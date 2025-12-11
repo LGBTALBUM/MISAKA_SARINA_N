@@ -46,6 +46,20 @@ tagline: >-
 # target: `_blank` opens in a new tab, `_self` opens in the same frame
 links:
   - link:
+      icon: "fa-solid fa-mug-saucer"
+      text: "Buy me a Ko-Fi"
+      url: "https://ko-fi.com/misakasarina"
+      title: "Buy me a Ko-Fi"
+      alt: "Buy me a Ko-Fi"
+      target: "_blank"
+  - link:
+      icon: "fa-brands fa-spotify"
+      text: "我的Spotify"
+      url: "https://open.spotify.com/artist/7HO1a8ZvIIRGG0y4sjkwy1"
+      title: "我的Spotify"
+      alt: "我的Spotify"
+      target: "_blank"
+  - link:
       icon: "fa-solid fa-angle-right"
       text: "我的Soun<u>dB</u>etter"
       url: "https://soundbetter.com/profiles/701882-misaka-sarina"
@@ -101,13 +115,6 @@ links:
       title: "我的YouTube（SARINA）"
       alt: "我的YouTube（SARINA）"
       target: "_blank"
-  - link:
-      icon: "fa-brands fa-spotify"
-      text: "我的Spotify"
-      url: "https://open.spotify.com/artist/7HO1a8ZvIIRGG0y4sjkwy1"
-      title: "我的Spotify"
-      alt: "我的Spotify"
-      target: "_blank"
 
 # List of social media links
 # icon: Use Font Awesome icons (https://fontawesome.com/search?o=r&m=free)
@@ -137,8 +144,8 @@ socials:
   - social:
       icon: "fa-brands fa-youtube"
       url: "https://www.youtube.com/@misakasarina"
-      title: "我的YouTube（SARINA-近期規劃中）"
-      alt: "我的YouTube（SARINA-近期規劃中）"
+      title: "我的YouTube（SARINA）"
+      alt: "我的YouTube（SARINA）"
       target: "_blank"
   - social:
       icon: "fa-solid fa-envelope"
