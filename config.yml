@@ -46,6 +46,13 @@ tagline: >-
 # target: `_blank` opens in a new tab, `_self` opens in the same frame
 links:
   - link:
+      icon: "fa-solid fa-angle-right"
+      text: "我的Soun<u>dB</u>etter"
+      url: "https://soundbetter.com/profiles/701882-misaka-sarina"
+      title: "我的Soun<u>dB</u>etter"
+      alt: "我的Soun<u>dB</u>etter"
+      target: "_blank"
+  - link:
       icon: "fa-brands fa-facebook-f"
       text: "我的FB個人主頁"
       url: "https://www.facebook.com/BakerSiacone/"
