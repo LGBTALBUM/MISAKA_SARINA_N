@@ -60,6 +60,13 @@ links:
       alt: "我的Spotify"
       target: "_blank"
   - link:
+      icon: "fa-solid fa-v"
+      text: "我的VocaDB"
+      url: "https://vocadb.net/Ar/75285"
+      title: "我的VocaDB"
+      alt: "我的VocaDB"
+      target: "_blank"
+  - link:
       icon: "fa-solid fa-angle-right"
       text: "我的Soun<u>dB</u>etter"
       url: "https://soundbetter.com/profiles/701882-misaka-sarina"
