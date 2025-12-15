@@ -97,7 +97,7 @@ links:
   - link:
       icon: "fa-brands fa-instagram"
       text: "我的INS個人主頁"
-      url: "https://www.instagram.com/bakersiacone/"
+      url: "https://www.instagram.com/misakasarina/"
       title: "我的INS個人主頁"
       alt: "我的INS個人主頁"
       target: "_blank"
@@ -138,7 +138,7 @@ socials:
       target: "_blank"
   - social:
       icon: "fa-brands fa-instagram"
-      url: "https://www.instagram.com/bakersiacone/"
+      url: "https://www.instagram.com/misakasarina/"
       title: "我的INS個人主頁"
       alt: "我的INS個人主頁"
       target: "_blank"
