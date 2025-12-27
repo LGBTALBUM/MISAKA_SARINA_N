@@ -1,7 +1,7 @@
 # Site Configuration
 
 # Theme, mapped to the directory: ./theme/xxxx
-theme: default
+theme: MS
 
 # HTML Language setting
 lang: "zh-TW"
