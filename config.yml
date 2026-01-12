@@ -74,6 +74,13 @@ links:
       alt: "我的Amazon Music"
       target: "_blank"
   - link:
+      icon: "fa-brands fa-youtube"
+      text: "我的Youtube Music"
+      url: "https://music.youtube.com/channel/UC7HcmRkHYdqHMYs_TxlP_GQ"
+      title: "我的Youtube Music"
+      alt: "我的Youtube Music"
+      target: "_blank"
+  - link:
       icon: "fa-solid fa-v"
       text: "我的VocaDB"
       url: "https://vocadb.net/Ar/75285"
