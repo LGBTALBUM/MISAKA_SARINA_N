@@ -143,6 +143,20 @@ links:
       title: "我的YouTube（SARINA）"
       alt: "我的YouTube（SARINA）"
       target: "_blank"
+  - link:
+      icon: "fa-solid fa-calendar"
+      text: "西元曆法-Carter曆法換算小工具"
+      url: "https://calendar.siacone.art/"
+      title: "西元曆法-Carter曆法換算小工具"
+      alt: "西元曆法-Carter曆法換算小工具"
+      target: "_blank"
+  - link:
+      icon: "fa-solid fa-rotate-right"
+      text: "我 跳 我 自 己"
+      url: "https://msarina.siacone.art/"
+      title: "我 跳 我 自 己"
+      alt: "我 跳 我 自 己"
+      target: "_blank"
 
 # List of social media links
 # icon: Use Font Awesome icons (https://fontawesome.com/search?o=r&m=free)
