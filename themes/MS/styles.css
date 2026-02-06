@@ -12,6 +12,7 @@ body {
     background-repeat: repeat-y;
     background-position: center; /* 居中 */
     background-size: cover; /* 自动调整大小以覆盖全屏 */
+    background-size: 100% auto;
 }
 
 a {
@@ -132,6 +133,7 @@ a {
     background-image: url('./images/Dark.jpg');
     background-color: #1a1a1a;
     color: #f0f0f0;
+    background-size: 100% auto;
   }
 
   a {
