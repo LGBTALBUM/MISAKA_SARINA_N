@@ -25,8 +25,8 @@ body {
   min-height: 100svh;                 /* 比 100vh 更适配移动端地址栏 */
   text-align: center;
   padding: 20px 0 20px 0;
-  box-sizing: border-box;
-  cursor: default;
+  box-sizing: content-box;
+  width: 100%;
 }
 
 a {
