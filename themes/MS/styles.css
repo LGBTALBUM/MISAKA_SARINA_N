@@ -7,19 +7,26 @@
 }
 
 /* Light mode (default) */
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
 body {
-    background-image: url('./images/Light.jpg');
-    background-repeat: repeat-y;
-    background-position: center; /* 居中 */
-    background-size: cover; /* 自动调整大小以覆盖全屏 */
-    background-size: 100% auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    cursor: default;
-    text-align: center;
-    padding: 20px 0 20px 0;
+  background-image: url('./images/Light.jpg');
+  background-repeat: repeat-y;        /* 纵向平铺 */
+  background-position: center top;    /* 水平居中，从顶部开始铺（更自然） */
+  background-size: 100% auto;         /* 宽度随浏览器缩放，高度按比例 */
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  min-height: 100svh;                 /* 比 100vh 更适配移动端地址栏 */
+  text-align: center;
+  padding: 20px 0;
+  box-sizing: border-box;
+  cursor: default;
 }
 
 a {
