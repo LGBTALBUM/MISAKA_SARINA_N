@@ -13,6 +13,13 @@ body {
     background-position: center; /* 居中 */
     background-size: cover; /* 自动调整大小以覆盖全屏 */
     background-size: 100% auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    cursor: default;
+    text-align: center;
+    padding: 20px 0 20px 0;
 }
 
 a {
@@ -133,7 +140,7 @@ a {
     background-image: url('./images/Dark.jpg');
     background-color: #1a1a1a;
     color: #f0f0f0;
-    background-size: 100% auto;
+    /* background-size: 100% auto; */
   }
 
   a {
