@@ -53,7 +53,7 @@ tagline: >-
 # target: `_blank` opens in a new tab, `_self` opens in the same frame
 links:
   - link:
-      icon: "fa-brands supportnow"
+      icon: "fa-brands fa-supportnow"
       text: "Support Me On 愛發電"
       url: "https://afdian.com/a/misakasarina"
       title: "Support Me On 愛發電"
