@@ -53,6 +53,13 @@ tagline: >-
 # target: `_blank` opens in a new tab, `_self` opens in the same frame
 links:
   - link:
+      icon: "fa-brands supportnow"
+      text: "Support Me On 愛發電"
+      url: "https://afdian.com/a/misakasarina"
+      title: "Support Me On 愛發電"
+      alt: "Support Me On 愛發電"
+      target: "_blank"
+  - link:
       icon: "fa-brands fa-spotify"
       text: "我的Spotify"
       url: "https://open.spotify.com/artist/7HO1a8ZvIIRGG0y4sjkwy1"
