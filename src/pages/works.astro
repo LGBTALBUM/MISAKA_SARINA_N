@@ -1,5 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-const withBase = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, '')}`;
+const withBase = (path: string) => {
+  const base = import.meta.env.BASE_URL.endsWith('/')
+    ? import.meta.env.BASE_URL
+    : `${import.meta.env.BASE_URL}/`;
+  return `${base}${path.replace(/^\/+/, '')}`;
+};
 ---
 <BaseLayout title="Works" description="Project and experiment catalogue placeholder."><section class="section card page-card"><p class="eyebrow">Works</p><h1 class="title">Works page is reserved.</h1><p class="copy">Prepared for future web tools, technical experiments, music infrastructure, and personal projects.</p><a class="button primary" href={withBase('/links')}>Back to links</a></section></BaseLayout><style>.page-card{padding:clamp(28px,6vw,56px)}</style>
