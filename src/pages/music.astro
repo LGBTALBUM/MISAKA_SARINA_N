@@ -1,10 +1,27 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-const withBase = (path: string) => {
-  const base = import.meta.env.BASE_URL.endsWith('/')
-    ? import.meta.env.BASE_URL
-    : `${import.meta.env.BASE_URL}/`;
-  return `${base}${path.replace(/^\/+/, '')}`;
-};
+import MusicCard from '../components/MusicCard.astro';
+import { getSortedReleases } from '../data/music';
+
+const releases = getSortedReleases();
 ---
-<BaseLayout title="Music" description="Music catalogue placeholder for Misaka Sarina releases."><section class="section card page-card"><p class="eyebrow">Music</p><h1 class="title">Music catalogue is reserved.</h1><p class="copy">Next milestone: release pages with cover art, release dates, lyrics, credits, and platform links.</p><div class="button-row"><a class="button primary" href="https://open.spotify.com/artist/7HO1a8ZvIIRGG0y4sjkwy1" target="_blank" rel="noreferrer">Spotify</a><a class="button" href={withBase('/links')}>All Links</a></div></section></BaseLayout><style>.page-card{padding:clamp(28px,6vw,56px)}</style>
+
+<BaseLayout title="Music" description="Music catalogue for Misaka Sarina releases, profiles, and sound experiments.">
+  <section class="section">
+    <p class="eyebrow">Music</p>
+    <h1 class="title">Releases and sound traces.</h1>
+    <p class="copy">A lightweight catalogue for Misaka Sarina music entries. Each item can point to streaming platforms, credits, production notes, and future lyrics pages.</p>
+  </section>
+
+  <section class="music-list" aria-label="Music releases">
+    {releases.map((release) => <MusicCard release={release} />)}
+  </section>
+</BaseLayout>
+
+<style>
+  .music-list {
+    display: grid;
+    gap: 18px;
+    margin: 0 0 80px;
+  }
+</style>
