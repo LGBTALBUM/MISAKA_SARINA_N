@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../data/content';
+---
+<BaseLayout title="Contact" description="Contact entry points for Misaka Sarina collaboration or project inquiries.">
+  <section class="section card page-card">
+    <p class="eyebrow">Contact</p>
+    <h1 class="title">Tell me about your project.</h1>
+    <p class="copy">For music production, collaboration, licensing, or project inquiries, use the contact methods below.</p>
+    <div class="button-row">
+      <a class="button primary" href={`mailto:${site.email}`}>Email {site.email}</a>
+      <a class="button" href="https://soundbetter.com/profiles/701882-misaka-sarina" target="_blank" rel="noreferrer">SoundBetter</a>
+      <a class="button" href="https://www.instagram.com/misakasarina/" target="_blank" rel="noreferrer">Instagram</a>
+      <a class="button" href="/links">All Links</a>
+    </div>
+  </section>
+</BaseLayout>
+<style>.page-card{padding:clamp(28px,6vw,56px)}</style>
