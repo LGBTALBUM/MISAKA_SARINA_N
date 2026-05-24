@@ -7,7 +7,7 @@ export type MusicRelease = {
   title: string;
   slug: string;
   releaseDate: string;
-  type: 'single' | 'ep' | 'album' | 'demo';
+  type: 'profile' | 'single' | 'ep' | 'album' | 'demo';
   description: string;
   cover?: string;
   featured?: boolean;
@@ -21,10 +21,10 @@ export const musicReleases: MusicRelease[] = [
     title: 'Misaka Sarina Artist Profile',
     slug: 'artist-profile',
     releaseDate: '2026-05-24',
-    type: 'single',
+    type: 'profile',
     featured: true,
     description:
-      'A temporary catalogue entry for the current Misaka Sarina streaming profiles. Replace this with the next official release entry when the music database is populated.',
+      'Official public music profiles for Misaka Sarina. This catalogue entry groups confirmed artist pages while individual song releases are being added.',
     platforms: [
       {
         label: 'Spotify',
@@ -47,10 +47,10 @@ export const musicReleases: MusicRelease[] = [
         href: 'https://vocadb.net/Ar/75285'
       }
     ],
-    credits: ['Misaka Sarina', 'Baker Siacone'],
+    credits: ['Artist: Misaka Sarina', 'Project identity: Baker Siacone'],
     notes: [
-      'This entry exists to validate the music catalogue structure.',
-      'Future release entries can include cover art, lyrics, credits, production notes, and more platform links.'
+      'This entry is intentionally marked as a profile, not a single release.',
+      'Add confirmed song releases below this entry once title, release date, and platform URLs are verified.'
     ]
   }
 ];
