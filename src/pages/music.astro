@@ -1,5 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-const withBase = (path) => `${import.meta.env.BASE_URL}${path.replace(/^\//, '')}`;
+const withBase = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, '')}`;
 ---
 <BaseLayout title="Music" description="Music catalogue placeholder for Misaka Sarina releases."><section class="section card page-card"><p class="eyebrow">Music</p><h1 class="title">Music catalogue is reserved.</h1><p class="copy">Next milestone: release pages with cover art, release dates, lyrics, credits, and platform links.</p><div class="button-row"><a class="button primary" href="https://open.spotify.com/artist/7HO1a8ZvIIRGG0y4sjkwy1" target="_blank" rel="noreferrer">Spotify</a><a class="button" href={withBase('/links')}>All Links</a></div></section></BaseLayout><style>.page-card{padding:clamp(28px,6vw,56px)}</style>
