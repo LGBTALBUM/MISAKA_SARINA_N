@@ -1,0 +1,98 @@
+---
+import type { MusicRelease } from '../data/music';
+
+const { release } = Astro.props as { release: MusicRelease };
+const withBase = (path: string) => {
+  const base = import.meta.env.BASE_URL.endsWith('/')
+    ? import.meta.env.BASE_URL
+    : `${import.meta.env.BASE_URL}/`;
+  return `${base}${path.replace(/^\/+/, '')}`;
+};
+---
+
+<a class="card music-card" href={withBase(`/music/${release.slug}/`)}>
+  <div class="cover" aria-hidden="true">
+    {release.cover ? <img src={withBase(release.cover)} alt="" /> : <span>MS</span>}
+  </div>
+  <div class="content">
+    <p class="meta">{release.type.toUpperCase()} · {release.releaseDate}</p>
+    <h2>{release.title}</h2>
+    <p>{release.description}</p>
+    <span class="open">View release</span>
+  </div>
+</a>
+
+<style>
+  .music-card {
+    display: grid;
+    grid-template-columns: 160px minmax(0, 1fr);
+    gap: 20px;
+    padding: 20px;
+    transition: transform 160ms ease, border-color 160ms ease;
+  }
+
+  .music-card:hover,
+  .music-card:focus-visible {
+    transform: translateY(-3px);
+    border-color: rgba(255, 122, 200, 0.58);
+  }
+
+  .cover {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 22px;
+    background: radial-gradient(circle at 35% 25%, #fff7fb, #ff7ac8 58%, #8d4cff);
+  }
+
+  .cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .cover span {
+    color: #190d15;
+    font-size: 2.6rem;
+    font-weight: 950;
+    letter-spacing: -0.12em;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .meta {
+    margin: 0 0 8px;
+    color: var(--cyan);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+  }
+
+  h2 {
+    margin: 0 0 10px;
+    font-size: clamp(1.6rem, 4vw, 2.6rem);
+    letter-spacing: -0.05em;
+  }
+
+  .content p:not(.meta) {
+    margin: 0 0 16px;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  .open {
+    color: var(--text);
+    font-weight: 800;
+  }
+
+  @media (max-width: 680px) {
+    .music-card {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
