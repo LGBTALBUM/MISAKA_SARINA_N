@@ -1,0 +1,35 @@
+---
+import '../styles/global.css';
+import { site, nav } from '../data/content';
+const { title = site.title, description = site.description } = Astro.props;
+const pageTitle = title === site.title ? title : `${title} | ${site.title}`;
+const canonical = new URL(Astro.url.pathname, site.url).toString();
+---
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+  </head>
+  <body>
+    <header class="header wrap">
+      <a class="brand" href="/">MS</a>
+      <nav class="nav" aria-label="Primary navigation">
+        {nav.map(([label, href]) => <a href={href}>{label}</a>)}
+      </nav>
+    </header>
+    <main><slot /></main>
+    <footer class="footer wrap">
+      <p>{site.copyright}</p>
+      <p>Built with Astro. Legacy link-page behavior now lives under <a href="/links">/links</a>.</p>
+    </footer>
+  </body>
+</html>

@@ -1,32 +1,26 @@
-name: 'Automatic build'
+name: Build and deploy Astro site
+
 on:
   push:
-    branches:
-      - main
-    paths-ignore:
-      - .gitignore
-      - README.md
-      - LICENSE
+    branches: [main]
   workflow_dispatch:
-  schedule:
-    - cron: '0 0 * * *'  # Runs daily at midnight (00:00 UTC)
-    
+
+permissions:
+  contents: write
+
 jobs:
-  continuous-delivery:
-
+  build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          fetch-depth: 0
-
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
+          node-version: 22
+      - run: npm install
+      - run: npm run build
+      - uses: peaceiris/actions-gh-pages@v4
         with:
-          ruby-version: 3.4.2
-          bundler-cache: true
-
-      - name: Deploy
-        run: bash deploy.sh
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
+          force_orphan: true
