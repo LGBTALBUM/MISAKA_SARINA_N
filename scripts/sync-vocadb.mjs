@@ -163,14 +163,39 @@ const mapSong = (song, usedSlugs) => {
 
 const toTs = (releases) => `export type MusicPlatform = {\n  label: string;\n  href: string;\n};\n\nexport type MusicRelease = {\n  title: string;\n  slug: string;\n  releaseDate: string;\n  type: 'profile' | 'single' | 'ep' | 'album' | 'demo';\n  description: string;\n  cover?: string;\n  featured?: boolean;\n  platforms: MusicPlatform[];\n  credits?: string[];\n  notes?: string[];\n  source?: {\n    label: string;\n    id: string;\n    href: string;\n  };\n};\n\nexport const musicReleases: MusicRelease[] = ${JSON.stringify(releases, null, 2)};\n\nexport const getSortedReleases = () =>\n  [...musicReleases].sort(\n    (a, b) => new Date(b.releaseDate).valueOf() - new Date(a.releaseDate).valueOf()\n  );\n\nexport const getFeaturedRelease = () => musicReleases.find((release) => release.featured) ?? musicReleases[0];\n`;
 
-const fetchSongs = async () => {
-  const apiUrl = new URL('https://vocadb.net/api/songs');
-  apiUrl.searchParams.set('artistId', String(ARTIST_ID));
-  apiUrl.searchParams.set('start', '0');
-  apiUrl.searchParams.set('maxResults', '100');
-  apiUrl.searchParams.set('sort', 'PublishDate');
-  apiUrl.searchParams.set('fields', 'Names,Artists,PVs,WebLinks,ReleaseDate,ThumbUrl');
+const buildSongApiUrls = () => {
+  const commonFields = 'Names,Artists,PVs,WebLinks,ThumbUrl';
+  const makeUrl = (params) => {
+    const apiUrl = new URL('https://vocadb.net/api/songs');
+    for (const [key, value] of params) {
+      apiUrl.searchParams.append(key, value);
+    }
+    return apiUrl;
+  };
 
+  return [
+    makeUrl([
+      ['artistId[]', String(ARTIST_ID)],
+      ['start', '0'],
+      ['maxResults', '100'],
+      ['fields', commonFields]
+    ]),
+    makeUrl([
+      ['artistId', String(ARTIST_ID)],
+      ['start', '0'],
+      ['maxResults', '100'],
+      ['fields', commonFields]
+    ]),
+    makeUrl([
+      ['query', 'Misaka Sarina'],
+      ['start', '0'],
+      ['maxResults', '100'],
+      ['fields', commonFields]
+    ])
+  ];
+};
+
+const requestJson = async (apiUrl) => {
   const response = await fetch(apiUrl, {
     headers: {
       Accept: 'application/json',
@@ -178,12 +203,33 @@ const fetchSongs = async () => {
     }
   });
 
+  const body = await response.text();
+
   if (!response.ok) {
-    throw new Error(`VocaDB API request failed: ${response.status} ${response.statusText}`);
+    throw new Error(
+      `VocaDB API request failed: ${response.status} ${response.statusText}\nURL: ${apiUrl.toString()}\nBody: ${body.slice(0, 1000)}`
+    );
   }
 
-  const payload = await response.json();
-  return Array.isArray(payload) ? payload : payload.items ?? [];
+  return body ? JSON.parse(body) : null;
+};
+
+const fetchSongs = async () => {
+  const errors = [];
+
+  for (const apiUrl of buildSongApiUrls()) {
+    try {
+      const payload = await requestJson(apiUrl);
+      const items = Array.isArray(payload) ? payload : payload?.items ?? [];
+      console.log(`Fetched ${items.length} VocaDB entries from ${apiUrl.toString()}`);
+      return items;
+    } catch (error) {
+      errors.push(error.message);
+      console.warn(error.message);
+    }
+  }
+
+  throw new Error(`All VocaDB API strategies failed.\n\n${errors.join('\n\n')}`);
 };
 
 const main = async () => {
