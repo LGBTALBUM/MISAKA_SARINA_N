@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../data/content';
+const withBase = (path) => `${import.meta.env.BASE_URL}${path.replace(/^\//, '')}`;
 ---
 <BaseLayout title="Contact" description="Contact entry points for Misaka Sarina collaboration or project inquiries.">
   <section class="section card page-card">
@@ -11,7 +12,7 @@ import { site } from '../data/content';
       <a class="button primary" href={`mailto:${site.email}`}>Email {site.email}</a>
       <a class="button" href="https://soundbetter.com/profiles/701882-misaka-sarina" target="_blank" rel="noreferrer">SoundBetter</a>
       <a class="button" href="https://www.instagram.com/misakasarina/" target="_blank" rel="noreferrer">Instagram</a>
-      <a class="button" href="/links">All Links</a>
+      <a class="button" href={withBase('/links')}>All Links</a>
     </div>
   </section>
 </BaseLayout>
