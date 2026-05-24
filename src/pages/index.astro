@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { socials } from '../data/content';
+const withBase = (path) => `${import.meta.env.BASE_URL}${path.replace(/^\//, '')}`;
 ---
 <BaseLayout>
   <section class="section hero">
@@ -9,9 +10,9 @@ import { socials } from '../data/content';
       <h1>Misaka Sarina</h1>
       <p class="copy">Music creator / VOCALOID creator / digital project maker. 歡迎來到 Baker Siacone / Misaka Sarina 的天南星小世界。</p>
       <div class="button-row">
-        <a class="button primary" href="/links">Listen / Links</a>
-        <a class="button" href="/music">Music</a>
-        <a class="button" href="/contact">Contact</a>
+        <a class="button primary" href={withBase('/links')}>Listen / Links</a>
+        <a class="button" href={withBase('/music')}>Music</a>
+        <a class="button" href={withBase('/contact')}>Contact</a>
       </div>
     </div>
     <aside class="card hero-card">
@@ -34,9 +35,9 @@ import { socials } from '../data/content';
     <p class="eyebrow">Explore</p>
     <h2 class="title">A small hub for music, notes, and digital traces.</h2>
     <div class="grid">
-      <a class="card tile" href="/music"><span>Soon</span><h3>Music</h3><p>Reserved for releases, lyrics, credits, and platform links.</p></a>
-      <a class="card tile" href="/links"><span>Live</span><h3>Links</h3><p>The organized replacement for the original Linkyee list.</p></a>
-      <a class="card tile" href="/works"><span>Reserved</span><h3>Works</h3><p>Future tools, experiments, and technical projects.</p></a>
+      <a class="card tile" href={withBase('/music')}><span>Soon</span><h3>Music</h3><p>Reserved for releases, lyrics, credits, and platform links.</p></a>
+      <a class="card tile" href={withBase('/links')}><span>Live</span><h3>Links</h3><p>The organized replacement for the original Linkyee list.</p></a>
+      <a class="card tile" href={withBase('/works')}><span>Reserved</span><h3>Works</h3><p>Future tools, experiments, and technical projects.</p></a>
     </div>
   </section>
 </BaseLayout>
