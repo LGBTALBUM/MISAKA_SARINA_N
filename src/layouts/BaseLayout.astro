@@ -4,6 +4,7 @@ import { site, nav } from '../data/content';
 const { title = site.title, description = site.description } = Astro.props;
 const pageTitle = title === site.title ? title : `${title} | ${site.title}`;
 const canonical = new URL(Astro.url.pathname, site.url).toString();
+const withBase = (path) => `${import.meta.env.BASE_URL}${path.replace(/^\//, '')}`;
 ---
 <!doctype html>
 <html lang="zh-Hant">
@@ -13,7 +14,7 @@ const canonical = new URL(Astro.url.pathname, site.url).toString();
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
@@ -21,15 +22,15 @@ const canonical = new URL(Astro.url.pathname, site.url).toString();
   </head>
   <body>
     <header class="header wrap">
-      <a class="brand" href="/">MS</a>
+      <a class="brand" href={withBase('/')}>MS</a>
       <nav class="nav" aria-label="Primary navigation">
-        {nav.map(([label, href]) => <a href={href}>{label}</a>)}
+        {nav.map(([label, href]) => <a href={withBase(href)}>{label}</a>)}
       </nav>
     </header>
     <main><slot /></main>
     <footer class="footer wrap">
       <p>{site.copyright}</p>
-      <p>Built with Astro. Legacy link-page behavior now lives under <a href="/links">/links</a>.</p>
+      <p>Built with Astro. Legacy link-page behavior now lives under <a href={withBase('/links')}>/links</a>.</p>
     </footer>
   </body>
 </html>
