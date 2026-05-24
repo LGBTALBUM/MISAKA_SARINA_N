@@ -2,7 +2,7 @@ name: Build and deploy Astro site
 
 on:
   push:
-    branches: [main]
+    branches: [main, astro-rebuild-mvp]
   workflow_dispatch:
 
 permissions:
