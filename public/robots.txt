@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://lgbtalbum.github.io/MISAKA_SARINA_N/sitemap.xml
