@@ -7,4 +7,54 @@ const withBase = (path: string) => {
   return `${base}${path.replace(/^\/+/, '')}`;
 };
 ---
-<BaseLayout title="Works" description="Project and experiment catalogue placeholder."><section class="section card page-card"><p class="eyebrow">Works</p><h1 class="title">Works page is reserved.</h1><p class="copy">Prepared for future web tools, technical experiments, music infrastructure, and personal projects.</p><a class="button primary" href={withBase('/links')}>Back to links</a></section></BaseLayout><style>.page-card{padding:clamp(28px,6vw,56px)}</style>
+<BaseLayout title="Works" description="Project and experiment catalogue placeholder.">
+  <section class="section card reserved-hero">
+    <p class="eyebrow">Works</p>
+    <h1 class="title">Project archive is reserved.</h1>
+    <p class="copy">Prepared for future web tools, technical experiments, music infrastructure, and personal digital projects.</p>
+    <div class="button-row">
+      <a class="button primary" href={withBase('/links')}>Back to links</a>
+      <a class="button" href={withBase('/music')}>Music archive</a>
+    </div>
+  </section>
+
+  <section class="section grid reserved-grid">
+    <article class="card reserved-card"><span>01</span><h2>Web tools</h2><p>Small utilities and public experiments can live here later.</p></article>
+    <article class="card reserved-card"><span>02</span><h2>Infrastructure</h2><p>Technical projects, deployment notes, and service experiments can be grouped here.</p></article>
+    <article class="card reserved-card"><span>03</span><h2>Creative systems</h2><p>Music-adjacent workflows, production systems, and archive tooling can be documented here.</p></article>
+  </section>
+</BaseLayout>
+<style>
+  .reserved-hero {
+    padding: clamp(28px, 6vw, 56px);
+  }
+
+  .reserved-grid {
+    margin-top: 0;
+  }
+
+  .reserved-card {
+    display: grid;
+    gap: 12px;
+    padding: 24px;
+  }
+
+  .reserved-card span {
+    color: var(--accent-2);
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 0.18em;
+  }
+
+  .reserved-card h2 {
+    margin: 0;
+    font-size: 1.6rem;
+    letter-spacing: -0.05em;
+  }
+
+  .reserved-card p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+</style>
