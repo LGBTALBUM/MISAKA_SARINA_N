@@ -8,11 +8,16 @@ const withBase = (path: string) => {
     : `${import.meta.env.BASE_URL}/`;
   return `${base}${path.replace(/^\/+/, '')}`;
 };
+
+const resolveAssetUrl = (url: string) => {
+  if (/^https?:\/\//i.test(url)) return url;
+  return withBase(url);
+};
 ---
 
 <a class="card music-card" href={withBase(`/music/${release.slug}/`)}>
   <div class="cover" aria-hidden="true">
-    {release.cover ? <img src={withBase(release.cover)} alt="" /> : <span>MS</span>}
+    {release.cover ? <img src={resolveAssetUrl(release.cover)} alt="" /> : <span>MS</span>}
   </div>
   <div class="content">
     <p class="meta">{release.type.toUpperCase()} · {release.releaseDate}</p>
