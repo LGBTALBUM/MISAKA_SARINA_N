@@ -2,10 +2,97 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 <BaseLayout title="About" description="About Misaka Sarina aka Baker Siacone.">
-  <section class="section card page-card">
-    <p class="eyebrow">About</p>
-    <h1 class="title">Misaka Sarina<br /><span>aka Baker Siacone</span></h1>
-    <p class="copy">這個 Astro 重構版本的定位，是把原本單純的連結頁升級為個人創作入口：首頁負責建立形象，/links 負責收納所有外部入口，後續 /music、/works、/blog 可以慢慢長成完整的作品庫與 digital garden。</p>
+  <section class="section about-hero card">
+    <div>
+      <p class="eyebrow">About</p>
+      <h1 class="title">Misaka Sarina<br /><span>aka Baker Siacone</span></h1>
+      <p class="copy">This site is a dark archive for music, links, notes, and digital traces. It turns the old link page into a creator homepage with a proper release catalogue and room for future projects.</p>
+    </div>
+    <div class="identity-card">
+      <span>Identity</span>
+      <strong>Music creator / VOCALOID creator / digital project maker</strong>
+      <p>Siacone Art is the project space. Misaka Sarina is the music identity.</p>
+    </div>
+  </section>
+
+  <section class="section grid notes-grid">
+    <article class="card note-card">
+      <p class="eyebrow">Music</p>
+      <h2>Release archive first.</h2>
+      <p>The music catalogue is synced from VocaDB and arranged so main releases stay visible while versions and instrumentals remain available.</p>
+    </article>
+    <article class="card note-card">
+      <p class="eyebrow">Web</p>
+      <h2>A personal space.</h2>
+      <p>The site is built with Astro and designed to stay light, static, and portable across GitHub Pages or future production hosting.</p>
+    </article>
+    <article class="card note-card">
+      <p class="eyebrow">Future</p>
+      <h2>Expandable by design.</h2>
+      <p>Works, blog notes, lyrics, credits, and production logs can be added without changing the core information architecture.</p>
+    </article>
   </section>
 </BaseLayout>
-<style>.page-card{padding:clamp(28px,6vw,56px)}span{color:var(--muted)}</style>
+<style>
+  .about-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 0.42fr);
+    gap: 28px;
+    align-items: end;
+    padding: clamp(28px, 6vw, 56px);
+  }
+
+  .title span {
+    color: var(--muted);
+  }
+
+  .identity-card,
+  .note-card {
+    border: 1px solid rgba(236, 238, 255, 0.12);
+    border-radius: 20px;
+    background: rgba(7, 8, 18, 0.52);
+  }
+
+  .identity-card {
+    display: grid;
+    gap: 12px;
+    padding: 22px;
+  }
+
+  .identity-card span {
+    color: var(--soft);
+    font-size: 0.72rem;
+    font-weight: 850;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .identity-card strong {
+    color: var(--accent);
+    font-size: 1.12rem;
+    line-height: 1.35;
+  }
+
+  .identity-card p,
+  .note-card p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .note-card {
+    padding: 24px;
+  }
+
+  .note-card h2 {
+    margin: 0 0 12px;
+    font-size: 1.65rem;
+    letter-spacing: -0.05em;
+  }
+
+  @media (max-width: 840px) {
+    .about-hero {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
