@@ -1,8 +1,9 @@
 export const site = {
   title: 'Misaka Sarina',
   description: 'Misaka Sarina aka Baker Siacone — music creator, VOCALOID creator, and digital project maker.',
-  url: 'https://msarina.moe',
+  url: 'https://lgbtalbum.github.io/MISAKA_SARINA_N/',
   email: 'i@msarina.moe',
+  image: '/og-image.svg',
   copyright: 'MISAKA SARINA AKA BAKER SIACONE @ SIACONE ART'
 };
 
