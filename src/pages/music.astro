@@ -15,54 +15,221 @@ const profileEntries = getProfileEntries(releases);
 ---
 
 <BaseLayout title="Music" description="Music catalogue for Misaka Sarina releases, profiles, and sound experiments.">
-  <section class="section">
-    <p class="eyebrow">Music</p>
-    <h1 class="title">Releases and sound traces.</h1>
-    <p class="copy">Main releases are shown first. Instrumental, Off Vocal, Vocal Off, karaoke, and other version entries are kept in a secondary section so they do not dominate the main catalogue.</p>
+  <section class="section music-hero card">
+    <div>
+      <p class="eyebrow">Music Archive</p>
+      <h1 class="title">Releases and sound traces.</h1>
+      <p class="copy">Main releases are shown first. Instrumental, Off Vocal, Vocal Off, karaoke, and other version entries remain available in a lower-priority archive section.</p>
+    </div>
+    <div class="stats" aria-label="Catalogue stats">
+      <div><span>Main</span><strong>{mainReleases.length}</strong></div>
+      <div><span>Versions</span><strong>{secondaryReleases.length}</strong></div>
+      <div><span>Profiles</span><strong>{profileEntries.length}</strong></div>
+    </div>
   </section>
 
-  <section class="music-list" aria-label="Main music releases">
-    {mainReleases.map((release) => <MusicCard release={release} />)}
+  <section class="section archive-section" aria-label="Main music releases">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">Primary catalogue</p>
+        <h2>Main releases</h2>
+      </div>
+      <p>Sorted by release date. Version entries are intentionally excluded from this list.</p>
+    </div>
+    <div class="music-list">
+      {mainReleases.map((release) => <MusicCard release={release} />)}
+    </div>
   </section>
 
   {secondaryReleases.length > 0 && (
-    <section class="section secondary-block">
-      <p class="eyebrow">Versions / Instrumentals</p>
-      <h2>Version entries</h2>
-      <p class="copy">These entries are kept available for reference, but are intentionally lower priority than main releases.</p>
-      <div class="compact-list">
-        {secondaryReleases.map((release) => <MusicCard release={release} />)}
-      </div>
+    <section class="section archive-section secondary-block">
+      <details>
+        <summary>
+          <div>
+            <p class="eyebrow">Versions / Instrumentals</p>
+            <h2>Secondary entries</h2>
+          </div>
+          <span>{secondaryReleases.length} entries</span>
+        </summary>
+        <p class="copy">These entries are kept for reference, but are intentionally lower priority than main releases.</p>
+        <div class="compact-list">
+          {secondaryReleases.map((release) => <MusicCard release={release} />)}
+        </div>
+      </details>
     </section>
   )}
 
   {profileEntries.length > 0 && (
-    <section class="section secondary-block">
-      <p class="eyebrow">Profiles</p>
-      <h2>Artist profile links</h2>
-      <div class="compact-list">
-        {profileEntries.map((release) => <MusicCard release={release} />)}
+    <section class="section archive-section profile-block">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Profiles</p>
+          <h2>Artist platform links</h2>
+        </div>
+        <p>External profile entries are grouped here instead of being mixed into releases.</p>
+      </div>
+      <div class="profile-grid">
+        {profileEntries.map((release) => (
+          <a class="card profile-card" href={release.platforms[0]?.href ?? '#'} target="_blank" rel="noreferrer">
+            <span>{release.type}</span>
+            <strong>{release.title}</strong>
+            <small>{release.platforms.length} external links · open profile</small>
+          </a>
+        ))}
       </div>
     </section>
   )}
 </BaseLayout>
 
 <style>
-  .music-list,
-  .compact-list {
+  .music-hero {
     display: grid;
-    gap: 18px;
-    margin: 0 0 80px;
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 0.42fr);
+    gap: 28px;
+    align-items: end;
+    padding: clamp(26px, 5vw, 46px);
   }
 
-  .secondary-block h2 {
-    margin: 0 0 12px;
-    font-size: clamp(2rem, 5vw, 3.6rem);
-    letter-spacing: -0.06em;
+  .stats {
+    display: grid;
+    gap: 12px;
+  }
+
+  .stats div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    border: 1px solid rgba(236, 238, 255, 0.12);
+    border-radius: 18px;
+    background: rgba(7, 8, 18, 0.54);
+    padding: 14px 16px;
+  }
+
+  .stats span,
+  .profile-card span {
+    color: var(--soft);
+    font-size: 0.72rem;
+    font-weight: 850;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .stats strong {
+    color: var(--accent);
+    font-size: 1.45rem;
+    line-height: 1;
+  }
+
+  .archive-section {
+    margin-top: 70px;
+  }
+
+  .section-head,
+  summary {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+
+  .section-head h2,
+  summary h2 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3.7rem);
+    line-height: 0.95;
+    letter-spacing: -0.07em;
+  }
+
+  .section-head > p {
+    max-width: 360px;
+    margin: 0;
+    color: var(--soft);
+    line-height: 1.65;
+  }
+
+  .music-list,
+  .compact-list,
+  .profile-grid {
+    display: grid;
+    gap: 18px;
+  }
+
+  details {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: linear-gradient(145deg, rgba(8, 10, 24, 0.62), rgba(8, 10, 24, 0.36));
+    padding: clamp(22px, 4vw, 34px);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(14px);
+  }
+
+  summary {
+    margin: 0;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  summary > span {
+    border: 1px solid rgba(236, 238, 255, 0.12);
+    border-radius: 999px;
+    color: var(--accent);
+    background: rgba(7, 8, 18, 0.54);
+    padding: 10px 14px;
+    font-size: 0.84rem;
+    font-weight: 850;
+  }
+
+  details > .copy {
+    margin-top: 18px;
   }
 
   .compact-list {
     margin-top: 24px;
-    opacity: 0.88;
+    opacity: 0.82;
+  }
+
+  .profile-grid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+
+  .profile-card {
+    display: grid;
+    gap: 10px;
+    padding: 22px;
+    transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+  }
+
+  .profile-card:hover,
+  .profile-card:focus-visible {
+    transform: translateY(-2px);
+    border-color: rgba(217, 210, 255, 0.45);
+    background: rgba(19, 22, 42, 0.72);
+  }
+
+  .profile-card strong {
+    font-size: 1.25rem;
+    line-height: 1.1;
+  }
+
+  .profile-card small {
+    color: var(--soft);
+  }
+
+  @media (max-width: 840px) {
+    .music-hero {
+      grid-template-columns: 1fr;
+    }
+
+    .section-head,
+    summary {
+      align-items: flex-start;
+      flex-direction: column;
+    }
   }
 </style>
