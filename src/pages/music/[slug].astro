@@ -26,40 +26,67 @@ const resolveAssetUrl = (url: string) => {
 
 <BaseLayout title={release.title} description={release.description}>
   <section class="section release-hero card">
-    <div class="cover" aria-hidden="true">
-      {release.cover ? <img src={resolveAssetUrl(release.cover)} alt="" /> : <span>MS</span>}
+    <div class="cover-wrap">
+      <div class="cover" aria-hidden="true">
+        {release.cover ? <img src={resolveAssetUrl(release.cover)} alt="" /> : <span>MS</span>}
+      </div>
+      <p class="archive-id">Archive entry · {release.source?.id ? `S/${release.source.id}` : release.slug}</p>
     </div>
-    <div>
+    <div class="release-main">
       <p class="eyebrow">{release.type} · {release.releaseDate}</p>
       <h1 class="title">{release.title}</h1>
       <p class="copy">{release.description}</p>
-      <div class="button-row">
-        {release.platforms.map((platform) => (
-          <a class="button" href={platform.href} target="_blank" rel="noreferrer">{platform.label}</a>
-        ))}
+      <div class="meta-grid">
+        <div><span>Type</span><strong>{release.type}</strong></div>
+        <div><span>Date</span><strong>{release.releaseDate}</strong></div>
+        <div><span>Links</span><strong>{release.platforms.length}</strong></div>
       </div>
     </div>
   </section>
 
-  {release.credits && release.credits.length > 0 && (
-    <section class="section card page-card">
-      <p class="eyebrow">Credits</p>
-      <ul>
-        {release.credits.map((credit) => <li>{credit}</li>)}
-      </ul>
+  <section class="section detail-grid">
+    <section class="card page-card platforms-card">
+      <p class="eyebrow">Platforms</p>
+      <div class="platform-grid">
+        {release.platforms.map((platform) => (
+          <a class="platform-link" href={platform.href} target="_blank" rel="noreferrer">
+            <span>{platform.label}</span>
+            <small>Open external</small>
+          </a>
+        ))}
+      </div>
     </section>
-  )}
 
-  {release.notes && release.notes.length > 0 && (
-    <section class="section card page-card">
-      <p class="eyebrow">Notes</p>
-      <ul>
-        {release.notes.map((note) => <li>{note}</li>)}
-      </ul>
-    </section>
-  )}
+    {release.source && (
+      <section class="card page-card source-card">
+        <p class="eyebrow">Source</p>
+        <a class="source-link" href={release.source.href} target="_blank" rel="noreferrer">
+          <span>{release.source.label}</span>
+          <strong>{release.source.id}</strong>
+        </a>
+      </section>
+    )}
 
-  <section class="section">
+    {release.credits && release.credits.length > 0 && (
+      <section class="card page-card">
+        <p class="eyebrow">Credits</p>
+        <ul>
+          {release.credits.map((credit) => <li>{credit}</li>)}
+        </ul>
+      </section>
+    )}
+
+    {release.notes && release.notes.length > 0 && (
+      <section class="card page-card">
+        <p class="eyebrow">Notes</p>
+        <ul>
+          {release.notes.map((note) => <li>{note}</li>)}
+        </ul>
+      </section>
+    )}
+  </section>
+
+  <section class="section back-row">
     <a class="button primary" href={withBase('/music')}>Back to music</a>
   </section>
 </BaseLayout>
@@ -67,10 +94,15 @@ const resolveAssetUrl = (url: string) => {
 <style>
   .release-hero {
     display: grid;
-    grid-template-columns: 280px minmax(0, 1fr);
-    gap: 28px;
+    grid-template-columns: minmax(220px, 340px) minmax(0, 1fr);
+    gap: clamp(26px, 5vw, 54px);
     align-items: center;
-    padding: clamp(24px, 5vw, 42px);
+    padding: clamp(24px, 5vw, 46px);
+  }
+
+  .cover-wrap {
+    display: grid;
+    gap: 14px;
   }
 
   .cover {
@@ -78,8 +110,10 @@ const resolveAssetUrl = (url: string) => {
     place-items: center;
     aspect-ratio: 1;
     overflow: hidden;
-    border-radius: 28px;
-    background: radial-gradient(circle at 35% 25%, #fff7fb, #ff7ac8 58%, #8d4cff);
+    border: 1px solid rgba(236, 238, 255, 0.18);
+    border-radius: 26px;
+    background: linear-gradient(135deg, #f5f2ff, #aebcff 58%, #d7b4c7);
+    box-shadow: 0 28px 90px rgba(0, 0, 0, 0.42);
   }
 
   .cover img {
@@ -89,14 +123,109 @@ const resolveAssetUrl = (url: string) => {
   }
 
   .cover span {
-    color: #190d15;
+    color: #080914;
     font-size: 4rem;
     font-weight: 950;
     letter-spacing: -0.12em;
   }
 
+  .archive-id {
+    margin: 0;
+    color: var(--soft);
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .release-main {
+    min-width: 0;
+  }
+
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 28px;
+  }
+
+  .meta-grid div {
+    border: 1px solid rgba(236, 238, 255, 0.12);
+    border-radius: 18px;
+    background: rgba(7, 8, 18, 0.52);
+    padding: 14px;
+  }
+
+  .meta-grid span {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--soft);
+    font-size: 0.7rem;
+    font-weight: 850;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .meta-grid strong {
+    color: var(--accent);
+    font-size: 0.95rem;
+  }
+
+  .detail-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr);
+    gap: 18px;
+  }
+
   .page-card {
-    padding: clamp(24px, 5vw, 42px);
+    padding: clamp(22px, 4vw, 34px);
+  }
+
+  .platforms-card {
+    grid-column: 1 / -1;
+  }
+
+  .platform-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+  }
+
+  .platform-link,
+  .source-link {
+    border: 1px solid rgba(236, 238, 255, 0.13);
+    border-radius: 18px;
+    background: rgba(7, 8, 18, 0.54);
+    padding: 16px;
+    transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+  }
+
+  .platform-link {
+    display: grid;
+    gap: 6px;
+  }
+
+  .platform-link:hover,
+  .source-link:hover {
+    transform: translateY(-2px);
+    border-color: rgba(217, 210, 255, 0.45);
+    background: rgba(19, 22, 42, 0.72);
+  }
+
+  .platform-link span,
+  .source-link span {
+    color: var(--text);
+    font-weight: 850;
+  }
+
+  .platform-link small {
+    color: var(--soft);
+  }
+
+  .source-link {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
   }
 
   ul {
@@ -106,8 +235,17 @@ const resolveAssetUrl = (url: string) => {
     line-height: 1.8;
   }
 
-  @media (max-width: 760px) {
-    .release-hero {
+  .back-row {
+    margin-top: 36px;
+  }
+
+  @media (max-width: 840px) {
+    .release-hero,
+    .detail-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .meta-grid {
       grid-template-columns: 1fr;
     }
   }
