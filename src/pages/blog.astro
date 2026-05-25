@@ -7,4 +7,55 @@ const withBase = (path: string) => {
   return `${base}${path.replace(/^\/+/, '')}`;
 };
 ---
-<BaseLayout title="Blog" description="Notes and digital garden placeholder."><section class="section card page-card"><p class="eyebrow">Blog</p><h1 class="title">Digital garden is reserved.</h1><p class="copy">Prepared for future technical notes, music production logs, release diaries, and infrastructure SOPs.</p><a class="button primary" href={withBase('/links')}>Back to links</a></section></BaseLayout><style>.page-card{padding:clamp(28px,6vw,56px)}</style>
+<BaseLayout title="Blog" description="Notes and digital garden placeholder.">
+  <section class="section card reserved-hero">
+    <p class="eyebrow">Blog</p>
+    <h1 class="title">Digital garden is reserved.</h1>
+    <p class="copy">Prepared for future technical notes, music production logs, release diaries, and infrastructure SOPs.</p>
+    <div class="button-row">
+      <a class="button primary" href={withBase('/links')}>Back to links</a>
+      <a class="button" href={withBase('/music')}>Music archive</a>
+    </div>
+  </section>
+
+  <section class="section grid reserved-grid">
+    <article class="card reserved-card"><span>Notes</span><h2>Technical logs</h2><p>Deployment notes, debugging records, and reproducible SOPs can be published here later.</p></article>
+    <article class="card reserved-card"><span>Music</span><h2>Release diaries</h2><p>Writing notes, production context, lyrics explanations, and release reflections can live here.</p></article>
+    <article class="card reserved-card"><span>Garden</span><h2>Long-term index</h2><p>A future digital garden can connect posts, works, releases, and external references.</p></article>
+  </section>
+</BaseLayout>
+<style>
+  .reserved-hero {
+    padding: clamp(28px, 6vw, 56px);
+  }
+
+  .reserved-grid {
+    margin-top: 0;
+  }
+
+  .reserved-card {
+    display: grid;
+    gap: 12px;
+    padding: 24px;
+  }
+
+  .reserved-card span {
+    color: var(--accent-2);
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .reserved-card h2 {
+    margin: 0;
+    font-size: 1.6rem;
+    letter-spacing: -0.05em;
+  }
+
+  .reserved-card p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+</style>
