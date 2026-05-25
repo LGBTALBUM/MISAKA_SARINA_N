@@ -1,12 +1,17 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { socials } from '../data/content';
+import { getSortedReleases } from '../data/music';
+
 const withBase = (path: string) => {
   const base = import.meta.env.BASE_URL.endsWith('/')
     ? import.meta.env.BASE_URL
     : `${import.meta.env.BASE_URL}/`;
   return `${base}${path.replace(/^\/+/, '')}`;
 };
+
+const featuredRelease = getSortedReleases().find((release) => release.type !== 'profile') ?? getSortedReleases()[0];
+const featuredPlatforms = featuredRelease.platforms.slice(0, 3);
 ---
 <BaseLayout>
   <section class="section hero">
@@ -15,8 +20,8 @@ const withBase = (path: string) => {
       <h1>Misaka Sarina</h1>
       <p class="copy">Music creator / VOCALOID creator / digital project maker. 歡迎來到 Baker Siacone / Misaka Sarina 的天南星小世界。</p>
       <div class="button-row">
-        <a class="button primary" href={withBase('/links')}>Listen / Links</a>
-        <a class="button" href={withBase('/music')}>Music</a>
+        <a class="button primary" href={withBase('/music')}>Listen / Music</a>
+        <a class="button" href={withBase('/links')}>Links</a>
         <a class="button" href={withBase('/contact')}>Contact</a>
       </div>
     </div>
@@ -27,23 +32,27 @@ const withBase = (path: string) => {
     </aside>
   </section>
   <section class="section card featured">
-    <p class="eyebrow">Featured</p>
-    <h2>Music first, links second.</h2>
-    <p class="copy">This MVP turns the old link list into a small creator landing page. The complete link collection remains available under /links.</p>
+    <div>
+      <p class="eyebrow">Featured Release</p>
+      <h2>{featuredRelease.title}</h2>
+      <p class="copy">{featuredRelease.description}</p>
+      <p class="release-meta">{featuredRelease.type.toUpperCase()} · {featuredRelease.releaseDate}</p>
+    </div>
     <div class="button-row">
-      <a class="button primary" href="https://open.spotify.com/artist/7HO1a8ZvIIRGG0y4sjkwy1" target="_blank" rel="noreferrer">Spotify</a>
-      <a class="button" href="https://music.youtube.com/channel/UC7HcmRkHYdqHMYs_TxlP_GQ" target="_blank" rel="noreferrer">YouTube Music</a>
-      <a class="button" href="https://vocadb.net/Ar/75285" target="_blank" rel="noreferrer">VocaDB</a>
+      <a class="button primary" href={withBase(`/music/${featuredRelease.slug}/`)}>View release</a>
+      {featuredPlatforms.map((platform) => (
+        <a class="button" href={platform.href} target="_blank" rel="noreferrer">{platform.label}</a>
+      ))}
     </div>
   </section>
   <section class="section">
     <p class="eyebrow">Explore</p>
     <h2 class="title">A small hub for music, notes, and digital traces.</h2>
     <div class="grid">
-      <a class="card tile" href={withBase('/music')}><span>Soon</span><h3>Music</h3><p>Reserved for releases, lyrics, credits, and platform links.</p></a>
+      <a class="card tile" href={withBase('/music')}><span>Live</span><h3>Music</h3><p>Releases, source links, credits, and platform links synced from VocaDB.</p></a>
       <a class="card tile" href={withBase('/links')}><span>Live</span><h3>Links</h3><p>The organized replacement for the original Linkyee list.</p></a>
       <a class="card tile" href={withBase('/works')}><span>Reserved</span><h3>Works</h3><p>Future tools, experiments, and technical projects.</p></a>
     </div>
   </section>
 </BaseLayout>
-<style>.hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);align-items:center;gap:28px;margin-top:56px}h1{margin:0;font-size:clamp(4rem,12vw,9rem);line-height:.86;letter-spacing:-.1em}.hero-card{padding:26px}.orb{display:grid;place-items:center;width:150px;height:150px;border-radius:40px;color:#190d15;font-size:3.5rem;font-weight:950;letter-spacing:-.12em;background:radial-gradient(circle at 35% 25%,#fff7fb,#ff7ac8 58%,#8d4cff);box-shadow:0 24px 90px rgba(255,122,200,.38)}.featured,.tile{padding:28px}.featured h2{margin:0 0 12px;font-size:clamp(2rem,5vw,4rem);letter-spacing:-.06em}.tile{display:flex;min-height:210px;flex-direction:column;justify-content:space-between}.tile span{width:fit-content;padding:8px 12px;border-radius:999px;color:var(--cyan);background:rgba(145,231,255,.1);font-size:.78rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase}.tile h3{font-size:1.6rem}.tile p,.hero-card p{color:var(--muted)}@media(max-width:880px){.hero{grid-template-columns:1fr}}</style>
+<style>.hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);align-items:center;gap:28px;margin-top:56px}h1{margin:0;font-size:clamp(4rem,12vw,9rem);line-height:.86;letter-spacing:-.1em}.hero-card{padding:26px}.orb{display:grid;place-items:center;width:150px;height:150px;border-radius:40px;color:#190d15;font-size:3.5rem;font-weight:950;letter-spacing:-.12em;background:radial-gradient(circle at 35% 25%,#fff7fb,#ff7ac8 58%,#8d4cff);box-shadow:0 24px 90px rgba(255,122,200,.38)}.featured,.tile{padding:28px}.featured{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:24px}.featured h2{margin:0 0 12px;font-size:clamp(2rem,5vw,4rem);letter-spacing:-.06em}.release-meta{margin:16px 0 0;color:var(--cyan);font-size:.8rem;font-weight:800;letter-spacing:.14em}.tile{display:flex;min-height:210px;flex-direction:column;justify-content:space-between}.tile span{width:fit-content;padding:8px 12px;border-radius:999px;color:var(--cyan);background:rgba(145,231,255,.1);font-size:.78rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase}.tile h3{font-size:1.6rem}.tile p,.hero-card p{color:var(--muted)}@media(max-width:880px){.hero,.featured{grid-template-columns:1fr}}</style>
