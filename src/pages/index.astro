@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { socials } from '../data/content';
 import { getSortedReleases } from '../data/music';
+import { getFeaturedCatalogueRelease } from '../utils/musicVisibility';
 
 const withBase = (path: string) => {
   const base = import.meta.env.BASE_URL.endsWith('/')
@@ -10,7 +11,7 @@ const withBase = (path: string) => {
   return `${base}${path.replace(/^\/+/, '')}`;
 };
 
-const featuredRelease = getSortedReleases().find((release) => release.type !== 'profile') ?? getSortedReleases()[0];
+const featuredRelease = getFeaturedCatalogueRelease(getSortedReleases());
 const featuredPlatforms = featuredRelease.platforms.slice(0, 3);
 ---
 <BaseLayout>
@@ -49,7 +50,7 @@ const featuredPlatforms = featuredRelease.platforms.slice(0, 3);
     <p class="eyebrow">Explore</p>
     <h2 class="title">A small hub for music, notes, and digital traces.</h2>
     <div class="grid">
-      <a class="card tile" href={withBase('/music')}><span>Live</span><h3>Music</h3><p>Releases, source links, credits, and platform links synced from VocaDB.</p></a>
+      <a class="card tile" href={withBase('/music')}><span>Live</span><h3>Music</h3><p>Main releases first, with version entries kept in a secondary section.</p></a>
       <a class="card tile" href={withBase('/links')}><span>Live</span><h3>Links</h3><p>The organized replacement for the original Linkyee list.</p></a>
       <a class="card tile" href={withBase('/works')}><span>Reserved</span><h3>Works</h3><p>Future tools, experiments, and technical projects.</p></a>
     </div>
