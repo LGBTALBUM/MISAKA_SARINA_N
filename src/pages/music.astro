@@ -2,26 +2,67 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import MusicCard from '../components/MusicCard.astro';
 import { getSortedReleases } from '../data/music';
+import {
+  getMainCatalogueReleases,
+  getProfileEntries,
+  getSecondaryReleases
+} from '../utils/musicVisibility';
 
 const releases = getSortedReleases();
+const mainReleases = getMainCatalogueReleases(releases);
+const secondaryReleases = getSecondaryReleases(releases);
+const profileEntries = getProfileEntries(releases);
 ---
 
 <BaseLayout title="Music" description="Music catalogue for Misaka Sarina releases, profiles, and sound experiments.">
   <section class="section">
     <p class="eyebrow">Music</p>
     <h1 class="title">Releases and sound traces.</h1>
-    <p class="copy">A lightweight catalogue for Misaka Sarina music entries. Each item can point to streaming platforms, credits, production notes, and future lyrics pages.</p>
+    <p class="copy">Main releases are shown first. Instrumental, Off Vocal, Vocal Off, karaoke, and other version entries are kept in a secondary section so they do not dominate the main catalogue.</p>
   </section>
 
-  <section class="music-list" aria-label="Music releases">
-    {releases.map((release) => <MusicCard release={release} />)}
+  <section class="music-list" aria-label="Main music releases">
+    {mainReleases.map((release) => <MusicCard release={release} />)}
   </section>
+
+  {secondaryReleases.length > 0 && (
+    <section class="section secondary-block">
+      <p class="eyebrow">Versions / Instrumentals</p>
+      <h2>Version entries</h2>
+      <p class="copy">These entries are kept available for reference, but are intentionally lower priority than main releases.</p>
+      <div class="compact-list">
+        {secondaryReleases.map((release) => <MusicCard release={release} />)}
+      </div>
+    </section>
+  )}
+
+  {profileEntries.length > 0 && (
+    <section class="section secondary-block">
+      <p class="eyebrow">Profiles</p>
+      <h2>Artist profile links</h2>
+      <div class="compact-list">
+        {profileEntries.map((release) => <MusicCard release={release} />)}
+      </div>
+    </section>
+  )}
 </BaseLayout>
 
 <style>
-  .music-list {
+  .music-list,
+  .compact-list {
     display: grid;
     gap: 18px;
     margin: 0 0 80px;
+  }
+
+  .secondary-block h2 {
+    margin: 0 0 12px;
+    font-size: clamp(2rem, 5vw, 3.6rem);
+    letter-spacing: -0.06em;
+  }
+
+  .compact-list {
+    margin-top: 24px;
+    opacity: 0.88;
   }
 </style>
