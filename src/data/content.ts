@@ -4,7 +4,8 @@ export const site = {
   url: 'https://lgbtalbum.github.io/MISAKA_SARINA_N/',
   email: 'i@msarina.moe',
   image: '/og-image.svg',
-  copyright: 'MISAKA SARINA AKA BAKER SIACONE @ SIACONE ART'
+  copyright: 'MISAKA SARINA AKA BAKER SIACONE @ SIACONE ART',
+  PGPPubkey: '213906239240F896E303A47662443ACE03F2788A'
 };
 
 export const nav = [
@@ -42,7 +43,7 @@ export const linkGroups = [
   { title: 'Projects', items: [
     ['YouTube — Baker', 'https://www.youtube.com/@BakerSiacone', 'Baker channel'],
     ['YouTube — Sarina', 'https://www.youtube.com/@misakasarina', 'Sarina channel'],
-    ['Calendar Tool', 'https://calendar.msarina.moe/', 'Web tool'],
+    ['Calendar Tool', 'https://calendar.siacone.art/', 'Web tool'],
     ['Siacone Art Mirror', 'https://msarina.siacone.art/', 'Mirror page']
   ]}
 ];
