@@ -56,5 +56,29 @@ const featuredPlatforms = featuredRelease.platforms.slice(0, 3);
       <a class="card tile" href={withBase('/works')}><span>Reserved</span><h3>Works</h3><p>Future tools, experiments, and technical projects.</p></a>
     </div>
   </section>
+  <section class="section card dev-trace">
+    <div>
+      <p class="eyebrow">Digital Trace</p>
+      <h2>Development traces behind the archive.</h2>
+      <p class="copy">Small tools, web experiments, infrastructure notes, and the repository history that keeps this creator space reproducible.</p>
+    </div>
+    <div class="trace-grid">
+      <a class="trace-card" href="https://github.com/LGBTALBUM" target="_blank" rel="noreferrer">
+        <span>GitHub</span>
+        <strong>Profile</strong>
+        <small>Development identity</small>
+      </a>
+      <a class="trace-card" href="https://github.com/LGBTALBUM/MISAKA_SARINA_N" target="_blank" rel="noreferrer">
+        <span>Repository</span>
+        <strong>MISAKA_SARINA_N</strong>
+        <small>Current Astro rebuild</small>
+      </a>
+      <a class="trace-card" href={withBase('/works')}>
+        <span>Archive</span>
+        <strong>Works</strong>
+        <small>Reserved project index</small>
+      </a>
+    </div>
+  </section>
 </BaseLayout>
-<style>.hero{display:grid;grid-template-columns:minmax(0,1.18fr) minmax(280px,.82fr);align-items:center;gap:30px;margin-top:62px}h1{margin:0;font-size:clamp(4.2rem,12vw,9.5rem);line-height:.84;letter-spacing:-.105em;text-shadow:0 18px 70px rgba(0,0,0,.55)}.hero-card{padding:28px}.index-label{margin:22px 0 4px;color:var(--accent);font-size:.78rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase}.orb{display:grid;place-items:center;width:154px;height:154px;border:1px solid rgba(236,238,255,.3);border-radius:32px;color:#080914;font-size:3.5rem;font-weight:950;letter-spacing:-.12em;background:linear-gradient(135deg,#f5f2ff,#aebcff 58%,#d7b4c7);box-shadow:0 24px 90px rgba(0,0,0,.46)}.featured,.tile{padding:30px}.featured{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,auto);align-items:center;gap:24px}.featured h2{margin:0 0 12px;font-size:clamp(2rem,5vw,4.2rem);letter-spacing:-.07em}.featured-actions{justify-content:flex-end}.release-meta{margin:16px 0 0;color:var(--accent-2);font-size:.78rem;font-weight:850;letter-spacing:.16em}.tile{display:flex;min-height:220px;flex-direction:column;justify-content:space-between}.tile span{width:fit-content;padding:8px 12px;border:1px solid rgba(236,238,255,.14);border-radius:999px;color:var(--accent-2);background:rgba(7,8,18,.55);font-size:.76rem;font-weight:850;letter-spacing:.16em;text-transform:uppercase}.tile h3{font-size:1.65rem;letter-spacing:-.045em}.tile p,.hero-card p{color:var(--muted)}@media(max-width:880px){.hero,.featured{grid-template-columns:1fr}.featured-actions{justify-content:flex-start}}</style>
+<style>.hero{display:grid;grid-template-columns:minmax(0,1.18fr) minmax(280px,.82fr);align-items:center;gap:30px;margin-top:62px}h1{margin:0;font-size:clamp(4.2rem,12vw,9.5rem);line-height:.84;letter-spacing:-.105em;text-shadow:0 18px 70px rgba(0,0,0,.55)}.hero-card{padding:28px}.index-label{margin:22px 0 4px;color:var(--accent);font-size:.78rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase}.orb{display:grid;place-items:center;width:154px;height:154px;border:1px solid rgba(236,238,255,.3);border-radius:32px;color:#080914;font-size:3.5rem;font-weight:950;letter-spacing:-.12em;background:linear-gradient(135deg,#f5f2ff,#aebcff 58%,#d7b4c7);box-shadow:0 24px 90px rgba(0,0,0,.46)}.featured,.tile,.dev-trace{padding:30px}.featured{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,auto);align-items:center;gap:24px}.featured h2,.dev-trace h2{margin:0 0 12px;font-size:clamp(2rem,5vw,4.2rem);letter-spacing:-.07em}.featured-actions{justify-content:flex-end}.release-meta{margin:16px 0 0;color:var(--accent-2);font-size:.78rem;font-weight:850;letter-spacing:.16em}.tile{display:flex;min-height:220px;flex-direction:column;justify-content:space-between}.tile span{width:fit-content;padding:8px 12px;border:1px solid rgba(236,238,255,.14);border-radius:999px;color:var(--accent-2);background:rgba(7,8,18,.55);font-size:.76rem;font-weight:850;letter-spacing:.16em;text-transform:uppercase}.tile h3{font-size:1.65rem;letter-spacing:-.045em}.tile p,.hero-card p{color:var(--muted)}.dev-trace{display:grid;grid-template-columns:minmax(0,0.9fr) minmax(320px,1.1fr);gap:28px;align-items:center;margin-bottom:24px}.trace-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.trace-card{display:grid;gap:8px;border:1px solid rgba(236,238,255,.12);border-radius:18px;background:rgba(7,8,18,.48);padding:18px;transition:transform 160ms ease,border-color 160ms ease,background 160ms ease}.trace-card:hover,.trace-card:focus-visible{transform:translateY(-2px);border-color:rgba(217,210,255,.45);background:rgba(19,22,42,.72)}.trace-card span{color:var(--soft);font-size:.72rem;font-weight:850;letter-spacing:.16em;text-transform:uppercase}.trace-card strong{font-size:1.05rem}.trace-card small{color:var(--soft);line-height:1.45}@media(max-width:920px){.dev-trace,.trace-grid{grid-template-columns:1fr}}@media(max-width:880px){.hero,.featured{grid-template-columns:1fr}.featured-actions{justify-content:flex-start}}</style>
