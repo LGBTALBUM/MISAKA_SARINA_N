@@ -1,4 +1,4 @@
-import { getSortedReleases } from '../data/music';
+import { getSortedReleases } from '../utils/musicCatalogue';
 import { site } from '../data/content';
 
 const staticPages = ['/', '/music/', '/works/', '/blog/', '/links/', '/about/', '/contact/'];
