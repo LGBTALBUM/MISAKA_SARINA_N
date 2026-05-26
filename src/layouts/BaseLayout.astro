@@ -33,13 +33,14 @@ const withBase = (path: string) => {
     <meta name="twitter:image" content={absoluteImage} />
   </head>
   <body>
+    <a class="skip-link" href="#content">Skip to content</a>
     <header class="header wrap">
-      <a class="brand" href={withBase('/')}>MS</a>
+      <a class="brand" href={withBase('/')} aria-label="Misaka Sarina home">MS</a>
       <nav class="nav" aria-label="Primary navigation">
         {nav.map(([label, href]) => <a href={withBase(href)}>{label}</a>)}
       </nav>
     </header>
-    <main><slot /></main>
+    <main id="content"><slot /></main>
     <footer class="footer wrap">
       <p>{site.copyright}</p>
       <p>Built with Astro. Legacy link-page behavior now lives under <a href={withBase('/links')}>/links</a>.</p>
