@@ -1,16 +1,16 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { musicReleases } from '../../data/music';
-import type { MusicRelease } from '../../data/music';
+import { getResolvedReleases } from '../../utils/musicCatalogue';
+import type { ResolvedMusicRelease } from '../../utils/musicCatalogue';
 
 export function getStaticPaths() {
-  return musicReleases.map((release) => ({
+  return getResolvedReleases().map((release) => ({
     params: { slug: release.slug },
     props: { release }
   }));
 }
 
-const { release } = Astro.props as { release: MusicRelease };
+const { release } = Astro.props as { release: ResolvedMusicRelease };
 const withBase = (path: string) => {
   const base = import.meta.env.BASE_URL.endsWith('/')
     ? import.meta.env.BASE_URL
