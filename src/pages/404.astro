@@ -1,13 +1,26 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-const homeUrl = import.meta.env.BASE_URL;
+const withBase = (path: string) => {
+  const base = import.meta.env.BASE_URL.endsWith('/')
+    ? import.meta.env.BASE_URL
+    : `${import.meta.env.BASE_URL}/`;
+  return `${base}${path.replace(/^\/+/, '')}`;
+};
 ---
-<BaseLayout title="Not Found" description="The requested page could not be found.">
-  <section class="section card page-card">
+<BaseLayout title="404" description="Page not found.">
+  <section class="section card not-found">
     <p class="eyebrow">404</p>
-    <h1 class="title">Signal not found.</h1>
-    <p class="copy">The page you are looking for does not exist yet.</p>
-    <a class="button primary" href={homeUrl}>Back home</a>
+    <h1 class="title">Archive entry not found.</h1>
+    <p class="copy">The page you are looking for does not exist in this archive, or the route has moved during the rebuild.</p>
+    <div class="button-row">
+      <a class="button primary" href={withBase('/')}>Back home</a>
+      <a class="button" href={withBase('/music')}>Music archive</a>
+      <a class="button" href={withBase('/links')}>Links archive</a>
+    </div>
   </section>
 </BaseLayout>
-<style>.page-card{padding:clamp(28px,6vw,56px)}</style>
+<style>
+  .not-found {
+    padding: clamp(28px, 6vw, 56px);
+  }
+</style>
