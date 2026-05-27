@@ -17,50 +17,50 @@ const featuredPlatforms = featuredRelease.platforms.slice(0, 3);
 <BaseLayout>
   <section class="section hero">
     <div>
-      <p class="eyebrow">Baker Siacone / Siacone Art</p>
+      <p class="eyebrow" data-i18n="home.eyebrow">Baker Siacone / Siacone Art</p>
       <h1>Misaka Sarina</h1>
-      <p class="copy">Music creator / VOCALOID creator / digital project maker. 歡迎來到 Baker Siacone / Misaka Sarina 的天南星小世界。<br>PGP Pubkey: 213906239240F896E303A47662443ACE03F2788A</p>
+      <p class="copy"><span data-i18n="home.copy">Music creator / VOCALOID creator / digital project maker. Welcome to the small world of Baker Siacone / Misaka Sarina.</span><br>PGP Pubkey: 213906239240F896E303A47662443ACE03F2788A</p>
       <div class="button-row">
-        <a class="button primary" href={withBase('/music')}>Listen / Music</a>
-        <a class="button" href={withBase('/links')}>Links</a>
-        <a class="button" href={withBase('/contact')}>Contact</a>
+        <a class="button primary" href={withBase('/music')} data-i18n="home.listen">Listen / Music</a>
+        <a class="button" href={withBase('/links')} data-i18n="home.links">Links</a>
+        <a class="button" href={withBase('/contact')} data-i18n="home.contact">Contact</a>
       </div>
     </div>
     <aside class="card hero-card">
       <div class="orb">MS</div>
-      <p class="index-label">Night archive</p>
-      <p>I make music, small tools, and personal spaces on the internet.</p>
+      <p class="index-label" data-i18n="home.nightArchive">Night archive</p>
+      <p data-i18n="home.heroCard">I make music, small tools, and personal spaces on the internet.</p>
       <div class="socials">{socials.map(([label, href]) => <a class="pill" href={href} target="_blank" rel="noreferrer">{label}</a>)}</div>
     </aside>
   </section>
   <section class="section card featured">
     <div>
-      <p class="eyebrow">Featured Release</p>
+      <p class="eyebrow" data-i18n="home.featured">Featured Release</p>
       <h2>{featuredRelease.title}</h2>
       <p class="copy">{featuredRelease.description}</p>
       <p class="release-meta">{featuredRelease.type.toUpperCase()} · {featuredRelease.releaseDate}</p>
     </div>
     <div class="button-row featured-actions">
-      <a class="button primary" href={withBase(`/music/${featuredRelease.slug}/`)}>View release</a>
+      <a class="button primary" href={withBase(`/music/${featuredRelease.slug}/`)} data-i18n="home.viewRelease">View release</a>
       {featuredPlatforms.map((platform) => (
         <a class="button" href={platform.href} target="_blank" rel="noreferrer">{platform.label}</a>
       ))}
     </div>
   </section>
   <section class="section">
-    <p class="eyebrow">Explore</p>
-    <h2 class="title">A small hub for music, notes, and digital traces.</h2>
+    <p class="eyebrow" data-i18n="home.explore">Explore</p>
+    <h2 class="title" data-i18n="home.exploreTitle">A small hub for music, notes, and digital traces.</h2>
     <div class="grid">
-      <a class="card tile" href={withBase('/music')}><span>Live</span><h3>Music</h3><p>Main releases first, with version entries kept in a secondary section.</p></a>
-      <a class="card tile" href={withBase('/links')}><span>Live</span><h3>Links</h3><p>The organized replacement for the original Linkyee list.</p></a>
-      <a class="card tile" href={withBase('/works')}><span>Reserved</span><h3>Works</h3><p>Future tools, experiments, and technical projects.</p></a>
+      <a class="card tile" href={withBase('/music')}><span>Live</span><h3 data-i18n="home.tileMusicTitle">Music</h3><p data-i18n="home.tileMusicBody">Main releases first, with version entries kept in a secondary section.</p></a>
+      <a class="card tile" href={withBase('/links')}><span>Live</span><h3 data-i18n="home.tileLinksTitle">Links</h3><p data-i18n="home.tileLinksBody">The organized replacement for the original Linkyee list.</p></a>
+      <a class="card tile" href={withBase('/works')}><span>Reserved</span><h3 data-i18n="home.tileWorksTitle">Works</h3><p data-i18n="home.tileWorksBody">Future tools, experiments, and technical projects.</p></a>
     </div>
   </section>
   <section class="section card dev-trace">
     <div>
-      <p class="eyebrow">Digital Trace</p>
-      <h2>Development traces behind the archive.</h2>
-      <p class="copy">Small tools, web experiments, infrastructure notes, and the repository history that keeps this creator space reproducible.</p>
+      <p class="eyebrow" data-i18n="home.digitalTrace">Digital Trace</p>
+      <h2 data-i18n="home.digitalTitle">Development traces behind the archive.</h2>
+      <p class="copy" data-i18n="home.digitalBody">Small tools, web experiments, infrastructure notes, and the repository history that keeps this creator space reproducible.</p>
     </div>
     <div class="trace-grid">
       <a class="trace-card" href="https://github.com/LGBTALBUM" target="_blank" rel="noreferrer">
