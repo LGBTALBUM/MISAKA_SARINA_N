@@ -1,0 +1,135 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { posts } from '../../data/posts';
+import type { PostItem } from '../../data/posts';
+
+export function getStaticPaths() {
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post }
+  }));
+}
+
+const { post } = Astro.props as { post: PostItem };
+const withBase = (path: string) => {
+  const base = import.meta.env.BASE_URL.endsWith('/')
+    ? import.meta.env.BASE_URL
+    : `${import.meta.env.BASE_URL}/`;
+  return `${base}${path.replace(/^\/+/, '')}`;
+};
+
+const statusLabel = {
+  planned: 'Planned',
+  draft: 'Draft',
+  published: 'Published'
+};
+---
+<BaseLayout title={post.title} description={post.summary}>
+  <section class="section card detail-hero">
+    <div>
+      <p class="eyebrow">{post.category.replace('-', ' ')}</p>
+      <h1 class="title">{post.title}</h1>
+      <p class="copy">{post.summary}</p>
+    </div>
+    <div class="meta-panel">
+      <div><span>Status</span><strong>{statusLabel[post.status]}</strong></div>
+      <div><span>Date</span><strong>{post.date}</strong></div>
+      <div><span>Slug</span><strong>{post.slug}</strong></div>
+    </div>
+  </section>
+
+  <section class="section detail-grid">
+    <section class="card page-card">
+      <p class="eyebrow">Tags</p>
+      <div class="tags">
+        {post.tags.map((tag) => <span>{tag}</span>)}
+      </div>
+    </section>
+
+    <section class="card page-card">
+      <p class="eyebrow">Entry notes</p>
+      <p class="copy">This blog entry is currently generated from lightweight static data. It can later become an MDX-powered post with full body content, references, release embeds, and RSS support.</p>
+    </section>
+  </section>
+
+  <section class="section button-row back-row">
+    <a class="button primary" href={withBase('/blog')}>Back to blog</a>
+    <a class="button" href={withBase('/works')}>View works</a>
+    <a class="button" href={withBase('/music')}>Music archive</a>
+  </section>
+</BaseLayout>
+<style>
+  .detail-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 0.42fr);
+    gap: 28px;
+    align-items: end;
+    padding: clamp(28px, 6vw, 56px);
+  }
+
+  .meta-panel {
+    display: grid;
+    gap: 12px;
+  }
+
+  .meta-panel div,
+  .page-card {
+    border: 1px solid rgba(236, 238, 255, 0.12);
+    border-radius: 18px;
+    background: rgba(7, 8, 18, 0.54);
+  }
+
+  .meta-panel div {
+    display: grid;
+    gap: 6px;
+    padding: 14px 16px;
+  }
+
+  .meta-panel span,
+  .tags span {
+    color: var(--soft);
+    font-size: 0.72rem;
+    font-weight: 850;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .meta-panel strong {
+    color: var(--accent);
+    word-break: break-word;
+  }
+
+  .detail-grid {
+    display: grid;
+    grid-template-columns: minmax(260px, 0.5fr) minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  .page-card {
+    padding: clamp(22px, 4vw, 34px);
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tags span {
+    border: 1px solid rgba(236, 238, 255, 0.12);
+    border-radius: 999px;
+    background: rgba(7, 8, 18, 0.48);
+    padding: 8px 10px;
+  }
+
+  .back-row {
+    margin-top: 36px;
+  }
+
+  @media (max-width: 820px) {
+    .detail-hero,
+    .detail-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
