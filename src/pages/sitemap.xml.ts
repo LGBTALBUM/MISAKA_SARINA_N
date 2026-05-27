@@ -1,4 +1,6 @@
 import { getSortedReleases } from '../utils/musicCatalogue';
+import { works } from '../data/works';
+import { posts } from '../data/posts';
 import { site } from '../data/content';
 
 const staticPages = ['/', '/music/', '/works/', '/blog/', '/links/', '/about/', '/contact/'];
@@ -15,7 +17,9 @@ const escapeXml = (value: string) =>
 
 export async function GET() {
   const releasePages = getSortedReleases().map((release) => `/music/${release.slug}/`);
-  const urls = [...staticPages, ...releasePages];
+  const workPages = works.map((work) => `/works/${work.slug}/`);
+  const postPages = posts.map((post) => `/blog/${post.slug}/`);
+  const urls = [...staticPages, ...releasePages, ...workPages, ...postPages];
 
   const body = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls
     .map(
