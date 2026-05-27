@@ -16,8 +16,8 @@ https://lgbtalbum.github.io/MISAKA_SARINA_N/
 - `/links/` — archive-style external link collection
 - `/about/` — artist and project identity page
 - `/contact/` — contact entry points
-- `/works/` — reserved project archive page
-- `/blog/` — reserved digital garden page
+- `/works/` — project and experiment archive
+- `/blog/` — notes, release diaries, and digital garden index
 - `/404.html` — custom not found page
 - `/sitemap.xml` — generated sitemap
 - `/robots.txt` — crawler rules for the debug mirror
@@ -90,6 +90,24 @@ Supported override fields include normal music fields such as `title`, `descript
 
 Site pages should read from `src/utils/musicCatalogue.ts`, not directly from `src/data/music.ts`.
 
+## Works and Blog content
+
+Works and Blog currently use lightweight static data files:
+
+```txt
+src/data/works.ts
+src/data/posts.ts
+```
+
+Use `works.ts` for public projects, tools, infrastructure experiments, and archive systems. Use `posts.ts` for planned notes, release diaries, technical notes, and digital garden entries.
+
+The current implementation intentionally does not use MDX or a CMS. This keeps the debug mirror simple while leaving room for future content collections and detail routes such as:
+
+```txt
+/works/:slug/
+/blog/:slug/
+```
+
 ## GitHub Actions
 
 The repository includes a manual workflow:
@@ -139,4 +157,5 @@ When updating the site:
 3. Verify external cover URLs are not prefixed with the GitHub Pages base path.
 4. If VocaDB data changed, review `src/data/music.ts` before merging.
 5. Put manual music corrections in `src/data/musicOverrides.ts`.
-6. Keep production-domain changes separate from debug-mirror changes.
+6. Put Works / Blog content in `src/data/works.ts` and `src/data/posts.ts`.
+7. Keep production-domain changes separate from debug-mirror changes.
