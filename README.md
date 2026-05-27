@@ -17,7 +17,9 @@ https://lgbtalbum.github.io/MISAKA_SARINA_N/
 - `/about/` — artist and project identity page
 - `/contact/` — contact entry points
 - `/works/` — project and experiment archive
+- `/works/:slug/` — work detail pages
 - `/blog/` — notes, release diaries, and digital garden index
+- `/blog/:slug/` — blog / note detail pages
 - `/404.html` — custom not found page
 - `/sitemap.xml` — generated sitemap
 - `/robots.txt` — crawler rules for the debug mirror
@@ -101,12 +103,14 @@ src/data/posts.ts
 
 Use `works.ts` for public projects, tools, infrastructure experiments, and archive systems. Use `posts.ts` for planned notes, release diaries, technical notes, and digital garden entries.
 
-The current implementation intentionally does not use MDX or a CMS. This keeps the debug mirror simple while leaving room for future content collections and detail routes such as:
+Each item generates a shareable detail route:
 
 ```txt
 /works/:slug/
 /blog/:slug/
 ```
+
+The current implementation intentionally does not use MDX or a CMS. This keeps the debug mirror simple while leaving room for future content collections, richer body content, screenshots, changelogs, RSS, and MDX-powered detail pages.
 
 ## GitHub Actions
 
@@ -154,8 +158,9 @@ When updating the site:
 
 1. Run `npm run build` before merging.
 2. Check `/`, `/music/`, and a few `/music/:slug/` pages.
-3. Verify external cover URLs are not prefixed with the GitHub Pages base path.
-4. If VocaDB data changed, review `src/data/music.ts` before merging.
-5. Put manual music corrections in `src/data/musicOverrides.ts`.
-6. Put Works / Blog content in `src/data/works.ts` and `src/data/posts.ts`.
-7. Keep production-domain changes separate from debug-mirror changes.
+3. Check `/works/`, `/works/:slug/`, `/blog/`, and `/blog/:slug/` pages.
+4. Verify external cover URLs are not prefixed with the GitHub Pages base path.
+5. If VocaDB data changed, review `src/data/music.ts` before merging.
+6. Put manual music corrections in `src/data/musicOverrides.ts`.
+7. Put Works / Blog content in `src/data/works.ts` and `src/data/posts.ts`.
+8. Keep production-domain changes separate from debug-mirror changes.

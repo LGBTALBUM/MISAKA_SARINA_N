@@ -43,6 +43,7 @@ const statusLabel = {
         <div class="post-side">
           <time datetime={post.date}>{post.date}</time>
           <strong>{statusLabel[post.status]}</strong>
+          <a class="button primary" href={withBase(`/blog/${post.slug}/`)}>Details</a>
         </div>
       </article>
     ))}
@@ -50,8 +51,8 @@ const statusLabel = {
 
   <section class="section card next-card">
     <p class="eyebrow">Next step</p>
-    <h2>Blog can later move to content collections.</h2>
-    <p class="copy">The current page uses lightweight static data. Later, this can become MDX-powered posts with detail pages, tags, excerpts, and RSS without changing the first-level information architecture.</p>
+    <h2>Blog entries now have shareable detail pages.</h2>
+    <p class="copy">The current page uses lightweight static data. Later, this can become MDX-powered posts with full body content, references, tags, excerpts, and RSS without changing the first-level information architecture.</p>
     <div class="button-row">
       <a class="button primary" href={withBase('/works')}>View works</a>
       <a class="button" href={withBase('/music')}>Music archive</a>

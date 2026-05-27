@@ -43,7 +43,10 @@ const statusLabel = {
         </div>
         <div class="work-side">
           <strong>{statusLabel[work.status]}</strong>
-          {work.href ? <a class="button" href={work.href.startsWith('/') ? withBase(work.href) : work.href}>Open</a> : <span class="muted">No public route yet</span>}
+          <div class="button-column">
+            <a class="button primary" href={withBase(`/works/${work.slug}/`)}>Details</a>
+            {work.href && <a class="button" href={work.href.startsWith('/') ? withBase(work.href) : work.href}>Open</a>}
+          </div>
         </div>
       </article>
     ))}
@@ -51,8 +54,8 @@ const statusLabel = {
 
   <section class="section card next-card">
     <p class="eyebrow">Next step</p>
-    <h2>Works can later grow into detail pages.</h2>
-    <p class="copy">This page now has a static data foundation. The next expansion can add `/works/:slug/` detail pages, screenshots, repo links, changelogs, and deployment notes.</p>
+    <h2>Works now have shareable detail pages.</h2>
+    <p class="copy">Each work entry now has a generated detail route. The next expansion can add screenshots, repository links, changelogs, deployment notes, and maintenance history.</p>
     <div class="button-row">
       <a class="button primary" href={withBase('/blog')}>Read notes</a>
       <a class="button" href={withBase('/contact')}>Contact</a>
@@ -90,8 +93,7 @@ const statusLabel = {
   }
 
   .stats span,
-  .tags span,
-  .work-side .muted {
+  .tags span {
     color: var(--soft);
     font-size: 0.72rem;
     font-weight: 850;
@@ -157,6 +159,12 @@ const statusLabel = {
     gap: 14px;
   }
 
+  .button-column {
+    display: grid;
+    gap: 10px;
+    width: 100%;
+  }
+
   .next-card {
     padding: clamp(28px, 6vw, 44px);
   }
@@ -169,6 +177,10 @@ const statusLabel = {
 
     .work-side {
       align-items: flex-start;
+    }
+
+    .button-column {
+      width: auto;
     }
   }
 </style>
