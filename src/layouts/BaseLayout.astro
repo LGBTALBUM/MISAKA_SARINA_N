@@ -11,9 +11,11 @@ const withBase = (path: string) => {
     : `${import.meta.env.BASE_URL}/`;
   return `${base}${path.replace(/^\/+/, '')}`;
 };
+
+const navKeys = ['nav.home', 'nav.music', 'nav.works', 'nav.blog', 'nav.links', 'nav.about', 'nav.contact'];
 ---
 <!doctype html>
-<html lang="zh-Hant">
+<html lang="en" data-theme="dark" data-locale="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -31,19 +33,52 @@ const withBase = (path: string) => {
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={absoluteImage} />
+    <script is:inline>
+      (() => {
+        const themePreference = localStorage.getItem('msarina.theme') || 'system';
+        const theme = themePreference === 'light' || themePreference === 'dark'
+          ? themePreference
+          : (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.style.colorScheme = theme;
+      })();
+    </script>
   </head>
   <body>
-    <a class="skip-link" href="#content">Skip to content</a>
+    <a class="skip-link" href="#content" data-i18n="ui.skip">Skip to content</a>
     <header class="header wrap">
       <a class="brand" href={withBase('/')} aria-label="Misaka Sarina home">MS</a>
-      <nav class="nav" aria-label="Primary navigation">
-        {nav.map(([label, href]) => <a href={withBase(href)}>{label}</a>)}
-      </nav>
+      <div class="header-actions">
+        <nav class="nav" aria-label="Primary navigation">
+          {nav.map(([label, href], index) => <a href={withBase(href)} data-i18n={navKeys[index]}>{label}</a>)}
+        </nav>
+        <div class="preference-panel" aria-label="Preferences">
+          <label>
+            <span data-i18n="ui.language">Language</span>
+            <select data-locale-select aria-label="Language">
+              <option value="system" data-i18n="ui.system">System</option>
+              <option value="en">English</option>
+              <option value="ja">日本語</option>
+              <option value="zh-TW">中文（台灣）</option>
+              <option value="ca">Català</option>
+            </select>
+          </label>
+          <label>
+            <span data-i18n="ui.theme">Theme</span>
+            <select data-theme-select aria-label="Theme">
+              <option value="system" data-i18n="ui.system">System</option>
+              <option value="dark" data-i18n="ui.themeDark">Dark</option>
+              <option value="light" data-i18n="ui.themeLight">Light</option>
+            </select>
+          </label>
+        </div>
+      </div>
     </header>
     <main id="content"><slot /></main>
     <footer class="footer wrap">
       <p>{site.copyright}</p>
-      <p>Built with Astro. Legacy link-page behavior now lives under <a href={withBase('/links')}>/links</a>.</p>
+      <p><span data-i18n="footer.built">Built with Astro. Legacy link-page behavior now lives under</span> <a href={withBase('/links')}>/links</a>.</p>
     </footer>
+    <script src={withBase('/preferences.js')} defer></script>
   </body>
 </html>
