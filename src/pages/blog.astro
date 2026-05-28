@@ -18,9 +18,9 @@ const statusLabel = {
 <BaseLayout title="Blog" description="Notes, release diaries, and digital garden index.">
   <section class="section card blog-hero">
     <div>
-      <p class="eyebrow">Digital Garden</p>
-      <h1 class="title">Notes, diaries, and maintenance logs.</h1>
-      <p class="copy">A prepared writing surface for release context, technical notes, production logs, and reproducible site maintenance records.</p>
+      <p class="eyebrow" data-i18n="blog.archive">Digital Garden</p>
+      <h1 class="title" data-i18n="blog.title">Notes, diaries, and maintenance logs.</h1>
+      <p class="copy" data-i18n="blog.copy">A prepared writing surface for release context, technical notes, production logs, and reproducible site maintenance records.</p>
     </div>
     <div class="stats" aria-label="Blog archive stats">
       <div><span>Total</span><strong>{posts.length}</strong></div>
@@ -43,19 +43,19 @@ const statusLabel = {
         <div class="post-side">
           <time datetime={post.date}>{post.date}</time>
           <strong>{statusLabel[post.status]}</strong>
-          <a class="button primary" href={withBase(`/blog/${post.slug}/`)}>Details</a>
+          <a class="button primary" href={withBase(`/blog/${post.slug}/`)} data-i18n="blog.details">Details</a>
         </div>
       </article>
     ))}
   </section>
 
   <section class="section card next-card">
-    <p class="eyebrow">Next step</p>
-    <h2>Blog entries now have shareable detail pages.</h2>
-    <p class="copy">The current page uses lightweight static data. Later, this can become MDX-powered posts with full body content, references, tags, excerpts, and RSS without changing the first-level information architecture.</p>
+    <p class="eyebrow" data-i18n="blog.next">Next step</p>
+    <h2 data-i18n="blog.nextTitle">Blog entries now have shareable detail pages.</h2>
+    <p class="copy" data-i18n="blog.nextCopy">The current page uses lightweight static data. Later, this can become MDX-powered posts with full body content, references, tags, excerpts, and RSS without changing the first-level information architecture.</p>
     <div class="button-row">
-      <a class="button primary" href={withBase('/works')}>View works</a>
-      <a class="button" href={withBase('/music')}>Music archive</a>
+      <a class="button primary" href={withBase('/works')} data-i18n="blog.viewWorks">View works</a>
+      <a class="button" href={withBase('/music')} data-i18n="blog.musicArchive">Music archive</a>
     </div>
   </section>
 </BaseLayout>
