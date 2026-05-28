@@ -11,7 +11,7 @@ https://lgbtalbum.github.io/MISAKA_SARINA_N/
 ## Current site structure
 
 - `/` — landing page with featured release
-- `/music/` — music archive synced from VocaDB data, plus complete listening catalogue playlist links
+- `/music/` — music archive resolved from VocaDB generated data plus manual catalogue entries
 - `/music/:slug/` — release detail pages
 - `/links/` — archive-style external link collection
 - `/about/` — artist and project identity page
@@ -55,19 +55,27 @@ Generated catalogue data should be reviewed before merging. Check titles, releas
 
 VocaDB is treated as a structured metadata source, not the only source of truth for the complete listening catalogue. Some releases may be missing or incomplete there.
 
-For the most complete listening catalogue, maintain the YouTube Music playlist links in:
+## Manual catalogue entries
+
+Private YouTube Music catalogue playlists must not be displayed publicly or linked from the site.
+
+When a release is present in a private YTM catalogue but missing from VocaDB, add it as a manual entry here:
 
 ```txt
-src/data/content.ts
+src/data/manualMusic.ts
 ```
 
-Look for:
+Manual entries are merged with generated VocaDB entries before rendering:
 
 ```txt
-cataloguePlaylists
+src/data/music.ts
++ src/data/manualMusic.ts
++ src/data/musicOverrides.ts
+→ src/utils/musicCatalogue.ts
+→ /music/ Primary catalogue
 ```
 
-These playlists are surfaced on `/music/` and in the Listen group on `/links/`.
+Manual entries should use public track/platform URLs only. Do not store private playlist URLs in the public repository.
 
 ## Manual music overrides
 
@@ -174,11 +182,11 @@ When updating the site:
 
 1. Run `npm run build` before merging.
 2. Check `/`, `/music/`, and a few `/music/:slug/` pages.
-3. Check the complete catalogue playlist cards on `/music/`.
-4. Check `/links/` Listen group after changing playlist URLs.
-5. Check `/works/`, `/works/:slug/`, `/blog/`, and `/blog/:slug/` pages.
-6. Verify external cover URLs are not prefixed with the GitHub Pages base path.
-7. If VocaDB data changed, review `src/data/music.ts` before merging.
+3. Check `/links/` Listen group after changing public platform links.
+4. Check `/works/`, `/works/:slug/`, `/blog/`, and `/blog/:slug/` pages.
+5. Verify external cover URLs are not prefixed with the GitHub Pages base path.
+6. If VocaDB data changed, review `src/data/music.ts` before merging.
+7. Add missing private-catalogue-derived music entries in `src/data/manualMusic.ts`.
 8. Put manual music corrections in `src/data/musicOverrides.ts`.
 9. Put Works / Blog content in `src/data/works.ts` and `src/data/posts.ts`.
 10. Keep production-domain changes separate from debug-mirror changes.
