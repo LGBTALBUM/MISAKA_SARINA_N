@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import MusicCard from '../components/MusicCard.astro';
+import { cataloguePlaylists } from '../data/content';
 import { getSortedReleases } from '../utils/musicCatalogue';
 import {
   getMainCatalogueReleases,
@@ -25,6 +26,23 @@ const profileEntries = getProfileEntries(releases);
       <div><span>Main</span><strong>{mainReleases.length}</strong></div>
       <div><span>Versions</span><strong>{secondaryReleases.length}</strong></div>
       <div><span>Profiles</span><strong>{profileEntries.length}</strong></div>
+    </div>
+  </section>
+
+  <section class="section card catalogue-sources" aria-label="Complete catalogue sources">
+    <div>
+      <p class="eyebrow">Complete catalogue sources</p>
+      <h2>For listening, YouTube Music playlists are more complete.</h2>
+      <p class="copy">VocaDB is used as a structured metadata source, but its data may be incomplete. For the most complete listening catalogue, use these YouTube Music playlists.</p>
+    </div>
+    <div class="playlist-grid">
+      {cataloguePlaylists.map((playlist) => (
+        <a class="playlist-card" href={playlist.href} target="_blank" rel="noreferrer">
+          <span>YouTube Music</span>
+          <strong>{playlist.label}</strong>
+          <small>{playlist.note}</small>
+        </a>
+      ))}
     </div>
   </section>
 
@@ -82,7 +100,8 @@ const profileEntries = getProfileEntries(releases);
 </BaseLayout>
 
 <style>
-  .music-hero {
+  .music-hero,
+  .catalogue-sources {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(260px, 0.42fr);
     gap: 28px;
@@ -90,9 +109,20 @@ const profileEntries = getProfileEntries(releases);
     padding: clamp(26px, 5vw, 46px);
   }
 
-  .stats {
+  .stats,
+  .playlist-grid {
     display: grid;
     gap: 12px;
+  }
+
+  .stats div,
+  .playlist-card {
+    display: grid;
+    gap: 6px;
+    border: 1px solid rgba(236, 238, 255, 0.12);
+    border-radius: 18px;
+    background: rgba(7, 8, 18, 0.54);
+    padding: 14px 16px;
   }
 
   .stats div {
@@ -100,13 +130,21 @@ const profileEntries = getProfileEntries(releases);
     align-items: center;
     justify-content: space-between;
     gap: 18px;
-    border: 1px solid rgba(236, 238, 255, 0.12);
-    border-radius: 18px;
-    background: rgba(7, 8, 18, 0.54);
-    padding: 14px 16px;
+  }
+
+  .playlist-card {
+    transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+  }
+
+  .playlist-card:hover,
+  .playlist-card:focus-visible {
+    transform: translateY(-2px);
+    border-color: rgba(217, 210, 255, 0.45);
+    background: rgba(19, 22, 42, 0.72);
   }
 
   .stats span,
+  .playlist-card span,
   .profile-card span {
     color: var(--soft);
     font-size: 0.72rem;
@@ -115,10 +153,25 @@ const profileEntries = getProfileEntries(releases);
     text-transform: uppercase;
   }
 
-  .stats strong {
+  .stats strong,
+  .playlist-card strong {
     color: var(--accent);
+  }
+
+  .stats strong {
     font-size: 1.45rem;
     line-height: 1;
+  }
+
+  .playlist-card small {
+    color: var(--soft);
+  }
+
+  .catalogue-sources h2 {
+    margin: 0 0 12px;
+    font-size: clamp(1.8rem, 4vw, 3.2rem);
+    line-height: 0.98;
+    letter-spacing: -0.06em;
   }
 
   .archive-section {
@@ -222,7 +275,8 @@ const profileEntries = getProfileEntries(releases);
   }
 
   @media (max-width: 840px) {
-    .music-hero {
+    .music-hero,
+    .catalogue-sources {
       grid-template-columns: 1fr;
     }
 
