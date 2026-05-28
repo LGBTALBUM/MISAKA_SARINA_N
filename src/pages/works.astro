@@ -19,9 +19,9 @@ const statusLabel = {
 <BaseLayout title="Works" description="Project and experiment catalogue for Misaka Sarina digital traces.">
   <section class="section card works-hero">
     <div>
-      <p class="eyebrow">Works Archive</p>
-      <h1 class="title">Projects, systems, and experiments.</h1>
-      <p class="copy">A lightweight index for public-facing web tools, archive systems, music infrastructure, and technical experiments around the Misaka Sarina / Siacone Art space.</p>
+      <p class="eyebrow" data-i18n="works.archive">Works Archive</p>
+      <h1 class="title" data-i18n="works.title">Projects, systems, and experiments.</h1>
+      <p class="copy" data-i18n="works.copy">A lightweight index for public-facing web tools, archive systems, music infrastructure, and technical experiments around the Misaka Sarina / Siacone Art space.</p>
     </div>
     <div class="stats" aria-label="Works archive stats">
       <div><span>Total</span><strong>{works.length}</strong></div>
@@ -44,8 +44,8 @@ const statusLabel = {
         <div class="work-side">
           <strong>{statusLabel[work.status]}</strong>
           <div class="button-column">
-            <a class="button primary" href={withBase(`/works/${work.slug}/`)}>Details</a>
-            {work.href && <a class="button" href={work.href.startsWith('/') ? withBase(work.href) : work.href}>Open</a>}
+            <a class="button primary" href={withBase(`/works/${work.slug}/`)} data-i18n="works.details">Details</a>
+            {work.href && <a class="button" href={work.href.startsWith('/') ? withBase(work.href) : work.href} data-i18n="works.open">Open</a>}
           </div>
         </div>
       </article>
@@ -53,12 +53,12 @@ const statusLabel = {
   </section>
 
   <section class="section card next-card">
-    <p class="eyebrow">Next step</p>
-    <h2>Works now have shareable detail pages.</h2>
-    <p class="copy">Each work entry now has a generated detail route. The next expansion can add screenshots, repository links, changelogs, deployment notes, and maintenance history.</p>
+    <p class="eyebrow" data-i18n="works.next">Next step</p>
+    <h2 data-i18n="works.nextTitle">Works now have shareable detail pages.</h2>
+    <p class="copy" data-i18n="works.nextCopy">Each work entry now has a generated detail route. The next expansion can add screenshots, repository links, changelogs, deployment notes, and maintenance history.</p>
     <div class="button-row">
-      <a class="button primary" href={withBase('/blog')}>Read notes</a>
-      <a class="button" href={withBase('/contact')}>Contact</a>
+      <a class="button primary" href={withBase('/blog')} data-i18n="works.readNotes">Read notes</a>
+      <a class="button" href={withBase('/contact')} data-i18n="home.contact">Contact</a>
     </div>
   </section>
 </BaseLayout>
