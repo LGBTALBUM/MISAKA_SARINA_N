@@ -9,13 +9,13 @@ const withBase = (path: string) => {
 ---
 <BaseLayout title="404" description="Page not found.">
   <section class="section card not-found">
-    <p class="eyebrow">404</p>
-    <h1 class="title">Archive entry not found.</h1>
-    <p class="copy">The page you are looking for does not exist in this archive, or the route has moved during the rebuild.</p>
+    <p class="eyebrow" data-i18n="notFound.eyebrow">404</p>
+    <h1 class="title" data-i18n="notFound.title">Archive entry not found.</h1>
+    <p class="copy" data-i18n="notFound.copy">The page you are looking for does not exist in this archive, or the route has moved during the rebuild.</p>
     <div class="button-row">
-      <a class="button primary" href={withBase('/')}>Back home</a>
-      <a class="button" href={withBase('/music')}>Music archive</a>
-      <a class="button" href={withBase('/links')}>Links archive</a>
+      <a class="button primary" href={withBase('/')} data-i18n="notFound.backHome">Back home</a>
+      <a class="button" href={withBase('/music')} data-i18n="notFound.musicArchive">Music archive</a>
+      <a class="button" href={withBase('/links')} data-i18n="notFound.linksArchive">Links archive</a>
     </div>
   </section>
 </BaseLayout>
