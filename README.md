@@ -11,7 +11,7 @@ https://lgbtalbum.github.io/MISAKA_SARINA_N/
 ## Current site structure
 
 - `/` — landing page with featured release
-- `/music/` — music archive synced from VocaDB data
+- `/music/` — music archive synced from VocaDB data, plus complete listening catalogue playlist links
 - `/music/:slug/` — release detail pages
 - `/links/` — archive-style external link collection
 - `/about/` — artist and project identity page
@@ -52,6 +52,22 @@ src/data/music.ts
 ```
 
 Generated catalogue data should be reviewed before merging. Check titles, release dates, credits, platform links, slugs, and whether version entries should remain secondary.
+
+VocaDB is treated as a structured metadata source, not the only source of truth for the complete listening catalogue. Some releases may be missing or incomplete there.
+
+For the most complete listening catalogue, maintain the YouTube Music playlist links in:
+
+```txt
+src/data/content.ts
+```
+
+Look for:
+
+```txt
+cataloguePlaylists
+```
+
+These playlists are surfaced on `/music/` and in the Listen group on `/links/`.
 
 ## Manual music overrides
 
@@ -158,9 +174,11 @@ When updating the site:
 
 1. Run `npm run build` before merging.
 2. Check `/`, `/music/`, and a few `/music/:slug/` pages.
-3. Check `/works/`, `/works/:slug/`, `/blog/`, and `/blog/:slug/` pages.
-4. Verify external cover URLs are not prefixed with the GitHub Pages base path.
-5. If VocaDB data changed, review `src/data/music.ts` before merging.
-6. Put manual music corrections in `src/data/musicOverrides.ts`.
-7. Put Works / Blog content in `src/data/works.ts` and `src/data/posts.ts`.
-8. Keep production-domain changes separate from debug-mirror changes.
+3. Check the complete catalogue playlist cards on `/music/`.
+4. Check `/links/` Listen group after changing playlist URLs.
+5. Check `/works/`, `/works/:slug/`, `/blog/`, and `/blog/:slug/` pages.
+6. Verify external cover URLs are not prefixed with the GitHub Pages base path.
+7. If VocaDB data changed, review `src/data/music.ts` before merging.
+8. Put manual music corrections in `src/data/musicOverrides.ts`.
+9. Put Works / Blog content in `src/data/works.ts` and `src/data/posts.ts`.
+10. Keep production-domain changes separate from debug-mirror changes.
