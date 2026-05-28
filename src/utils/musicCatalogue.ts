@@ -1,5 +1,6 @@
 import { musicReleases } from '../data/music';
 import type { MusicRelease } from '../data/music';
+import { manualMusicReleases } from '../data/manualMusic';
 import { musicOverrides } from '../data/musicOverrides';
 
 export type ResolvedMusicRelease = MusicRelease & {
@@ -23,8 +24,13 @@ const mergeRelease = (release: MusicRelease): ResolvedMusicRelease => {
   };
 };
 
+export const getRawCatalogueReleases = () => [
+  ...musicReleases,
+  ...manualMusicReleases
+];
+
 export const getResolvedReleases = () =>
-  musicReleases.map(mergeRelease).filter((release) => !release.hidden);
+  getRawCatalogueReleases().map(mergeRelease).filter((release) => !release.hidden);
 
 export const getSortedReleases = () =>
   [...getResolvedReleases()].sort(
