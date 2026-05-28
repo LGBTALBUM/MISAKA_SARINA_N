@@ -20,27 +20,12 @@ export const socials = [
   ['Email', 'mailto:i@msarina.moe']
 ];
 
-export const cataloguePlaylists = [
-  {
-    label: 'YouTube Music Complete Catalogue I',
-    href: 'https://music.youtube.com/playlist?list=PLtzYDwd776n95n0NCzKNxz7Nm39hcgocR&si=5GF2SzNTnERkJzPr',
-    note: 'More complete listening catalogue'
-  },
-  {
-    label: 'YouTube Music Complete Catalogue II',
-    href: 'https://music.youtube.com/playlist?list=PLtzYDwd776n8wxBVIitierBrho2Pw0cw5&si=xENj4dm6OEm_Bw4r',
-    note: 'More complete listening catalogue'
-  }
-];
-
 export const linkGroups = [
   { title: 'Listen', items: [
     ['Spotify', 'https://open.spotify.com/artist/7HO1a8ZvIIRGG0y4sjkwy1', 'Artist profile'],
     ['Apple Music', 'https://music.apple.com/en/artist/misaka-sarina/1705885192', 'Artist profile'],
     ['Amazon Music', 'https://www.amazon.co.uk/music/player/artists/B0C627DLFN/misaka-sarina', 'Artist profile'],
     ['YouTube Music', 'https://music.youtube.com/channel/UC7HcmRkHYdqHMYs_TxlP_GQ', 'Music channel'],
-    ['YouTube Music Catalogue I', 'https://music.youtube.com/playlist?list=PLtzYDwd776n95n0NCzKNxz7Nm39hcgocR&si=5GF2SzNTnERkJzPr', 'Complete catalogue playlist'],
-    ['YouTube Music Catalogue II', 'https://music.youtube.com/playlist?list=PLtzYDwd776n8wxBVIitierBrho2Pw0cw5&si=xENj4dm6OEm_Bw4r', 'Complete catalogue playlist'],
     ['VocaDB', 'https://vocadb.net/Ar/75285', 'Structured metadata profile']
   ]},
   { title: 'Support / Collaboration', items: [
