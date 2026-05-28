@@ -11,32 +11,32 @@ const withBase = (path: string) => {
 <BaseLayout title="Contact" description="Contact entry points for Misaka Sarina collaboration or project inquiries.">
   <section class="section contact-hero card">
     <div>
-      <p class="eyebrow">Contact</p>
-      <h1 class="title">Tell me about your project.</h1>
-      <p class="copy">For music production, collaboration, licensing, release-related questions, or digital project inquiries, use one of the contact routes below.</p>
+      <p class="eyebrow" data-i18n="contact.eyebrow">Contact</p>
+      <h1 class="title" data-i18n="contact.title">Tell me about your project.</h1>
+      <p class="copy" data-i18n="contact.copy">For music production, collaboration, licensing, release-related questions, or digital project inquiries, use one of the contact routes below.</p>
     </div>
     <div class="mail-card">
-      <span>Primary email</span>
+      <span data-i18n="contact.primaryEmail">Primary email</span>
       <strong>{site.email}</strong>
-      <a class="button primary" href={`mailto:${site.email}`}>Write email</a>
+      <a class="button primary" href={`mailto:${site.email}`} data-i18n="contact.writeEmail">Write email</a>
     </div>
   </section>
 
   <section class="section contact-grid">
     <a class="card contact-card" href="https://soundbetter.com/profiles/701882-misaka-sarina" target="_blank" rel="noreferrer">
-      <span>Production</span>
+      <span data-i18n="contact.production">Production</span>
       <strong>SoundBetter</strong>
-      <small>Music production profile</small>
+      <small data-i18n="contact.soundbetter">Music production profile</small>
     </a>
     <a class="card contact-card" href="https://www.instagram.com/misakasarina/" target="_blank" rel="noreferrer">
-      <span>Social</span>
+      <span data-i18n="contact.social">Social</span>
       <strong>Instagram</strong>
-      <small>Updates and direct contact</small>
+      <small data-i18n="contact.instagram">Updates and direct contact</small>
     </a>
     <a class="card contact-card" href={withBase('/links')}>
-      <span>Archive</span>
-      <strong>All Links</strong>
-      <small>Full external link collection</small>
+      <span data-i18n="contact.archive">Archive</span>
+      <strong data-i18n="contact.allLinks">All Links</strong>
+      <small data-i18n="contact.allLinksCopy">Full external link collection</small>
     </a>
   </section>
 </BaseLayout>
