@@ -2,6 +2,7 @@
 import type { MusicRelease } from '../data/music';
 
 const { release } = Astro.props as { release: MusicRelease };
+const isManualCatalogue = release.source?.label === 'Manual catalogue';
 const withBase = (path: string) => {
   const base = import.meta.env.BASE_URL.endsWith('/')
     ? import.meta.env.BASE_URL
@@ -21,7 +22,10 @@ const resolveAssetUrl = (url: string) => {
   </div>
   <div class="content">
     <p class="meta">{release.type.toUpperCase()} · {release.releaseDate}</p>
-    <h2>{release.title}</h2>
+    <div class="title-row">
+      <h2>{release.title}</h2>
+      {isManualCatalogue && <span class="badge">Manual catalogue</span>}
+    </div>
     <p>{release.description}</p>
     <span class="open">Open archive entry</span>
   </div>
@@ -100,11 +104,31 @@ const resolveAssetUrl = (url: string) => {
     letter-spacing: 0.16em;
   }
 
+  .title-row {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
   h2 {
-    margin: 0 0 10px;
+    margin: 0;
     font-size: clamp(1.5rem, 3.6vw, 2.45rem);
     line-height: 1;
     letter-spacing: -0.06em;
+  }
+
+  .badge {
+    border: 1px solid rgba(217, 210, 255, 0.28);
+    border-radius: 999px;
+    color: var(--accent);
+    background: rgba(7, 8, 18, 0.54);
+    padding: 7px 10px;
+    font-size: 0.68rem;
+    font-weight: 850;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
   }
 
   .content p:not(.meta) {
