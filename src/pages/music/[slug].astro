@@ -11,6 +11,8 @@ export function getStaticPaths() {
 }
 
 const { release } = Astro.props as { release: ResolvedMusicRelease };
+const isManualCatalogue = release.source?.label === 'Manual catalogue';
+const hasPlatforms = release.platforms.length > 0;
 const withBase = (path: string) => {
   const base = import.meta.env.BASE_URL.endsWith('/')
     ? import.meta.env.BASE_URL
@@ -34,7 +36,10 @@ const resolveAssetUrl = (url: string) => {
     </div>
     <div class="release-main">
       <p class="eyebrow">{release.type} · {release.releaseDate}</p>
-      <h1 class="title">{release.title}</h1>
+      <div class="title-row">
+        <h1 class="title">{release.title}</h1>
+        {isManualCatalogue && <span class="badge">Manual catalogue</span>}
+      </div>
       <p class="copy">{release.description}</p>
       <div class="meta-grid">
         <div><span>Type</span><strong>{release.type}</strong></div>
@@ -47,14 +52,21 @@ const resolveAssetUrl = (url: string) => {
   <section class="section detail-grid">
     <section class="card page-card platforms-card">
       <p class="eyebrow">Platforms</p>
-      <div class="platform-grid">
-        {release.platforms.map((platform) => (
-          <a class="platform-link" href={platform.href} target="_blank" rel="noreferrer">
-            <span>{platform.label}</span>
-            <small>Open external</small>
-          </a>
-        ))}
-      </div>
+      {hasPlatforms ? (
+        <div class="platform-grid">
+          {release.platforms.map((platform) => (
+            <a class="platform-link" href={platform.href} target="_blank" rel="noreferrer">
+              <span>{platform.label}</span>
+              <small>Open external</small>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <div class="empty-platforms">
+          <strong>No public platform link yet</strong>
+          <p>This entry was imported from a private catalogue export. Public track URLs can be added later through manual catalogue data or music overrides.</p>
+        </div>
+      )}
     </section>
 
     {release.source && (
@@ -142,6 +154,24 @@ const resolveAssetUrl = (url: string) => {
     min-width: 0;
   }
 
+  .title-row {
+    display: grid;
+    gap: 14px;
+  }
+
+  .badge {
+    width: fit-content;
+    border: 1px solid rgba(217, 210, 255, 0.28);
+    border-radius: 999px;
+    color: var(--accent);
+    background: rgba(7, 8, 18, 0.54);
+    padding: 8px 11px;
+    font-size: 0.72rem;
+    font-weight: 850;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
   .meta-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -192,7 +222,8 @@ const resolveAssetUrl = (url: string) => {
   }
 
   .platform-link,
-  .source-link {
+  .source-link,
+  .empty-platforms {
     border: 1px solid rgba(236, 238, 255, 0.13);
     border-radius: 18px;
     background: rgba(7, 8, 18, 0.54);
@@ -213,13 +244,20 @@ const resolveAssetUrl = (url: string) => {
   }
 
   .platform-link span,
-  .source-link span {
+  .source-link span,
+  .empty-platforms strong {
     color: var(--text);
     font-weight: 850;
   }
 
-  .platform-link small {
+  .platform-link small,
+  .empty-platforms p {
     color: var(--soft);
+  }
+
+  .empty-platforms p {
+    margin: 8px 0 0;
+    line-height: 1.65;
   }
 
   .source-link {
