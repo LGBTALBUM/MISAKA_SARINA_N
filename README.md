@@ -72,10 +72,14 @@ src/data/music.ts
 + src/data/manualMusic.ts
 + src/data/musicOverrides.ts
 → src/utils/musicCatalogue.ts
-→ /music/ Primary catalogue
+→ /music/ catalogue
 ```
 
 Manual entries should use public track/platform URLs only. Do not store private playlist URLs in the public repository.
+
+Manual catalogue entries should usually not set `forceMain`. Let `src/utils/musicVisibility.ts` classify version entries such as Instrumental, Off Vocal, Karaoke, Acoustic, Remix, Extended, Radio Edit, Take, and Short Ver. into the secondary section. Use `forceMain` or `forceSecondary` only for deliberate exceptions.
+
+Entries without public platform links are still allowed. Their detail pages show a "No public platform link yet" state until public URLs are added.
 
 ## Manual music overrides
 
@@ -188,5 +192,6 @@ When updating the site:
 6. If VocaDB data changed, review `src/data/music.ts` before merging.
 7. Add missing private-catalogue-derived music entries in `src/data/manualMusic.ts`.
 8. Put manual music corrections in `src/data/musicOverrides.ts`.
-9. Put Works / Blog content in `src/data/works.ts` and `src/data/posts.ts`.
-10. Keep production-domain changes separate from debug-mirror changes.
+9. Review whether new manual entries should stay in Primary catalogue or secondary version entries.
+10. Put Works / Blog content in `src/data/works.ts` and `src/data/posts.ts`.
+11. Keep production-domain changes separate from debug-mirror changes.
