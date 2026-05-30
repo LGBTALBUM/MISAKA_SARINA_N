@@ -1,26 +1,45 @@
 import { musicReleases } from '../data/music';
 import type { MusicRelease } from '../data/music';
 import { manualMusicReleases } from '../data/manualMusic';
+import { manualMusicQualityOverrides } from '../data/manualMusicQuality';
 import { musicOverrides } from '../data/musicOverrides';
 
 export type ResolvedMusicRelease = MusicRelease & {
   hidden?: boolean;
   forceMain?: boolean;
   forceSecondary?: boolean;
+  featuredCandidate?: boolean;
+  needsReview?: boolean;
+  qualityNotes?: string[];
 };
 
 const mergeRelease = (release: MusicRelease): ResolvedMusicRelease => {
-  const override = musicOverrides[release.slug];
-  if (!override) return release;
+  const qualityOverride = manualMusicQualityOverrides[release.slug];
+  const qualityResolved = qualityOverride
+    ? {
+        ...release,
+        ...qualityOverride,
+        slug: release.slug,
+        platforms: qualityOverride.platforms ?? release.platforms,
+        credits: qualityOverride.credits ?? release.credits,
+        notes: [
+          ...(qualityOverride.notes ?? release.notes ?? []),
+          ...(qualityOverride.qualityNotes ?? []).map((note) => `Quality note: ${note}`)
+        ]
+      }
+    : release;
+
+  const override = musicOverrides[qualityResolved.slug];
+  if (!override) return qualityResolved;
 
   return {
-    ...release,
+    ...qualityResolved,
     ...override,
-    slug: release.slug,
-    platforms: override.platforms ?? release.platforms,
-    credits: override.credits ?? release.credits,
-    notes: override.notes ?? release.notes,
-    source: override.source ? { ...release.source, ...override.source } as MusicRelease['source'] : release.source
+    slug: qualityResolved.slug,
+    platforms: override.platforms ?? qualityResolved.platforms,
+    credits: override.credits ?? qualityResolved.credits,
+    notes: override.notes ?? qualityResolved.notes,
+    source: override.source ? { ...qualityResolved.source, ...override.source } as MusicRelease['source'] : qualityResolved.source
   };
 };
 
