@@ -17,11 +17,20 @@ const VERSION_KEYWORDS = [
   /offvo/i
 ];
 
-const SHORT_VERSION_KEYWORDS = [
+const SECONDARY_VERSION_KEYWORDS = [
   /short\s*ver\.?/i,
   /short\s*version/i,
   /tv\s*size/i,
-  /demo/i
+  /demo/i,
+  /acoustic/i,
+  /acappella/i,
+  /a\s*cappella/i,
+  /remix/i,
+  /extended\s*version/i,
+  /radio\s*edit/i,
+  /take\s*\d+/i,
+  /karaoke\s*version/i,
+  /\bver\.?\b/i
 ];
 
 const normaliseTitle = (title: string) =>
@@ -46,7 +55,7 @@ export const isSecondaryEntry = (release: VisibilityRelease) => {
   if (release.forceSecondary) return true;
 
   const title = normaliseTitle(release.title);
-  return isVersionEntry(release) || SHORT_VERSION_KEYWORDS.some((pattern) => pattern.test(title));
+  return isVersionEntry(release) || SECONDARY_VERSION_KEYWORDS.some((pattern) => pattern.test(title));
 };
 
 export const isMainCatalogueEntry = (release: VisibilityRelease) =>
