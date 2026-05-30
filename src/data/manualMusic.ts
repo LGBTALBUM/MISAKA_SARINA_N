@@ -2,6 +2,7 @@ import type { MusicRelease } from './music';
 
 export type ManualMusicRelease = MusicRelease & {
   forceMain?: boolean;
+  forceSecondary?: boolean;
   source: MusicRelease['source'] & { label: 'Manual catalogue' | string };
 };
 
@@ -9,6 +10,7 @@ type ManualMusicSeed = [title: string, slug: string, releaseDate: string, artist
 
 // Derived from private YouTube Music catalogue CSV exports.
 // Private playlist URLs are intentionally not stored or exposed.
+// Visibility is handled by src/utils/musicVisibility.ts rather than forcing every entry into Primary catalogue.
 const manualMusicSeeds: ManualMusicSeed[] = [
   ["Run! Run! 向前跑", "ytm-01-001", "2023-12-31", "Baker CarterG · 洛天依", "01:001", "Before 113"],
   ["旋转的", "ytm-01-002", "2023-12-31", "洛天依 · Baker CarterG", "01:002", "Before 113"],
@@ -154,9 +156,8 @@ export const manualMusicReleases: ManualMusicRelease[] = manualMusicSeeds.map(([
   slug,
   releaseDate,
   type: 'single',
-  description: `Manual catalogue entry derived from private YTM export. Artist field from export: ${artist}.`,
+  description: `Manual catalogue entry derived from private YTM export. Public platform link not added yet. Artist field from export: ${artist}.`,
   featured: false,
-  forceMain: true,
   platforms: [],
   credits: [`Artist / vocal field from export: ${artist}`],
   notes: [
