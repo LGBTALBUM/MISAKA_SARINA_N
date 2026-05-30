@@ -70,6 +70,7 @@ Manual entries are merged with generated VocaDB entries before rendering:
 ```txt
 src/data/music.ts
 + src/data/manualMusic.ts
++ src/data/manualMusicQuality.ts
 + src/data/musicOverrides.ts
 → src/utils/musicCatalogue.ts
 → /music/ catalogue
@@ -80,6 +81,25 @@ Manual entries should use public track/platform URLs only. Do not store private 
 Manual catalogue entries should usually not set `forceMain`. Let `src/utils/musicVisibility.ts` classify version entries such as Instrumental, Off Vocal, Karaoke, Acoustic, Remix, Extended, Radio Edit, Take, and Short Ver. into the secondary section. Use `forceMain` or `forceSecondary` only for deliberate exceptions.
 
 Entries without public platform links are still allowed. Their detail pages show a "No public platform link yet" state until public URLs are added.
+
+## Manual catalogue quality overrides
+
+Do not directly edit the large CSV-derived seed list for small quality fixes. Use:
+
+```txt
+src/data/manualMusicQuality.ts
+```
+
+This file is for gradual cleanup of YTM-derived entries, including:
+
+- normalized titles
+- corrected artist / vocal fields
+- public platform links when available
+- featured candidate markers
+- needs-review markers
+- quality notes explaining what was changed
+
+Quality overrides are applied before `musicOverrides.ts`, so final manual corrections can still be made in `musicOverrides.ts` if needed.
 
 ## Manual music overrides
 
@@ -191,7 +211,8 @@ When updating the site:
 5. Verify external cover URLs are not prefixed with the GitHub Pages base path.
 6. If VocaDB data changed, review `src/data/music.ts` before merging.
 7. Add missing private-catalogue-derived music entries in `src/data/manualMusic.ts`.
-8. Put manual music corrections in `src/data/musicOverrides.ts`.
-9. Review whether new manual entries should stay in Primary catalogue or secondary version entries.
-10. Put Works / Blog content in `src/data/works.ts` and `src/data/posts.ts`.
-11. Keep production-domain changes separate from debug-mirror changes.
+8. Put gradual manual catalogue cleanup in `src/data/manualMusicQuality.ts`.
+9. Put final manual music corrections in `src/data/musicOverrides.ts`.
+10. Review whether new manual entries should stay in Primary catalogue or secondary version entries.
+11. Put Works / Blog content in `src/data/works.ts` and `src/data/posts.ts`.
+12. Keep production-domain changes separate from debug-mirror changes.

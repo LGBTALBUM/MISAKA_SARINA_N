@@ -13,6 +13,7 @@ export function getStaticPaths() {
 const { release } = Astro.props as { release: ResolvedMusicRelease };
 const isManualCatalogue = release.source?.label === 'Manual catalogue';
 const hasPlatforms = release.platforms.length > 0;
+const hasQualityStatus = release.featuredCandidate || release.needsReview;
 const withBase = (path: string) => {
   const base = import.meta.env.BASE_URL.endsWith('/')
     ? import.meta.env.BASE_URL
@@ -38,7 +39,11 @@ const resolveAssetUrl = (url: string) => {
       <p class="eyebrow">{release.type} · {release.releaseDate}</p>
       <div class="title-row">
         <h1 class="title">{release.title}</h1>
-        {isManualCatalogue && <span class="badge">Manual catalogue</span>}
+        <div class="badge-row">
+          {isManualCatalogue && <span class="badge">Manual catalogue</span>}
+          {release.featuredCandidate && <span class="badge accent">Featured candidate</span>}
+          {release.needsReview && <span class="badge warning">Needs review</span>}
+        </div>
       </div>
       <p class="copy">{release.description}</p>
       <div class="meta-grid">
@@ -68,6 +73,16 @@ const resolveAssetUrl = (url: string) => {
         </div>
       )}
     </section>
+
+    {hasQualityStatus && (
+      <section class="card page-card quality-card">
+        <p class="eyebrow">Catalogue quality</p>
+        <ul>
+          {release.featuredCandidate && <li>This entry is marked as a featured candidate for future homepage or highlight use.</li>}
+          {release.needsReview && <li>This entry still needs manual review before it should be treated as fully curated.</li>}
+        </ul>
+      </section>
+    )}
 
     {release.source && (
       <section class="card page-card source-card">
@@ -159,6 +174,12 @@ const resolveAssetUrl = (url: string) => {
     gap: 14px;
   }
 
+  .badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
   .badge {
     width: fit-content;
     border: 1px solid rgba(217, 210, 255, 0.28);
@@ -170,6 +191,16 @@ const resolveAssetUrl = (url: string) => {
     font-weight: 850;
     letter-spacing: 0.12em;
     text-transform: uppercase;
+  }
+
+  .badge.accent {
+    border-color: rgba(168, 184, 255, 0.42);
+    color: var(--cyan);
+  }
+
+  .badge.warning {
+    border-color: rgba(215, 180, 199, 0.48);
+    color: var(--pink);
   }
 
   .meta-grid {
