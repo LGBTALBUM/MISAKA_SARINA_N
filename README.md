@@ -13,6 +13,7 @@ https://lgbtalbum.github.io/MISAKA_SARINA_N/
 - `/` — landing page with featured release
 - `/music/` — music archive resolved from VocaDB generated data plus manual catalogue entries
 - `/music/:slug/` — release detail pages
+- `/catalogue-review/` — internal-style static music catalogue review dashboard
 - `/links/` — archive-style external link collection
 - `/about/` — artist and project identity page
 - `/contact/` — contact entry points
@@ -81,6 +82,26 @@ Manual entries should use public track/platform URLs only. Do not store private 
 Manual catalogue entries should usually not set `forceMain`. Let `src/utils/musicVisibility.ts` classify version entries such as Instrumental, Off Vocal, Karaoke, Acoustic, Remix, Extended, Radio Edit, Take, and Short Ver. into the secondary section. Use `forceMain` or `forceSecondary` only for deliberate exceptions.
 
 Entries without public platform links are still allowed. Their detail pages show a "No public platform link yet" state until public URLs are added.
+
+## Catalogue review dashboard
+
+The static review dashboard is available at:
+
+```txt
+/catalogue-review/
+```
+
+It is not added to the main navigation. Use it during catalogue cleanup to check:
+
+- Primary / Secondary / Profiles counts
+- Manual catalogue entries
+- entries without public platform links
+- manual entries without public platform links
+- featured candidates
+- needs-review entries
+- possible duplicate title groups
+
+This page is generated from the same resolved catalogue as `/music/`, so it reflects VocaDB data, manual entries, manual quality overrides, and final music overrides.
 
 ## Manual catalogue quality overrides
 
@@ -206,13 +227,14 @@ When updating the site:
 
 1. Run `npm run build` before merging.
 2. Check `/`, `/music/`, and a few `/music/:slug/` pages.
-3. Check `/links/` Listen group after changing public platform links.
-4. Check `/works/`, `/works/:slug/`, `/blog/`, and `/blog/:slug/` pages.
-5. Verify external cover URLs are not prefixed with the GitHub Pages base path.
-6. If VocaDB data changed, review `src/data/music.ts` before merging.
-7. Add missing private-catalogue-derived music entries in `src/data/manualMusic.ts`.
-8. Put gradual manual catalogue cleanup in `src/data/manualMusicQuality.ts`.
-9. Put final manual music corrections in `src/data/musicOverrides.ts`.
-10. Review whether new manual entries should stay in Primary catalogue or secondary version entries.
-11. Put Works / Blog content in `src/data/works.ts` and `src/data/posts.ts`.
-12. Keep production-domain changes separate from debug-mirror changes.
+3. Check `/catalogue-review/` during manual catalogue cleanup.
+4. Check `/links/` Listen group after changing public platform links.
+5. Check `/works/`, `/works/:slug/`, `/blog/`, and `/blog/:slug/` pages.
+6. Verify external cover URLs are not prefixed with the GitHub Pages base path.
+7. If VocaDB data changed, review `src/data/music.ts` before merging.
+8. Add missing private-catalogue-derived music entries in `src/data/manualMusic.ts`.
+9. Put gradual manual catalogue cleanup in `src/data/manualMusicQuality.ts`.
+10. Put final manual music corrections in `src/data/musicOverrides.ts`.
+11. Review whether new manual entries should stay in Primary catalogue or secondary version entries.
+12. Put Works / Blog content in `src/data/works.ts` and `src/data/posts.ts`.
+13. Keep production-domain changes separate from debug-mirror changes.
