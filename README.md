@@ -101,7 +101,7 @@ It is not added to the main navigation. Use it during catalogue cleanup to check
 - needs-review entries
 - possible duplicate title groups
 
-The dashboard includes page anchors, quick links, a search box, and client-side filters for manual entries, missing public links, featured candidates, and needs-review entries.
+The dashboard includes page anchors, quick links, a search box, client-side filters, and copy helper buttons for slug, `manualMusicQuality.ts` templates, platform-link templates, and `musicOverrides.ts` templates.
 
 This page is generated from the same resolved catalogue as `/music/`, so it reflects VocaDB data, manual entries, manual quality overrides, and final music overrides.
 
@@ -230,7 +230,7 @@ When updating the site:
 1. Run `npm run build` before merging.
 2. Check `/`, `/music/`, and a few `/music/:slug/` pages.
 3. Check `/catalogue-review/` during manual catalogue cleanup.
-4. Use catalogue review search / filters when cleaning manual entries.
+4. Use catalogue review search / filters / copy helpers when cleaning manual entries.
 5. Check `/links/` Listen group after changing public platform links.
 6. Check `/works/`, `/works/:slug/`, `/blog/`, and `/blog/:slug/` pages.
 7. Verify external cover URLs are not prefixed with the GitHub Pages base path.
