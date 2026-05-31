@@ -3,7 +3,7 @@ import { works } from '../data/works';
 import { posts } from '../data/posts';
 import { site } from '../data/content';
 
-const staticPages = ['/', '/music/', '/works/', '/blog/', '/links/', '/about/', '/contact/'];
+const staticPages = ['/', '/music/', '/catalogue-review/', '/works/', '/blog/', '/links/', '/about/', '/contact/'];
 const lastmod = new Date().toISOString().slice(0, 10);
 
 const toAbsoluteUrl = (path: string) => new URL(path.replace(/^\/+/, ''), site.url).toString();
