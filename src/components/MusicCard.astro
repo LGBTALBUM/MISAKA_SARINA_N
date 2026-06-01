@@ -1,5 +1,6 @@
 ---
 import type { MusicRelease } from '../data/music';
+import { resolveMusicCover } from '../utils/musicCover';
 
 const { release } = Astro.props as { release: MusicRelease };
 const isManualCatalogue = release.source?.label === 'Manual catalogue';
@@ -10,15 +11,20 @@ const withBase = (path: string) => {
   return `${base}${path.replace(/^\/+/, '')}`;
 };
 
-const resolveAssetUrl = (url: string) => {
-  if (/^https?:\/\//i.test(url)) return url;
-  return withBase(url);
-};
+const cover = resolveMusicCover(release, import.meta.env.BASE_URL);
 ---
 
 <a class="card music-card" href={withBase(`/music/${release.slug}/`)}>
   <div class="cover" aria-hidden="true">
-    {release.cover ? <img src={resolveAssetUrl(release.cover)} alt="" /> : <span>MS</span>}
+    {cover.primary ? (
+      <img
+        src={cover.primary}
+        data-fallback-src={cover.fallback}
+        data-cover-strategy={cover.strategy}
+        alt=""
+        onerror="if (this.dataset.fallbackSrc && this.src !== this.dataset.fallbackSrc) { this.src = this.dataset.fallbackSrc; this.removeAttribute('data-fallback-src'); } else { this.remove(); this.parentElement?.classList.add('is-placeholder'); }"
+      />
+    ) : <span>MS</span>}
   </div>
   <div class="content">
     <p class="meta">{release.type.toUpperCase()} · {release.releaseDate}</p>
@@ -82,11 +88,16 @@ const resolveAssetUrl = (url: string) => {
     object-fit: cover;
   }
 
-  .cover span {
+  .cover span,
+  .cover.is-placeholder::before {
     color: #080914;
     font-size: 2.5rem;
     font-weight: 950;
     letter-spacing: -0.12em;
+  }
+
+  .cover.is-placeholder::before {
+    content: "MS";
   }
 
   .content {
