@@ -3,6 +3,7 @@ import type { MusicRelease } from '../data/music';
 import { manualMusicReleases } from '../data/manualMusic';
 import { manualMusicQualityOverrides } from '../data/manualMusicQuality';
 import { musicOverrides } from '../data/musicOverrides';
+import { completePublicLinks } from './musicLinkCompletion';
 
 export type ResolvedMusicRelease = MusicRelease & {
   hidden?: boolean;
@@ -11,6 +12,11 @@ export type ResolvedMusicRelease = MusicRelease & {
   featuredCandidate?: boolean;
   needsReview?: boolean;
   qualityNotes?: string[];
+  linkCompletedFrom?: {
+    slug: string;
+    title: string;
+    source: string;
+  };
 };
 
 const mergeRelease = (release: MusicRelease): ResolvedMusicRelease => {
@@ -29,17 +35,30 @@ const mergeRelease = (release: MusicRelease): ResolvedMusicRelease => {
       }
     : release;
 
-  const override = musicOverrides[qualityResolved.slug];
-  if (!override) return qualityResolved;
+  const completed = completePublicLinks(qualityResolved);
+  const linkCompletedResolved: ResolvedMusicRelease = completed.completedFrom
+    ? {
+        ...qualityResolved,
+        platforms: completed.platforms,
+        linkCompletedFrom: completed.completedFrom,
+        notes: [
+          ...(qualityResolved.notes ?? []),
+          `Public links completed from ${completed.completedFrom.title} (${completed.completedFrom.slug}).`
+        ]
+      }
+    : qualityResolved;
+
+  const override = musicOverrides[linkCompletedResolved.slug];
+  if (!override) return linkCompletedResolved;
 
   return {
-    ...qualityResolved,
+    ...linkCompletedResolved,
     ...override,
-    slug: qualityResolved.slug,
-    platforms: override.platforms ?? qualityResolved.platforms,
-    credits: override.credits ?? qualityResolved.credits,
-    notes: override.notes ?? qualityResolved.notes,
-    source: override.source ? { ...qualityResolved.source, ...override.source } as MusicRelease['source'] : qualityResolved.source
+    slug: linkCompletedResolved.slug,
+    platforms: override.platforms ?? linkCompletedResolved.platforms,
+    credits: override.credits ?? linkCompletedResolved.credits,
+    notes: override.notes ?? linkCompletedResolved.notes,
+    source: override.source ? { ...linkCompletedResolved.source, ...override.source } as MusicRelease['source'] : linkCompletedResolved.source
   };
 };
 
