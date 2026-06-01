@@ -3,6 +3,7 @@ import type { MusicRelease } from '../data/music';
 import { manualMusicReleases } from '../data/manualMusic';
 import { manualMusicQualityOverrides } from '../data/manualMusicQuality';
 import { musicOverrides } from '../data/musicOverrides';
+import { applyPublicLinkCompletion, type LinkCompletion } from './publicLinkCompletion';
 
 export type ResolvedMusicRelease = MusicRelease & {
   hidden?: boolean;
@@ -11,6 +12,7 @@ export type ResolvedMusicRelease = MusicRelease & {
   featuredCandidate?: boolean;
   needsReview?: boolean;
   qualityNotes?: string[];
+  linkCompletion?: LinkCompletion;
 };
 
 const mergeRelease = (release: MusicRelease): ResolvedMusicRelease => {
@@ -30,17 +32,19 @@ const mergeRelease = (release: MusicRelease): ResolvedMusicRelease => {
     : release;
 
   const override = musicOverrides[qualityResolved.slug];
-  if (!override) return qualityResolved;
+  const overrideResolved = override
+    ? {
+        ...qualityResolved,
+        ...override,
+        slug: qualityResolved.slug,
+        platforms: override.platforms ?? qualityResolved.platforms,
+        credits: override.credits ?? qualityResolved.credits,
+        notes: override.notes ?? qualityResolved.notes,
+        source: override.source ? { ...qualityResolved.source, ...override.source } as MusicRelease['source'] : qualityResolved.source
+      }
+    : qualityResolved;
 
-  return {
-    ...qualityResolved,
-    ...override,
-    slug: qualityResolved.slug,
-    platforms: override.platforms ?? qualityResolved.platforms,
-    credits: override.credits ?? qualityResolved.credits,
-    notes: override.notes ?? qualityResolved.notes,
-    source: override.source ? { ...qualityResolved.source, ...override.source } as MusicRelease['source'] : qualityResolved.source
-  };
+  return applyPublicLinkCompletion(overrideResolved);
 };
 
 export const getRawCatalogueReleases = () => [
