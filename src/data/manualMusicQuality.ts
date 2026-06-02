@@ -4,6 +4,8 @@ export type ManualMusicQualityOverride = {
   title?: string;
   releaseDate?: string;
   description?: string;
+  cover?: string;
+  coverSquare?: string;
   credits?: MusicRelease['credits'];
   notes?: MusicRelease['notes'];
   platforms?: MusicRelease['platforms'];
