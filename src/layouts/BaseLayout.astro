@@ -79,6 +79,7 @@ const navKeys = ['nav.home', 'nav.music', 'nav.works', 'nav.blog', 'nav.links', 
       <p>{site.copyright}</p>
       <p><span data-i18n="footer.built">Built with Astro. Legacy link-page behavior now lives under</span> <a href={withBase('/links')}>/links</a>.</p>
     </footer>
+    <script src={withBase('/music-cover-fallback.js')} defer></script>
     <script src={withBase('/preferences.js')} defer></script>
   </body>
 </html>
