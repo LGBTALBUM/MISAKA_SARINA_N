@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getResolvedReleases } from '../../utils/musicCatalogue';
 import type { ResolvedMusicRelease } from '../../utils/musicCatalogue';
+import { resolveMusicCover } from '../../utils/musicCover';
 
 export function getStaticPaths() {
   return getResolvedReleases().map((release) => ({
@@ -14,16 +15,12 @@ const { release } = Astro.props as { release: ResolvedMusicRelease };
 const isManualCatalogue = release.source?.label === 'Manual catalogue';
 const hasPlatforms = release.platforms.length > 0;
 const hasQualityStatus = release.featuredCandidate || release.needsReview;
+const cover = resolveMusicCover(release, import.meta.env.BASE_URL);
 const withBase = (path: string) => {
   const base = import.meta.env.BASE_URL.endsWith('/')
     ? import.meta.env.BASE_URL
     : `${import.meta.env.BASE_URL}/`;
   return `${base}${path.replace(/^\/+/, '')}`;
-};
-
-const resolveAssetUrl = (url: string) => {
-  if (/^https?:\/\//i.test(url)) return url;
-  return withBase(url);
 };
 ---
 
@@ -31,7 +28,15 @@ const resolveAssetUrl = (url: string) => {
   <section class="section release-hero card">
     <div class="cover-wrap">
       <div class="cover" aria-hidden="true">
-        {release.cover ? <img src={resolveAssetUrl(release.cover)} alt="" /> : <span>MS</span>}
+        {cover.primary ? (
+          <img
+            src={cover.primary}
+            data-cover-fallback
+            data-fallback-src={cover.fallback}
+            data-cover-strategy={cover.strategy}
+            alt=""
+          />
+        ) : <span>MS</span>}
       </div>
       <p class="archive-id">Archive entry · {release.source?.id ? `S/${release.source.id}` : release.slug}</p>
     </div>
@@ -149,11 +154,16 @@ const resolveAssetUrl = (url: string) => {
     object-fit: cover;
   }
 
-  .cover span {
+  .cover span,
+  .cover.is-placeholder::before {
     color: #080914;
     font-size: 4rem;
     font-weight: 950;
     letter-spacing: -0.12em;
+  }
+
+  .cover.is-placeholder::before {
+    content: "MS";
   }
 
   .archive-id {
