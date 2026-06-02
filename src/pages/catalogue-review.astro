@@ -6,6 +6,7 @@ import {
   getProfileEntries,
   getSecondaryReleases
 } from '../utils/musicVisibility';
+import { resolveMusicCover } from '../utils/musicCover';
 
 const releases = getSortedReleases();
 const mainReleases = getMainCatalogueReleases(releases);
@@ -16,6 +17,12 @@ const noPublicLinks = releases.filter((release) => release.platforms.length === 
 const manualNoPublicLinks = manualEntries.filter((release) => release.platforms.length === 0);
 const featuredCandidates = releases.filter((release) => release.featuredCandidate);
 const needsReview = releases.filter((release) => release.needsReview);
+const coverDiagnostics = releases.map((release) => ({ release, cover: resolveMusicCover(release, import.meta.env.BASE_URL) }));
+const withCover = coverDiagnostics.filter((item) => item.cover.hasCover);
+const withoutCover = coverDiagnostics.filter((item) => !item.cover.hasCover);
+const squareCandidateCovers = coverDiagnostics.filter((item) => item.cover.strategy === 'square');
+const sourceCovers = coverDiagnostics.filter((item) => item.cover.strategy === 'source');
+const placeholderCovers = coverDiagnostics.filter((item) => item.cover.strategy === 'placeholder');
 
 const normalizeDuplicateKey = (title: string) =>
   title
@@ -47,7 +54,12 @@ const reviewRows = [
   ['Manual entries without public links', manualNoPublicLinks.length, 'manual-no-links'],
   ['Featured candidates', featuredCandidates.length, 'featured'],
   ['Needs review', needsReview.length, 'needs-review'],
-  ['Possible duplicate title groups', duplicateGroups.length, 'duplicates']
+  ['Possible duplicate title groups', duplicateGroups.length, 'duplicates'],
+  ['Entries with cover', withCover.length, 'covers'],
+  ['Entries without cover', withoutCover.length, 'cover-missing'],
+  ['Square cover candidates', squareCandidateCovers.length, 'cover-square'],
+  ['Source cover only', sourceCovers.length, 'cover-source'],
+  ['MS placeholder', placeholderCovers.length, 'cover-placeholder']
 ];
 
 const withBase = (path: string) => {
@@ -57,9 +69,10 @@ const withBase = (path: string) => {
   return `${base}${path.replace(/^\/+/, '')}`;
 };
 
-const sectionLimit = 80;
+const sectionLimit = 100;
 const quickLinks = [
   ['Stats', '#stats'],
+  ['Covers', '#covers'],
   ['Featured', '#featured'],
   ['No public links', '#no-public-links'],
   ['Needs review', '#needs-review'],
@@ -77,7 +90,7 @@ const rowData = (release: typeof releases[number], tags: string[] = []) => ({
     <div>
       <p class="eyebrow">Catalogue Review</p>
       <h1 class="title">Music data health dashboard.</h1>
-      <p class="copy">A static review page for checking VocaDB generated entries, YTM-derived manual entries, quality flags, missing public links, and possible duplicate titles.</p>
+      <p class="copy">A static review page for checking generated entries, manual entries, quality flags, missing public links, duplicate titles, and cover fallback status.</p>
     </div>
     <div class="hero-actions">
       <a class="button primary" href={withBase('/music')}>Back to music</a>
@@ -100,6 +113,8 @@ const rowData = (release: typeof releases[number], tags: string[] = []) => ({
         <button type="button" data-filter="no-links">No links</button>
         <button type="button" data-filter="featured">Featured</button>
         <button type="button" data-filter="needs-review">Needs review</button>
+        <button type="button" data-filter="cover-missing">No cover</button>
+        <button type="button" data-filter="cover-square">Square cover</button>
       </div>
       <p data-filter-status class="filter-status">Showing all review rows.</p>
     </div>
@@ -114,99 +129,60 @@ const rowData = (release: typeof releases[number], tags: string[] = []) => ({
     ))}
   </section>
 
-  <section id="featured" class="section card review-section" data-review-section>
+  <section id="covers" class="section card review-section" data-review-section>
     <div class="section-head">
       <div>
-        <p class="eyebrow">Featured candidates</p>
-        <h2>Potential highlights</h2>
+        <p class="eyebrow">Cover diagnostics</p>
+        <h2>Artwork fallback status</h2>
       </div>
-      <span>{featuredCandidates.length} entries</span>
+      <span>{coverDiagnostics.length} entries</span>
     </div>
-    {featuredCandidates.length > 0 ? (
-      <div class="review-list">
-        {featuredCandidates.map((release) => {
-          const data = rowData(release, ['featured', release.source?.label === 'Manual catalogue' ? 'manual' : 'generated', release.platforms.length === 0 ? 'no-links' : 'has-links']);
-          return <a class="review-row" data-review-row data-search={data.search} data-tags={data.tags} href={withBase(`/music/${release.slug}/`)}><b>{release.title}</b><small>{release.releaseDate} · {release.source?.label ?? 'Generated'} · {release.platforms.length} links · {release.slug}</small></a>;
-        })}
-      </div>
-    ) : <p class="empty">No featured candidates yet.</p>}
+    <p class="hint">Showing up to {sectionLimit} entries. Cover strategy is resolved as <code>square</code>, <code>source</code>, or <code>placeholder</code>. Browser runtime may still fall back from square candidate to original source if the square image URL fails.</p>
+    <div class="review-list">
+      {coverDiagnostics.slice(0, sectionLimit).map(({ release, cover }) => {
+        const tags = [
+          'cover',
+          cover.hasCover ? 'has-cover' : 'cover-missing',
+          `cover-${cover.strategy}`,
+          release.source?.label === 'Manual catalogue' ? 'manual' : 'generated',
+          release.platforms.length === 0 ? 'no-links' : 'has-links'
+        ];
+        const data = rowData(release, tags);
+        return (
+          <a class="review-row" data-review-row data-search={data.search} data-tags={data.tags} data-cover-primary={cover.primary ?? ''} data-cover-fallback={cover.fallback ?? ''} href={withBase(`/music/${release.slug}/`)}>
+            <b>{release.title}</b>
+            <small>{release.releaseDate} · {cover.strategy} · {cover.hasCover ? 'has cover' : 'no cover'} · {release.slug}</small>
+          </a>
+        );
+      })}
+    </div>
+  </section>
+
+  <section id="featured" class="section card review-section" data-review-section>
+    <div class="section-head"><div><p class="eyebrow">Featured candidates</p><h2>Potential highlights</h2></div><span>{featuredCandidates.length} entries</span></div>
+    {featuredCandidates.length > 0 ? <div class="review-list">{featuredCandidates.map((release) => { const cover = resolveMusicCover(release, import.meta.env.BASE_URL); const data = rowData(release, ['featured', release.source?.label === 'Manual catalogue' ? 'manual' : 'generated', release.platforms.length === 0 ? 'no-links' : 'has-links', cover.hasCover ? 'has-cover' : 'cover-missing', `cover-${cover.strategy}`]); return <a class="review-row" data-review-row data-search={data.search} data-tags={data.tags} data-cover-primary={cover.primary ?? ''} data-cover-fallback={cover.fallback ?? ''} href={withBase(`/music/${release.slug}/`)}><b>{release.title}</b><small>{release.releaseDate} · {release.source?.label ?? 'Generated'} · {release.platforms.length} links · {cover.strategy} · {release.slug}</small></a>; })}</div> : <p class="empty">No featured candidates yet.</p>}
   </section>
 
   <section id="no-public-links" class="section card review-section" data-review-section>
-    <div class="section-head">
-      <div>
-        <p class="eyebrow">No public links</p>
-        <h2>Entries missing platform URLs</h2>
-      </div>
-      <span>{noPublicLinks.length} entries</span>
-    </div>
+    <div class="section-head"><div><p class="eyebrow">No public links</p><h2>Entries missing platform URLs</h2></div><span>{noPublicLinks.length} entries</span></div>
     <p class="hint">Showing up to {sectionLimit} entries. Add public track URLs through <code>manualMusicQuality.ts</code> or <code>musicOverrides.ts</code>.</p>
-    <div class="review-list">
-      {noPublicLinks.slice(0, sectionLimit).map((release) => {
-        const data = rowData(release, ['no-links', release.source?.label === 'Manual catalogue' ? 'manual' : 'generated', release.featuredCandidate ? 'featured' : '', release.needsReview ? 'needs-review' : '']);
-        return <a class="review-row" data-review-row data-search={data.search} data-tags={data.tags} href={withBase(`/music/${release.slug}/`)}><b>{release.title}</b><small>{release.releaseDate} · {release.source?.label ?? 'Generated'} · {release.slug}</small></a>;
-      })}
-    </div>
+    <div class="review-list">{noPublicLinks.slice(0, sectionLimit).map((release) => { const cover = resolveMusicCover(release, import.meta.env.BASE_URL); const data = rowData(release, ['no-links', release.source?.label === 'Manual catalogue' ? 'manual' : 'generated', release.featuredCandidate ? 'featured' : '', release.needsReview ? 'needs-review' : '', cover.hasCover ? 'has-cover' : 'cover-missing', `cover-${cover.strategy}`]); return <a class="review-row" data-review-row data-search={data.search} data-tags={data.tags} data-cover-primary={cover.primary ?? ''} data-cover-fallback={cover.fallback ?? ''} href={withBase(`/music/${release.slug}/`)}><b>{release.title}</b><small>{release.releaseDate} · {release.source?.label ?? 'Generated'} · {cover.strategy} · {release.slug}</small></a>; })}</div>
   </section>
 
   <section id="needs-review" class="section card review-section" data-review-section>
-    <div class="section-head">
-      <div>
-        <p class="eyebrow">Needs review</p>
-        <h2>Manual curation queue</h2>
-      </div>
-      <span>{needsReview.length} entries</span>
-    </div>
-    {needsReview.length > 0 ? (
-      <div class="review-list">
-        {needsReview.map((release) => {
-          const data = rowData(release, ['needs-review', release.source?.label === 'Manual catalogue' ? 'manual' : 'generated', release.platforms.length === 0 ? 'no-links' : 'has-links']);
-          return <a class="review-row" data-review-row data-search={data.search} data-tags={data.tags} href={withBase(`/music/${release.slug}/`)}><b>{release.title}</b><small>{release.releaseDate} · {release.source?.label ?? 'Generated'} · {release.slug}</small></a>;
-        })}
-      </div>
-    ) : <p class="empty">No entries are marked as needsReview.</p>}
+    <div class="section-head"><div><p class="eyebrow">Needs review</p><h2>Manual curation queue</h2></div><span>{needsReview.length} entries</span></div>
+    {needsReview.length > 0 ? <div class="review-list">{needsReview.map((release) => { const cover = resolveMusicCover(release, import.meta.env.BASE_URL); const data = rowData(release, ['needs-review', release.source?.label === 'Manual catalogue' ? 'manual' : 'generated', release.platforms.length === 0 ? 'no-links' : 'has-links', cover.hasCover ? 'has-cover' : 'cover-missing', `cover-${cover.strategy}`]); return <a class="review-row" data-review-row data-search={data.search} data-tags={data.tags} data-cover-primary={cover.primary ?? ''} data-cover-fallback={cover.fallback ?? ''} href={withBase(`/music/${release.slug}/`)}><b>{release.title}</b><small>{release.releaseDate} · {release.source?.label ?? 'Generated'} · {cover.strategy} · {release.slug}</small></a>; })}</div> : <p class="empty">No entries are marked as needsReview.</p>}
   </section>
 
   <section id="duplicates" class="section card review-section" data-review-section>
-    <div class="section-head">
-      <div>
-        <p class="eyebrow">Possible duplicates</p>
-        <h2>Normalized title groups</h2>
-      </div>
-      <span>{duplicateGroups.length} groups</span>
-    </div>
-    {duplicateGroups.length > 0 ? (
-      <div class="duplicate-list">
-        {duplicateGroups.map((group) => (
-          <article class="duplicate-group">
-            <h3>{normalizeDuplicateKey(group[0].title)} <span>{group.length} entries</span></h3>
-            <div class="review-list">
-              {group.map((release) => {
-                const data = rowData(release, ['duplicate', release.source?.label === 'Manual catalogue' ? 'manual' : 'generated', release.platforms.length === 0 ? 'no-links' : 'has-links']);
-                return <a class="review-row" data-review-row data-search={data.search} data-tags={data.tags} href={withBase(`/music/${release.slug}/`)}><b>{release.title}</b><small>{release.releaseDate} · {release.source?.label ?? 'Generated'} · {release.slug}</small></a>;
-              })}
-            </div>
-          </article>
-        ))}
-      </div>
-    ) : <p class="empty">No possible duplicate title groups found.</p>}
+    <div class="section-head"><div><p class="eyebrow">Possible duplicates</p><h2>Normalized title groups</h2></div><span>{duplicateGroups.length} groups</span></div>
+    {duplicateGroups.length > 0 ? <div class="duplicate-list">{duplicateGroups.map((group) => <article class="duplicate-group"><h3>{normalizeDuplicateKey(group[0].title)} <span>{group.length} entries</span></h3><div class="review-list">{group.map((release) => { const cover = resolveMusicCover(release, import.meta.env.BASE_URL); const data = rowData(release, ['duplicate', release.source?.label === 'Manual catalogue' ? 'manual' : 'generated', release.platforms.length === 0 ? 'no-links' : 'has-links', cover.hasCover ? 'has-cover' : 'cover-missing', `cover-${cover.strategy}`]); return <a class="review-row" data-review-row data-search={data.search} data-tags={data.tags} data-cover-primary={cover.primary ?? ''} data-cover-fallback={cover.fallback ?? ''} href={withBase(`/music/${release.slug}/`)}><b>{release.title}</b><small>{release.releaseDate} · {release.source?.label ?? 'Generated'} · {cover.strategy} · {release.slug}</small></a>; })}</div></article>)}</div> : <p class="empty">No possible duplicate title groups found.</p>}
   </section>
 
   <section id="manual" class="section card review-section" data-review-section>
-    <div class="section-head">
-      <div>
-        <p class="eyebrow">Manual catalogue</p>
-        <h2>YTM-derived entries</h2>
-      </div>
-      <span>{manualEntries.length} entries</span>
-    </div>
+    <div class="section-head"><div><p class="eyebrow">Manual catalogue</p><h2>YTM-derived entries</h2></div><span>{manualEntries.length} entries</span></div>
     <p class="hint">Showing up to {sectionLimit} entries. Private playlist URLs are not stored or displayed.</p>
-    <div class="review-list">
-      {manualEntries.slice(0, sectionLimit).map((release) => {
-        const data = rowData(release, ['manual', release.platforms.length === 0 ? 'no-links' : 'has-links', release.featuredCandidate ? 'featured' : '', release.needsReview ? 'needs-review' : '']);
-        return <a class="review-row" data-review-row data-search={data.search} data-tags={data.tags} href={withBase(`/music/${release.slug}/`)}><b>{release.title}</b><small>{release.releaseDate} · {release.platforms.length} public links · {release.slug}</small></a>;
-      })}
-    </div>
+    <div class="review-list">{manualEntries.slice(0, sectionLimit).map((release) => { const cover = resolveMusicCover(release, import.meta.env.BASE_URL); const data = rowData(release, ['manual', release.platforms.length === 0 ? 'no-links' : 'has-links', release.featuredCandidate ? 'featured' : '', release.needsReview ? 'needs-review' : '', cover.hasCover ? 'has-cover' : 'cover-missing', `cover-${cover.strategy}`]); return <a class="review-row" data-review-row data-search={data.search} data-tags={data.tags} data-cover-primary={cover.primary ?? ''} data-cover-fallback={cover.fallback ?? ''} href={withBase(`/music/${release.slug}/`)}><b>{release.title}</b><small>{release.releaseDate} · {release.platforms.length} public links · {cover.strategy} · {release.slug}</small></a>; })}</div>
   </section>
 
   <script is:inline>
@@ -229,10 +205,12 @@ const rowData = (release: typeof releases[number], tags: string[] = []) => ({
       const slug = getSlug(row);
       const title = row.querySelector('b')?.textContent?.trim() || slug;
       const hasNoLinks = (row.getAttribute('data-tags') || '').includes('no-links');
+      const coverPrimary = row.getAttribute('data-cover-primary') || '';
       const qualityTemplate = `'${slug}': {\n  title: '${escapeTs(title)}',\n  needsReview: false,\n  qualityNotes: ['TODO: describe manual catalogue cleanup.']\n},`;
       const platformsTemplate = `'${slug}': {\n  platforms: [\n    { label: 'YouTube Music', href: 'PUBLIC_TRACK_URL_HERE' }\n  ],\n  qualityNotes: ['Added public platform link.']\n},`;
+      const coverTemplate = `'${slug}': {\n  coverSquare: '${escapeTs(coverPrimary || 'PUBLIC_1_1_COVER_URL_HERE')}',\n  qualityNotes: ['Added square cover override.']\n},`;
       const overrideTemplate = `'${slug}': {\n  title: '${escapeTs(title)}',\n  ${hasNoLinks ? "platforms: [\n    { label: 'YouTube Music', href: 'PUBLIC_TRACK_URL_HERE' }\n  ],\n  " : ''}forceMain: false,\n  forceSecondary: false\n},`;
-      return { slug, qualityTemplate, platformsTemplate, overrideTemplate };
+      return { slug, qualityTemplate, platformsTemplate, coverTemplate, overrideTemplate };
     };
 
     const copyText = async (value) => {
@@ -255,12 +233,7 @@ const rowData = (release: typeof releases[number], tags: string[] = []) => ({
       const templates = buildTemplates(row);
       const actions = document.createElement('span');
       actions.className = 'copy-actions';
-      [
-        ['Slug', templates.slug],
-        ['Quality', templates.qualityTemplate],
-        ['Platforms', templates.platformsTemplate],
-        ['Override', templates.overrideTemplate]
-      ].forEach(([label, value]) => {
+      [['Slug', templates.slug], ['Quality', templates.qualityTemplate], ['Platforms', templates.platformsTemplate], ['Cover', templates.coverTemplate], ['Override', templates.overrideTemplate]].forEach(([label, value]) => {
         const button = document.createElement('button');
         button.type = 'button';
         button.textContent = label;
@@ -293,12 +266,7 @@ const rowData = (release: typeof releases[number], tags: string[] = []) => ({
     };
 
     searchInput?.addEventListener('input', applyFilter);
-    buttons.forEach((button) => {
-      button.addEventListener('click', () => {
-        activeFilter = button.getAttribute('data-filter') || 'all';
-        applyFilter();
-      });
-    });
+    buttons.forEach((button) => button.addEventListener('click', () => { activeFilter = button.getAttribute('data-filter') || 'all'; applyFilter(); }));
   </script>
 </BaseLayout>
 <style>
@@ -323,13 +291,13 @@ const rowData = (release: typeof releases[number], tags: string[] = []) => ({
   .review-section { padding: clamp(24px, 5vw, 38px); }
   .section-head { display: flex; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 22px; }
   .section-head h2 { margin: 0; font-size: clamp(1.8rem, 4.5vw, 3.2rem); line-height: 0.96; letter-spacing: -0.06em; }
-  .section-head > span, .duplicate-group h3 span { border: 1px solid rgba(236, 238, 255, 0.13); border-radius: 999px; background: rgba(7, 8, 18, 0.52); padding: 8px 12px; white-space: nowrap; }
+  .section-head > span, .duplicate-group h3 span { border: 1px solid rgba(236,238,255,.13); border-radius: 999px; background: rgba(7,8,18,.52); padding: 8px 12px; white-space: nowrap; }
   .hint, .empty { color: var(--muted); line-height: 1.7; }
-  code { border: 1px solid rgba(236, 238, 255, 0.13); border-radius: 8px; background: rgba(7, 8, 18, 0.52); padding: 2px 6px; }
+  code { border: 1px solid rgba(236,238,255,.13); border-radius: 8px; background: rgba(7,8,18,.52); padding: 2px 6px; }
   .review-list, .duplicate-list { display: grid; gap: 10px; }
-  .review-row, .duplicate-group { border: 1px solid rgba(236, 238, 255, 0.12); border-radius: 18px; background: rgba(7, 8, 18, 0.48); }
+  .review-row, .duplicate-group { border: 1px solid rgba(236,238,255,.12); border-radius: 18px; background: rgba(7,8,18,.48); }
   .review-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, auto) auto; align-items: center; gap: 14px; padding: 14px 16px; transition: transform 160ms ease, border-color 160ms ease, background 160ms ease; }
-  .review-row:hover, .review-row:focus-visible { transform: translateY(-2px); border-color: rgba(217, 210, 255, 0.45); background: rgba(19, 22, 42, 0.72); }
+  .review-row:hover, .review-row:focus-visible { transform: translateY(-2px); border-color: rgba(217,210,255,.45); background: rgba(19,22,42,.72); }
   .review-row[hidden] { display: none; }
   .review-row small { color: var(--soft); text-align: right; }
   .copy-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
