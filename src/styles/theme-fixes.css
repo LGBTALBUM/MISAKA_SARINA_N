@@ -1,10 +1,10 @@
-body::after{background-image:url('/backgrounds/dark-material.svg');background-size:cover;background-position:center;background-repeat:no-repeat;filter:none;opacity:.88}
-body::before{opacity:.38;mask-image:none}
-body{background:linear-gradient(180deg,rgba(2,3,15,.04),rgba(2,3,15,.18) 42%,rgba(2,3,15,.28)),radial-gradient(circle at 18% 0%,rgba(217,210,255,.04),transparent 34rem)}
+body::after{background-image:url('/backgrounds/dark-material.svg');background-size:cover;background-position:center;background-repeat:no-repeat;filter:none;opacity:.95}
+body::before{display:none}
+body{background:linear-gradient(180deg,rgba(2,3,15,.02),rgba(2,3,15,.1) 42%,rgba(2,3,15,.18)),radial-gradient(circle at 18% 0%,rgba(217,210,255,.03),transparent 34rem)}
 :root[data-theme='light']{--bg:#f7f3ec;--panel:rgba(255,255,255,.9);--panel-strong:rgba(255,255,255,.96);--line:rgba(34,28,45,.22);--line-strong:rgba(34,28,45,.36);--text:#15111d;--muted:#342e42;--soft:#5f566d;--accent:#332a91;--accent-2:#4b3eb0;--accent-warm:#884760;--cyan:#334ea7;--pink:#884760;--shadow:0 26px 70px rgba(35,27,55,.16)}
-:root[data-theme='light'] body{background:linear-gradient(180deg,rgba(247,243,236,.38),rgba(247,243,236,.44) 42%,rgba(247,243,236,.58)),radial-gradient(circle at 18% 0%,rgba(77,69,168,.08),transparent 34rem)}
-:root[data-theme='light'] body::after{background-image:url('/backgrounds/light-material.svg');background-size:cover;background-position:center;background-repeat:no-repeat;filter:none;opacity:.78}
-:root[data-theme='light'] body::before{opacity:.18;mask-image:none;background:linear-gradient(90deg,rgba(24,19,31,.035) 1px,transparent 1px),linear-gradient(180deg,rgba(24,19,31,.026) 1px,transparent 1px),linear-gradient(180deg,rgba(255,255,255,.12),rgba(247,243,236,.16));background-size:72px 72px,72px 72px,100% 100%}
+:root[data-theme='light'] body{background:linear-gradient(180deg,rgba(247,243,236,.24),rgba(247,243,236,.3) 42%,rgba(247,243,236,.42)),radial-gradient(circle at 18% 0%,rgba(77,69,168,.06),transparent 34rem)}
+:root[data-theme='light'] body::after{background-image:url('/backgrounds/light-material.svg');background-size:cover;background-position:center;background-repeat:no-repeat;filter:none;opacity:.88}
+:root[data-theme='light'] body::before{display:none}
 :root[data-theme='light'] .card{border-color:rgba(34,28,45,.18);background:linear-gradient(145deg,rgba(255,255,255,.9),rgba(255,252,247,.78));box-shadow:var(--shadow)}
 :root[data-theme='light'] .copy,:root[data-theme='light'] .card p,:root[data-theme='light'] .tile p,:root[data-theme='light'] .hero-card p,:root[data-theme='light'] .section-head>p,:root[data-theme='light'] .platform-link small,:root[data-theme='light'] .empty-platforms p,:root[data-theme='light'] ul{color:var(--muted)}
 :root[data-theme='light'] .eyebrow,:root[data-theme='light'] .release-meta,:root[data-theme='light'] .stats strong,:root[data-theme='light'] .timeline-stats strong,:root[data-theme='light'] .friend-count strong,:root[data-theme='light'] .open{color:var(--accent-2)}
