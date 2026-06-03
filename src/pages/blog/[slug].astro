@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { posts } from '../../data/posts';
 import type { PostItem } from '../../data/posts';
+import { blogPostJsonLd } from '../../utils/seo';
 
 export function getStaticPaths() {
   return posts.map((post) => ({
@@ -25,7 +26,15 @@ const statusLabel = {
   published: 'Published'
 };
 ---
-<BaseLayout title={post.title} description={post.summary}>
+<BaseLayout
+  title={post.title}
+  description={post.summary}
+  ogType="article"
+  publishedTime={post.date}
+  modifiedTime={post.date}
+  tags={post.tags}
+  jsonLd={blogPostJsonLd(post)}
+>
   <section class="section card detail-hero">
     <div>
       <p class="eyebrow">{post.category.replace('-', ' ')}</p>

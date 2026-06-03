@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../data/content';
 import { businessOfferings } from '../data/business';
+import { webPageJsonLd } from '../utils/seo';
 
 const withBase = (path: string) => {
   const base = import.meta.env.BASE_URL.endsWith('/')
@@ -9,8 +10,15 @@ const withBase = (path: string) => {
     : `${import.meta.env.BASE_URL}/`;
   return `${base}${path.replace(/^\/+/, '')}`;
 };
+
+const description = 'Contact entry points for Misaka Sarina collaboration, business, licensing, or project inquiries.';
 ---
-<BaseLayout title="Contact" description="Contact entry points for Misaka Sarina collaboration, business, licensing, or project inquiries.">
+<BaseLayout
+  title="Contact"
+  description={description}
+  tags={['Contact', 'Music production inquiry', 'Licensing', 'Collaboration', 'Misaka Sarina']}
+  jsonLd={webPageJsonLd({ title: 'Contact', description, path: '/contact/', type: 'ContactPage' })}
+>
   <section class="section contact-hero card">
     <div>
       <p class="eyebrow" data-i18n="contact.eyebrow">Contact</p>
