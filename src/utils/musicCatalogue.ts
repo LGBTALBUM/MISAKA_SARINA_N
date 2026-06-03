@@ -15,6 +15,12 @@ export type ResolvedMusicRelease = MusicRelease & {
   linkCompletion?: LinkCompletion;
 };
 
+const uniqueList = (items: string[] = []) =>
+  items.filter((item, index, list) => list.indexOf(item) === index);
+
+const mergeNotes = (...noteGroups: Array<string[] | undefined>) =>
+  uniqueList(noteGroups.flatMap((notes) => notes ?? []));
+
 const mergeRelease = (release: MusicRelease): ResolvedMusicRelease => {
   const qualityOverride = manualMusicQualityOverrides[release.slug];
   const qualityResolved = qualityOverride
@@ -23,13 +29,17 @@ const mergeRelease = (release: MusicRelease): ResolvedMusicRelease => {
         ...qualityOverride,
         slug: release.slug,
         platforms: qualityOverride.platforms ?? release.platforms,
-        credits: qualityOverride.credits ?? release.credits,
-        notes: [
-          ...(qualityOverride.notes ?? release.notes ?? []),
-          ...(qualityOverride.qualityNotes ?? []).map((note) => `Quality note: ${note}`)
-        ]
+        credits: uniqueList(qualityOverride.credits ?? release.credits ?? []),
+        notes: mergeNotes(
+          qualityOverride.notes ?? release.notes,
+          (qualityOverride.qualityNotes ?? []).map((note) => `Quality note: ${note}`)
+        )
       }
-    : release;
+    : {
+        ...release,
+        credits: uniqueList(release.credits ?? []),
+        notes: uniqueList(release.notes ?? [])
+      };
 
   const override = musicOverrides[qualityResolved.slug];
   const overrideResolved = override
@@ -38,8 +48,8 @@ const mergeRelease = (release: MusicRelease): ResolvedMusicRelease => {
         ...override,
         slug: qualityResolved.slug,
         platforms: override.platforms ?? qualityResolved.platforms,
-        credits: override.credits ?? qualityResolved.credits,
-        notes: override.notes ?? qualityResolved.notes,
+        credits: uniqueList(override.credits ?? qualityResolved.credits ?? []),
+        notes: mergeNotes(qualityResolved.notes, override.notes),
         source: override.source ? { ...qualityResolved.source, ...override.source } as MusicRelease['source'] : qualityResolved.source
       }
     : qualityResolved;
