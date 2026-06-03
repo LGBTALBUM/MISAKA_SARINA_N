@@ -13,7 +13,7 @@ export type PostItem = {
   title: string;
   slug: string;
   date: string;
-  category: 'release-diary' | 'technical-note' | 'site-log' | 'music-note';
+  category: 'release-diary' | 'technical-note' | 'site-log' | 'music-note' | 'business-note' | 'field-note';
   summary: string;
   tags: string[];
   status: 'planned' | 'draft' | 'published';
@@ -127,6 +127,75 @@ export const posts: PostItem[] = [
     ],
     related: [
       { label: 'Digital Garden', href: '/works/digital-garden/' }
+    ]
+  },
+  {
+    title: 'Business collaboration brief',
+    slug: 'business-collaboration-brief',
+    date: '2026-06-03',
+    category: 'business-note',
+    status: 'draft',
+    summary: 'A compact guide for starting a collaboration request with useful context, scope, timeline, and budget boundaries.',
+    tags: ['Business', 'Collaboration', 'Brief'],
+    bodySections: [
+      {
+        title: 'What to include',
+        body: 'A useful first message includes the project type, expected outcome, deadline, budget range, reference links, and the decision maker or contact person.'
+      },
+      {
+        title: 'Why scope matters',
+        body: 'Small creator projects are easiest to finish when the scope is explicit. A clear scope keeps the work reviewable, prevents hidden assumptions, and makes later maintenance easier.'
+      }
+    ],
+    links: [
+      { label: 'Business', href: '/business/', note: 'Collaboration entry point' },
+      { label: 'Contact', href: '/contact/', note: 'Send the first message' }
+    ]
+  },
+  {
+    title: 'Maintaining a creator archive after launch',
+    slug: 'maintaining-creator-archive',
+    date: '2026-06-03',
+    category: 'site-log',
+    status: 'draft',
+    summary: 'A maintenance note about keeping links, releases, pages, metadata, and deployment details understandable after the site is already public.',
+    tags: ['Maintenance', 'Archive', 'Deployment'],
+    bodySections: [
+      {
+        title: 'After launch',
+        body: 'A public site is not finished when it deploys. Links change, releases get new platforms, descriptions need refinement, and deployment settings can drift away from the original assumptions.'
+      },
+      {
+        title: 'Maintenance surface',
+        body: 'The important maintenance surfaces are content data, generated music metadata, manual overrides, external links, domain settings, and the visual system. Each should have a clear place to be updated.'
+      }
+    ],
+    links: [
+      { label: 'Works', href: '/works/', note: 'Project index' },
+      { label: 'Release timeline', href: '/music/timeline/', note: 'Music archive timeline' }
+    ]
+  },
+  {
+    title: 'Field notes on small web systems',
+    slug: 'small-web-systems-field-notes',
+    date: '2026-06-03',
+    category: 'field-note',
+    status: 'planned',
+    summary: 'Loose notes about personal web systems, static deployment, creator identity, and keeping technical work legible.',
+    tags: ['Small Web', 'Static Site', 'Infrastructure'],
+    bodySections: [
+      {
+        title: 'Small systems',
+        body: 'Small web systems should be boring in the best way: easy to inspect, easy to move, easy to rebuild, and not dependent on an oversized backend unless the content truly needs it.'
+      },
+      {
+        title: 'Legibility',
+        body: 'A project is easier to keep alive when its structure explains itself. Routes, data files, notes, and deployment settings should make sense to the future maintainer.'
+      }
+    ],
+    links: [
+      { label: 'Business', href: '/business/', note: 'Web archive work' },
+      { label: 'GitHub repository', href: 'https://github.com/LGBTALBUM/MISAKA_SARINA_N', note: 'Current implementation' }
     ]
   }
 ];

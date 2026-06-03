@@ -1,0 +1,257 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../data/content';
+import { businessOfferings, businessProcess } from '../data/business';
+
+const withBase = (path: string) => {
+  const base = import.meta.env.BASE_URL.endsWith('/')
+    ? import.meta.env.BASE_URL
+    : `${import.meta.env.BASE_URL}/`;
+  return `${base}${path.replace(/^\/+/, '')}`;
+};
+
+const resolveHref = (href: string) => href.startsWith('/') ? withBase(href) : href;
+---
+
+<BaseLayout title="Business" description="Business collaboration, music production, web archive, and digital project consulting for Misaka Sarina.">
+  <section class="section business-hero card">
+    <div>
+      <p class="eyebrow">Business</p>
+      <h1 class="title">Collaboration with a clear scope.</h1>
+      <p class="copy">Music, web archive, and digital project work should be small enough to finish, clear enough to maintain, and quiet enough to still feel personal.</p>
+      <div class="button-row hero-actions">
+        <a class="button primary" href={`mailto:${site.email}?subject=Business%20Inquiry%20for%20Misaka%20Sarina`}>Start inquiry</a>
+        <a class="button" href={withBase('/contact/')}>Contact routes</a>
+      </div>
+    </div>
+    <aside class="business-signal" aria-label="Business signal">
+      <span>Open to</span>
+      <strong>Music / Web / Archive</strong>
+      <p>Independent creator work, production support, and maintainable small web systems.</p>
+    </aside>
+  </section>
+
+  <section class="section offering-grid" aria-label="Business offerings">
+    {businessOfferings.map((offering) => (
+      <article class="card offering-card" id={offering.slug}>
+        <p class="eyebrow">{offering.eyebrow}</p>
+        <h2>{offering.title}</h2>
+        <p>{offering.summary}</p>
+        <div class="mini-section">
+          <h3>Suitable for</h3>
+          <ul>
+            {offering.suitableFor.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+        <div class="mini-section">
+          <h3>Deliverables</h3>
+          <ul>
+            {offering.deliverables.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+        {offering.links && (
+          <div class="link-row">
+            {offering.links.map((link) => (
+              <a href={resolveHref(link.href)} target={link.href.startsWith('/') ? undefined : '_blank'} rel={link.href.startsWith('/') ? undefined : 'noreferrer'}>
+                <strong>{link.label}</strong>
+                {link.note && <small>{link.note}</small>}
+              </a>
+            ))}
+          </div>
+        )}
+      </article>
+    ))}
+  </section>
+
+  <section class="section card process-card">
+    <div class="section-heading">
+      <p class="eyebrow">Workflow</p>
+      <h2>How a project starts.</h2>
+      <p class="copy">The best inquiry is not long. It only needs enough context to decide whether the scope is real, feasible, and worth doing.</p>
+    </div>
+    <div class="process-grid">
+      {businessProcess.map((step, index) => (
+        <article>
+          <span>{String(index + 1).padStart(2, '0')}</span>
+          <h3>{step.title}</h3>
+          <p>{step.body}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section card inquiry-card">
+    <div>
+      <p class="eyebrow">Inquiry note</p>
+      <h2>Send a compact brief.</h2>
+      <p class="copy">Please include the project type, expected outcome, references, deadline, budget range, and the best contact route. This keeps the first reply practical.</p>
+    </div>
+    <a class="button primary" href={`mailto:${site.email}?subject=Business%20Inquiry%20for%20Misaka%20Sarina`}>Email {site.email}</a>
+  </section>
+</BaseLayout>
+
+<style>
+  .business-hero,
+  .inquiry-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 0.42fr);
+    gap: 28px;
+    align-items: end;
+    padding: clamp(28px, 6vw, 56px);
+  }
+
+  .hero-actions {
+    margin-top: 26px;
+  }
+
+  .business-signal {
+    display: grid;
+    gap: 12px;
+    border: 1px solid rgba(236, 238, 255, 0.12);
+    border-radius: 22px;
+    background: rgba(7, 8, 18, 0.54);
+    padding: 22px;
+  }
+
+  .business-signal span,
+  .process-grid span,
+  .mini-section h3,
+  .link-row small {
+    color: var(--soft);
+    font-size: 0.72rem;
+    font-weight: 850;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .business-signal strong {
+    color: var(--accent);
+    font-size: clamp(1.5rem, 4vw, 2.3rem);
+    line-height: 1;
+    letter-spacing: -0.06em;
+  }
+
+  .business-signal p,
+  .offering-card p,
+  .process-grid p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.72;
+  }
+
+  .offering-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .offering-card {
+    display: grid;
+    align-content: start;
+    gap: 18px;
+    padding: clamp(22px, 4vw, 30px);
+  }
+
+  .offering-card h2,
+  .process-card h2,
+  .inquiry-card h2 {
+    margin: 0;
+    font-size: clamp(1.75rem, 4.2vw, 3rem);
+    line-height: 0.96;
+    letter-spacing: -0.07em;
+  }
+
+  .mini-section {
+    display: grid;
+    gap: 10px;
+  }
+
+  .mini-section ul {
+    display: grid;
+    gap: 8px;
+    margin: 0;
+    padding-left: 18px;
+    color: var(--muted);
+    line-height: 1.58;
+  }
+
+  .link-row {
+    display: grid;
+    gap: 10px;
+    margin-top: 4px;
+  }
+
+  .link-row a {
+    display: grid;
+    gap: 6px;
+    border: 1px solid rgba(236, 238, 255, 0.12);
+    border-radius: 16px;
+    background: rgba(7, 8, 18, 0.48);
+    padding: 14px;
+    transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+  }
+
+  .link-row a:hover,
+  .link-row a:focus-visible {
+    transform: translateY(-2px);
+    border-color: rgba(217, 210, 255, 0.45);
+    background: rgba(19, 22, 42, 0.72);
+  }
+
+  .process-card {
+    padding: clamp(28px, 6vw, 44px);
+  }
+
+  .section-heading {
+    margin-bottom: 26px;
+  }
+
+  .process-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .process-grid article {
+    display: grid;
+    gap: 10px;
+    border: 1px solid rgba(236, 238, 255, 0.12);
+    border-radius: 18px;
+    background: rgba(7, 8, 18, 0.48);
+    padding: 18px;
+  }
+
+  .process-grid h3 {
+    margin: 0;
+    font-size: 1.22rem;
+    letter-spacing: -0.04em;
+  }
+
+  .inquiry-card {
+    align-items: center;
+  }
+
+  .inquiry-card .button {
+    justify-self: end;
+  }
+
+  @media (max-width: 980px) {
+    .offering-grid,
+    .process-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .business-hero,
+    .inquiry-card,
+    .offering-grid,
+    .process-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .inquiry-card .button {
+      justify-self: start;
+    }
+  }
+</style>
