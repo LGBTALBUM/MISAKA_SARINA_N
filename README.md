@@ -2,10 +2,16 @@
 
 Dark Archive style Astro rebuild of the Misaka Sarina / Baker Siacone mainpage.
 
-This repository is currently used as a GitHub Pages debug mirror for the new site architecture. The current debug URL is:
+This repository now builds the production site for:
 
 ```txt
-https://lgbtalbum.github.io/MISAKA_SARINA_N/
+https://msarina.moe/
+```
+
+The previous Linkyee-style link page is kept at:
+
+```txt
+https://msarina.siacone.art/
 ```
 
 ## Current site structure
@@ -23,7 +29,7 @@ https://lgbtalbum.github.io/MISAKA_SARINA_N/
 - `/blog/:slug/` — blog / note detail pages
 - `/404.html` — custom not found page
 - `/sitemap.xml` — generated sitemap
-- `/robots.txt` — crawler rules for the debug mirror
+- `/robots.txt` — crawler rules for the production site
 
 ## Development
 
@@ -181,11 +187,35 @@ Each item generates a shareable detail route:
 /blog/:slug/
 ```
 
-The current implementation intentionally does not use MDX or a CMS. This keeps the debug mirror simple while leaving room for future content collections, richer body content, screenshots, changelogs, RSS, and MDX-powered detail pages.
+The current implementation intentionally does not use MDX or a CMS. This keeps the site simple while leaving room for future content collections, richer body content, screenshots, changelogs, RSS, and MDX-powered detail pages.
 
 ## GitHub Actions
 
-The repository includes a manual workflow:
+The repository includes a production build workflow:
+
+```txt
+Build and deploy Astro site
+```
+
+It runs on pushes to `main`, builds the Astro site, and publishes `./dist` to:
+
+```txt
+gh-pages
+```
+
+The production custom domain is stored in:
+
+```txt
+public/CNAME
+```
+
+with this value:
+
+```txt
+msarina.moe
+```
+
+The repository also includes a manual workflow:
 
 ```txt
 Sync VocaDB music data
@@ -201,17 +231,24 @@ Because the repository may not allow Actions to create pull requests automatical
 
 ## Deployment notes
 
-This repo is configured for GitHub Pages project-path deployment. Base-path handling is important because the debug mirror lives under:
+This repo is configured for GitHub Pages root-domain production deployment:
 
 ```txt
-/MISAKA_SARINA_N/
+https://msarina.moe/
 ```
 
-Before moving to the production domain, review these files:
+The legacy Linkyee page should remain available at:
 
-- `src/data/content.ts` — `site.url`
+```txt
+https://msarina.siacone.art/
+```
+
+Before changing production deployment again, review these files:
+
+- `astro.config.mjs` — `site` and root-path deployment settings
+- `src/data/content.ts` — `site.url` and external links
+- `public/CNAME` — GitHub Pages custom domain
 - `public/robots.txt` — sitemap URL
-- `astro.config.mjs` — `site` / `base` settings if present
 - `.github/workflows/*` — deployment target and permissions
 
 ## Design direction
@@ -219,6 +256,7 @@ Before moving to the production domain, review these files:
 The current visual direction is **Dark Archive**:
 
 - dark background image with vertical repeat
+- compact mobile header with menu toggle
 - release archive layout
 - main releases prioritized over instrumental / off-vocal versions
 - static pages polished to match the archive system
@@ -233,11 +271,11 @@ When updating the site:
 4. Use catalogue review search / filters / copy helpers when cleaning manual entries.
 5. Check `/links/` Listen group after changing public platform links.
 6. Check `/works/`, `/works/:slug/`, `/blog/`, and `/blog/:slug/` pages.
-7. Verify external cover URLs are not prefixed with the GitHub Pages base path.
+7. Verify external cover URLs are not prefixed with a GitHub Pages project base path.
 8. If VocaDB data changed, review `src/data/music.ts` before merging.
 9. Add missing private-catalogue-derived music entries in `src/data/manualMusic.ts`.
 10. Put gradual manual catalogue cleanup in `src/data/manualMusicQuality.ts`.
 11. Put final manual music corrections in `src/data/musicOverrides.ts`.
 12. Review whether new manual entries should stay in Primary catalogue or secondary version entries.
 13. Put Works / Blog content in `src/data/works.ts` and `src/data/posts.ts`.
-14. Keep production-domain changes separate from debug-mirror changes.
+14. Keep legacy Linkyee deployment changes separate from the Astro production site.
