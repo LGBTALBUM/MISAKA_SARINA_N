@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../data/content';
+import { businessOfferings } from '../data/business';
+
 const withBase = (path: string) => {
   const base = import.meta.env.BASE_URL.endsWith('/')
     ? import.meta.env.BASE_URL
@@ -8,21 +10,45 @@ const withBase = (path: string) => {
   return `${base}${path.replace(/^\/+/, '')}`;
 };
 ---
-<BaseLayout title="Contact" description="Contact entry points for Misaka Sarina collaboration or project inquiries.">
+<BaseLayout title="Contact" description="Contact entry points for Misaka Sarina collaboration, business, licensing, or project inquiries.">
   <section class="section contact-hero card">
     <div>
       <p class="eyebrow" data-i18n="contact.eyebrow">Contact</p>
-      <h1 class="title" data-i18n="contact.title">Tell me about your project.</h1>
-      <p class="copy" data-i18n="contact.copy">For music production, collaboration, licensing, release-related questions, or digital project inquiries, use one of the contact routes below.</p>
+      <h1 class="title">Start with a clear brief.</h1>
+      <p class="copy">For music production, collaboration, licensing, web archive work, or digital project inquiries, send a compact message with enough context to make the first reply useful.</p>
+      <div class="button-row hero-actions">
+        <a class="button primary" href={`mailto:${site.email}?subject=Project%20Inquiry%20for%20Misaka%20Sarina`}>Email directly</a>
+        <a class="button" href={withBase('/business/')}>View business scope</a>
+      </div>
     </div>
     <div class="mail-card">
       <span data-i18n="contact.primaryEmail">Primary email</span>
       <strong>{site.email}</strong>
-      <a class="button primary" href={`mailto:${site.email}`} data-i18n="contact.writeEmail">Write email</a>
+      <p>Best for scoped inquiries, licensing questions, collaboration requests, and production work.</p>
     </div>
   </section>
 
-  <section class="section contact-grid">
+  <section class="section card brief-card">
+    <div>
+      <p class="eyebrow">Before writing</p>
+      <h2>What makes a good first message?</h2>
+      <p class="copy">A good first message does not need to be long. It should be specific enough to understand the goal, timing, and whether the work fits.</p>
+    </div>
+    <ul>
+      <li>Project type and expected outcome</li>
+      <li>Reference links or existing materials</li>
+      <li>Deadline, launch window, or urgency</li>
+      <li>Budget range or collaboration model</li>
+      <li>Preferred contact route and timezone</li>
+    </ul>
+  </section>
+
+  <section class="section route-grid" aria-label="Contact routes">
+    <a class="card contact-card feature" href={`mailto:${site.email}?subject=Music%20Production%20Inquiry`}>
+      <span>Music / Licensing</span>
+      <strong>Production, release, or usage inquiry</strong>
+      <small>Use email for work that needs context, files, credits, rights, or timeline discussion.</small>
+    </a>
     <a class="card contact-card" href="https://soundbetter.com/profiles/701882-misaka-sarina" target="_blank" rel="noreferrer">
       <span data-i18n="contact.production">Production</span>
       <strong>SoundBetter</strong>
@@ -33,24 +59,52 @@ const withBase = (path: string) => {
       <strong>Instagram</strong>
       <small data-i18n="contact.instagram">Updates and direct contact</small>
     </a>
+    <a class="card contact-card" href={withBase('/business/')}>
+      <span>Business</span>
+      <strong>Collaboration scope</strong>
+      <small>Music, web archive, and digital project consulting details.</small>
+    </a>
     <a class="card contact-card" href={withBase('/links')}>
       <span data-i18n="contact.archive">Archive</span>
       <strong data-i18n="contact.allLinks">All Links</strong>
       <small data-i18n="contact.allLinksCopy">Full external link collection</small>
     </a>
   </section>
+
+  <section class="section card service-map">
+    <div class="section-heading">
+      <p class="eyebrow">Project lanes</p>
+      <h2>Choose the closest lane.</h2>
+      <p class="copy">The message can be simple. Pick the closest lane and describe the desired result.</p>
+    </div>
+    <div class="lane-grid">
+      {businessOfferings.map((offering) => (
+        <a href={withBase(`/business/#${offering.slug}`)}>
+          <span>{offering.eyebrow}</span>
+          <strong>{offering.title}</strong>
+          <small>{offering.summary}</small>
+        </a>
+      ))}
+    </div>
+  </section>
 </BaseLayout>
 <style>
-  .contact-hero {
+  .contact-hero,
+  .brief-card {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(260px, 0.42fr);
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.42fr);
     gap: 28px;
     align-items: end;
     padding: clamp(28px, 6vw, 56px);
   }
 
+  .hero-actions {
+    margin-top: 26px;
+  }
+
   .mail-card,
-  .contact-card {
+  .contact-card,
+  .lane-grid a {
     border: 1px solid rgba(236, 238, 255, 0.12);
     border-radius: 20px;
     background: rgba(7, 8, 18, 0.52);
@@ -63,7 +117,8 @@ const withBase = (path: string) => {
   }
 
   .mail-card span,
-  .contact-card span {
+  .contact-card span,
+  .lane-grid span {
     color: var(--soft);
     font-size: 0.72rem;
     font-weight: 850;
@@ -76,7 +131,34 @@ const withBase = (path: string) => {
     word-break: break-all;
   }
 
-  .contact-grid {
+  .mail-card p,
+  .brief-card li,
+  .contact-card small,
+  .lane-grid small {
+    color: var(--muted);
+    line-height: 1.62;
+  }
+
+  .brief-card {
+    align-items: center;
+  }
+
+  .brief-card h2,
+  .service-map h2 {
+    margin: 0 0 12px;
+    font-size: clamp(1.9rem, 5vw, 3.4rem);
+    line-height: 0.96;
+    letter-spacing: -0.07em;
+  }
+
+  .brief-card ul {
+    display: grid;
+    gap: 10px;
+    margin: 0;
+    padding-left: 20px;
+  }
+
+  .route-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 18px;
@@ -85,29 +167,74 @@ const withBase = (path: string) => {
   .contact-card {
     display: grid;
     gap: 10px;
+    min-height: 190px;
+    align-content: space-between;
     padding: 24px;
     transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
   }
 
+  .contact-card.feature {
+    grid-column: span 2;
+  }
+
   .contact-card:hover,
-  .contact-card:focus-visible {
+  .contact-card:focus-visible,
+  .lane-grid a:hover,
+  .lane-grid a:focus-visible {
     transform: translateY(-2px);
     border-color: rgba(217, 210, 255, 0.45);
     background: rgba(19, 22, 42, 0.72);
   }
 
   .contact-card strong {
-    font-size: 1.3rem;
+    font-size: clamp(1.25rem, 3vw, 1.8rem);
+    line-height: 1.08;
+    letter-spacing: -0.04em;
   }
 
-  .contact-card small {
-    color: var(--soft);
+  .service-map {
+    padding: clamp(28px, 6vw, 44px);
   }
 
-  @media (max-width: 840px) {
+  .section-heading {
+    margin-bottom: 26px;
+  }
+
+  .lane-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .lane-grid a {
+    display: grid;
+    gap: 10px;
+    padding: 18px;
+    transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+  }
+
+  .lane-grid strong {
+    font-size: 1.15rem;
+    line-height: 1.12;
+  }
+
+  @media (max-width: 900px) {
+    .route-grid,
+    .lane-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 720px) {
     .contact-hero,
-    .contact-grid {
+    .brief-card,
+    .route-grid,
+    .lane-grid {
       grid-template-columns: 1fr;
+    }
+
+    .contact-card.feature {
+      grid-column: auto;
     }
   }
 </style>
