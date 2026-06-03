@@ -1,0 +1,180 @@
+/* Production theme corrections loaded after global.css.
+   - Fixes the old GitHub Pages project-path background URL.
+   - Raises contrast for light mode cards, copy text, navigation, and controls. */
+
+body::after {
+  background-image: url('/backgrounds/dark.jpg');
+}
+
+:root[data-theme='light'] {
+  --bg: #f7f3ec;
+  --panel: rgba(255, 255, 255, 0.9);
+  --panel-strong: rgba(255, 255, 255, 0.96);
+  --line: rgba(34, 28, 45, 0.22);
+  --line-strong: rgba(34, 28, 45, 0.36);
+  --text: #15111d;
+  --muted: #342e42;
+  --soft: #5f566d;
+  --accent: #332a91;
+  --accent-2: #4b3eb0;
+  --accent-warm: #884760;
+  --cyan: #334ea7;
+  --pink: #884760;
+  --shadow: 0 26px 70px rgba(35, 27, 55, 0.16);
+}
+
+:root[data-theme='light'] body {
+  background:
+    linear-gradient(180deg, rgba(247, 243, 236, 0.92), rgba(247, 243, 236, 0.88) 42%, rgba(247, 243, 236, 0.94)),
+    radial-gradient(circle at 18% 0%, rgba(77, 69, 168, 0.12), transparent 34rem);
+}
+
+:root[data-theme='light'] body::after {
+  filter: invert(1) hue-rotate(170deg) saturate(0.32) brightness(1.32) contrast(0.82);
+  opacity: 0.18;
+}
+
+:root[data-theme='light'] body::before {
+  background:
+    linear-gradient(90deg, rgba(24, 19, 31, 0.055) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(24, 19, 31, 0.04) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.42), rgba(247, 243, 236, 0.74));
+  background-size: 72px 72px, 72px 72px, 100% 100%;
+}
+
+:root[data-theme='light'] .card {
+  border-color: rgba(34, 28, 45, 0.18);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.94), rgba(255, 252, 247, 0.86));
+  box-shadow: var(--shadow);
+}
+
+:root[data-theme='light'] .copy,
+:root[data-theme='light'] .card p,
+:root[data-theme='light'] .tile p,
+:root[data-theme='light'] .hero-card p,
+:root[data-theme='light'] .section-head > p,
+:root[data-theme='light'] .platform-link small,
+:root[data-theme='light'] .empty-platforms p,
+:root[data-theme='light'] ul {
+  color: var(--muted);
+}
+
+:root[data-theme='light'] .eyebrow,
+:root[data-theme='light'] .release-meta,
+:root[data-theme='light'] .stats strong,
+:root[data-theme='light'] .timeline-stats strong,
+:root[data-theme='light'] .friend-count strong,
+:root[data-theme='light'] .open {
+  color: var(--accent-2);
+}
+
+:root[data-theme='light'] .nav a,
+:root[data-theme='light'] .pill,
+:root[data-theme='light'] .button,
+:root[data-theme='light'] .preference-panel label,
+:root[data-theme='light'] .menu-toggle,
+:root[data-theme='light'] .year-pills a,
+:root[data-theme='light'] .platform-link,
+:root[data-theme='light'] .source-link,
+:root[data-theme='light'] .empty-platforms,
+:root[data-theme='light'] .trace-card,
+:root[data-theme='light'] .stats div,
+:root[data-theme='light'] .timeline-stats div,
+:root[data-theme='light'] .friend-count,
+:root[data-theme='light'] .entry-badge,
+:root[data-theme='light'] summary > span {
+  border-color: rgba(34, 28, 45, 0.18);
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--text);
+}
+
+:root[data-theme='light'] .nav a,
+:root[data-theme='light'] .pill {
+  color: #2c2638;
+}
+
+:root[data-theme='light'] .preference-panel span,
+:root[data-theme='light'] .stats span,
+:root[data-theme='light'] .profile-card span,
+:root[data-theme='light'] .timeline-stats span,
+:root[data-theme='light'] .friend-count span,
+:root[data-theme='light'] .friend-card span,
+:root[data-theme='light'] .trace-card span,
+:root[data-theme='light'] .trace-card small,
+:root[data-theme='light'] .profile-card small,
+:root[data-theme='light'] time {
+  color: var(--soft);
+}
+
+:root[data-theme='light'] .preference-panel select {
+  border: 1px solid rgba(34, 28, 45, 0.12);
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--text);
+}
+
+:root[data-theme='light'] .button.primary {
+  border-color: rgba(51, 42, 145, 0.32);
+  color: #ffffff;
+  background: linear-gradient(135deg, #3c329e, #7661d4);
+}
+
+:root[data-theme='light'] .button.primary:hover,
+:root[data-theme='light'] .button.primary:focus-visible {
+  background: linear-gradient(135deg, #2f278c, #6752c5);
+}
+
+:root[data-theme='light'] .button:hover,
+:root[data-theme='light'] .nav a:hover,
+:root[data-theme='light'] .pill:hover,
+:root[data-theme='light'] .platform-link:hover,
+:root[data-theme='light'] .source-link:hover,
+:root[data-theme='light'] .trace-card:hover,
+:root[data-theme='light'] .friend-card:hover,
+:root[data-theme='light'] .timeline-entry:hover,
+:root[data-theme='light'] .music-card:hover,
+:root[data-theme='light'] .profile-card:hover,
+:root[data-theme='light'] .year-pills a:hover {
+  border-color: rgba(51, 42, 145, 0.34);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+:root[data-theme='light'] .music-card:hover,
+:root[data-theme='light'] .friend-card:hover,
+:root[data-theme='light'] .timeline-entry:hover {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(247, 243, 236, 0.9));
+}
+
+:root[data-theme='light'] .badge,
+:root[data-theme='light'] .entry-badge.main,
+:root[data-theme='light'] .entry-badge.manual {
+  border-color: rgba(51, 42, 145, 0.22);
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--accent);
+}
+
+:root[data-theme='light'] .cover,
+:root[data-theme='light'] .orb {
+  border-color: rgba(34, 28, 45, 0.22);
+  box-shadow: 0 18px 50px rgba(35, 27, 55, 0.18);
+}
+
+:root[data-theme='light'] .footer {
+  border-top-color: rgba(34, 28, 45, 0.18);
+  color: var(--soft);
+}
+
+@media (max-width: 820px) {
+  body::after {
+    background-size: auto 100%;
+  }
+
+  :root[data-theme='light'] .header {
+    border-bottom-color: rgba(34, 28, 45, 0.12);
+    background: linear-gradient(180deg, rgba(255, 252, 247, 0.94), rgba(247, 243, 236, 0.86));
+  }
+
+  :root[data-theme='light'] .header-actions {
+    border-color: rgba(34, 28, 45, 0.18);
+    background: rgba(255, 255, 255, 0.9);
+  }
+}
