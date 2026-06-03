@@ -4,6 +4,7 @@ const extraTranslations = {
   en: {
     'nav.timeline': 'Timeline',
     'nav.friends': 'Friends',
+    'nav.business': 'Business',
     'timeline.eyebrow': 'Release Timeline',
     'timeline.title': 'Sound traces by year.',
     'timeline.copy': 'A chronological view of the Misaka Sarina music archive. Main releases, manual catalogue entries, and lower-priority version entries are grouped together by year for cleanup and discovery.',
@@ -25,6 +26,7 @@ const extraTranslations = {
   ja: {
     'nav.timeline': '年表',
     'nav.friends': '友人リンク',
+    'nav.business': 'ビジネス',
     'timeline.eyebrow': 'リリース年表',
     'timeline.title': '年ごとの音の痕跡。',
     'timeline.copy': 'Misaka Sarina の音楽アーカイブを時系列で見るページです。メインリリース、手動カタログ項目、低優先度のバージョン項目を年ごとにまとめ、整理と発見に使えるようにしています。',
@@ -46,6 +48,7 @@ const extraTranslations = {
   'zh-TW': {
     'nav.timeline': '時間線',
     'nav.friends': '友連',
+    'nav.business': '商務',
     'timeline.eyebrow': '發行時間線',
     'timeline.title': '按年份排列的聲音痕跡。',
     'timeline.copy': '以時間順序整理 Misaka Sarina 的音樂檔案。主發行、手動目錄條目與較低優先級的版本條目會按年份歸檔，方便清理與探索。',
@@ -67,6 +70,7 @@ const extraTranslations = {
   ca: {
     'nav.timeline': 'Cronologia',
     'nav.friends': 'Amistats',
+    'nav.business': 'Negocis',
     'timeline.eyebrow': 'Cronologia de llançaments',
     'timeline.title': 'Rastres sonors per any.',
     'timeline.copy': 'Una vista cronològica de l’arxiu musical de Misaka Sarina. Els llançaments principals, les entrades manuals del catàleg i les versions de prioritat baixa s’agrupen per any per facilitar la revisió i la descoberta.',
