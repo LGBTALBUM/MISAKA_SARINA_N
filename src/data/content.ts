@@ -1,7 +1,7 @@
 export const site = {
   title: 'Misaka Sarina',
   description: 'Misaka Sarina aka Baker Siacone — music creator, VOCALOID creator, and digital project maker.',
-  url: 'https://lgbtalbum.github.io/MISAKA_SARINA_N/',
+  url: 'https://msarina.moe/',
   email: 'i@msarina.moe',
   image: '/og-image.svg',
   copyright: 'MISAKA SARINA AKA BAKER SIACONE @ SIACONE ART',
@@ -44,6 +44,6 @@ export const linkGroups = [
     ['YouTube — Baker', 'https://www.youtube.com/@BakerSiacone', 'Baker channel'],
     ['YouTube — Sarina', 'https://www.youtube.com/@misakasarina', 'Sarina channel'],
     ['Calendar Tool', 'https://calendar.siacone.art/', 'Web tool'],
-    ['Siacone Art Mirror', 'https://msarina.siacone.art/', 'Mirror page']
+    ['Legacy Linkyee Page', 'https://msarina.siacone.art/', 'Previous link-page mirror']
   ]}
 ];
