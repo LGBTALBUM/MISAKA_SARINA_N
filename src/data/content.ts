@@ -9,7 +9,7 @@ export const site = {
 };
 
 export const nav = [
-  ['Home', '/'], ['Music', '/music'], ['Timeline', '/music/timeline'], ['Works', '/works'], ['Blog', '/blog'], ['Links', '/links'], ['About', '/about'], ['Contact', '/contact']
+  ['Home', '/'], ['Music', '/music'], ['Timeline', '/music/timeline'], ['Friends', '/friends'], ['Works', '/works'], ['Blog', '/blog'], ['Links', '/links'], ['About', '/about'], ['Contact', '/contact']
 ];
 
 export const socials = [
