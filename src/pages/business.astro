@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../data/content';
 import { businessOfferings, businessProcess } from '../data/business';
+import { serviceJsonLd, webPageJsonLd } from '../utils/seo';
 
 const withBase = (path: string) => {
   const base = import.meta.env.BASE_URL.endsWith('/')
@@ -11,9 +12,18 @@ const withBase = (path: string) => {
 };
 
 const resolveHref = (href: string) => href.startsWith('/') ? withBase(href) : href;
+const description = 'Business collaboration, music production, web archive, and digital project consulting for Misaka Sarina.';
 ---
 
-<BaseLayout title="Business" description="Business collaboration, music production, web archive, and digital project consulting for Misaka Sarina.">
+<BaseLayout
+  title="Business"
+  description={description}
+  tags={['Music production', 'Web archive', 'Digital project consulting', 'Misaka Sarina']}
+  jsonLd={[
+    webPageJsonLd({ title: 'Business', description, path: '/business/', type: 'WebPage' }),
+    serviceJsonLd({ title: 'Misaka Sarina business collaboration', description, path: '/business/' })
+  ]}
+>
   <section class="section business-hero card">
     <div>
       <p class="eyebrow" data-i18n="business.eyebrow">Business</p>
