@@ -1,0 +1,285 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getSortedReleases } from '../../utils/musicCatalogue';
+import { getTimelineStats, getTimelineYearGroups } from '../../utils/musicTimeline';
+import { isMainCatalogueEntry } from '../../utils/musicVisibility';
+
+const releases = getSortedReleases();
+const groups = getTimelineYearGroups(releases);
+const stats = getTimelineStats(groups);
+
+const withBase = (path: string) => {
+  const base = import.meta.env.BASE_URL.endsWith('/')
+    ? import.meta.env.BASE_URL
+    : `${import.meta.env.BASE_URL}/`;
+  return `${base}${path.replace(/^\/+/, '')}`;
+};
+---
+
+<BaseLayout title="Release Timeline" description="Chronological Misaka Sarina music release timeline grouped by archive year.">
+  <section class="section timeline-hero card">
+    <div>
+      <p class="eyebrow">Release Timeline</p>
+      <h1 class="title">Sound traces by year.</h1>
+      <p class="copy">A chronological view of the Misaka Sarina music archive. Main releases, manual catalogue entries, and lower-priority version entries are grouped together by year for cleanup and discovery.</p>
+      <div class="button-row">
+        <a class="button primary" href={withBase('/music/')}>Back to music</a>
+        <a class="button" href={withBase('/catalogue-review/')}>Catalogue review</a>
+      </div>
+    </div>
+    <div class="timeline-stats" aria-label="Timeline stats">
+      <div><span>Years</span><strong>{stats.years}</strong></div>
+      <div><span>Entries</span><strong>{stats.releases}</strong></div>
+      <div><span>Main</span><strong>{stats.main}</strong></div>
+      <div><span>Manual</span><strong>{stats.manual}</strong></div>
+    </div>
+  </section>
+
+  <section class="section timeline-index card" aria-label="Timeline year index">
+    <p class="eyebrow">Index</p>
+    <div class="year-pills">
+      {groups.map((group) => (
+        <a href={`#year-${group.year}`}>{group.year}<span>{group.releases.length}</span></a>
+      ))}
+    </div>
+  </section>
+
+  <section class="section timeline" aria-label="Release timeline">
+    {groups.map((group) => (
+      <section class="year-block" id={`year-${group.year}`}>
+        <div class="year-heading">
+          <div>
+            <p class="eyebrow">Archive year</p>
+            <h2>{group.year}</h2>
+          </div>
+          <p>{group.mainCount} main · {group.secondaryCount} secondary · {group.manualCount} manual</p>
+        </div>
+        <div class="entries">
+          {group.releases.map((release) => {
+            const isMain = isMainCatalogueEntry(release);
+            const isManual = release.source?.label === 'Manual catalogue';
+            return (
+              <a class="timeline-entry card" href={withBase(`/music/${release.slug}/`)}>
+                <time datetime={release.releaseDate}>{release.releaseDate}</time>
+                <div>
+                  <div class="entry-title-row">
+                    <h3>{release.title}</h3>
+                    <span class:list={["entry-badge", isMain ? "main" : "secondary"]}>{isMain ? 'Main' : 'Secondary'}</span>
+                    {isManual && <span class="entry-badge manual">Manual</span>}
+                  </div>
+                  <p>{release.description}</p>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      </section>
+    ))}
+  </section>
+</BaseLayout>
+
+<style>
+  .timeline-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.46fr);
+    gap: clamp(24px, 5vw, 46px);
+    align-items: end;
+    padding: clamp(26px, 5vw, 46px);
+  }
+
+  .timeline-hero .button-row {
+    margin-top: 26px;
+  }
+
+  .timeline-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .timeline-stats div {
+    border: 1px solid rgba(236, 238, 255, 0.12);
+    border-radius: 18px;
+    background: rgba(7, 8, 18, 0.54);
+    padding: 16px;
+  }
+
+  .timeline-stats span {
+    display: block;
+    margin-bottom: 10px;
+    color: var(--soft);
+    font-size: 0.72rem;
+    font-weight: 850;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .timeline-stats strong {
+    color: var(--accent);
+    font-size: clamp(1.7rem, 4vw, 2.5rem);
+    line-height: 1;
+  }
+
+  .timeline-index {
+    padding: clamp(22px, 4vw, 30px);
+  }
+
+  .year-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .year-pills a {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid rgba(236, 238, 255, 0.13);
+    border-radius: 999px;
+    background: rgba(7, 8, 18, 0.54);
+    color: var(--text);
+    padding: 10px 13px;
+    font-weight: 850;
+    transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+  }
+
+  .year-pills a:hover,
+  .year-pills a:focus-visible {
+    transform: translateY(-2px);
+    border-color: rgba(217, 210, 255, 0.45);
+    background: rgba(19, 22, 42, 0.72);
+  }
+
+  .year-pills span {
+    color: var(--accent-2);
+    font-size: 0.78rem;
+  }
+
+  .timeline {
+    display: grid;
+    gap: 76px;
+  }
+
+  .year-block {
+    scroll-margin-top: 96px;
+  }
+
+  .year-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+
+  .year-heading h2 {
+    margin: 0;
+    font-size: clamp(3rem, 9vw, 7rem);
+    line-height: 0.86;
+    letter-spacing: -0.1em;
+  }
+
+  .year-heading > p {
+    max-width: 320px;
+    margin: 0;
+    color: var(--soft);
+    font-size: 0.88rem;
+    font-weight: 850;
+    letter-spacing: 0.12em;
+    text-align: right;
+    text-transform: uppercase;
+  }
+
+  .entries {
+    display: grid;
+    gap: 14px;
+  }
+
+  .timeline-entry {
+    display: grid;
+    grid-template-columns: 132px minmax(0, 1fr);
+    gap: 20px;
+    padding: 18px;
+    transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+  }
+
+  .timeline-entry:hover,
+  .timeline-entry:focus-visible {
+    transform: translateY(-2px);
+    border-color: rgba(217, 210, 255, 0.44);
+    background: linear-gradient(145deg, rgba(12, 15, 34, 0.9), rgba(8, 10, 24, 0.62));
+  }
+
+  time {
+    color: var(--accent-2);
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .entry-title-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  h3 {
+    margin: 0;
+    font-size: clamp(1.35rem, 3.4vw, 2.2rem);
+    line-height: 1;
+    letter-spacing: -0.06em;
+  }
+
+  .timeline-entry p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  .entry-badge {
+    border: 1px solid rgba(236, 238, 255, 0.14);
+    border-radius: 999px;
+    background: rgba(7, 8, 18, 0.54);
+    color: var(--soft);
+    padding: 6px 9px;
+    font-size: 0.66rem;
+    font-weight: 850;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .entry-badge.main {
+    border-color: rgba(168, 184, 255, 0.38);
+    color: var(--cyan);
+  }
+
+  .entry-badge.manual {
+    border-color: rgba(217, 210, 255, 0.3);
+    color: var(--accent);
+  }
+
+  @media (max-width: 840px) {
+    .timeline-hero,
+    .timeline-entry {
+      grid-template-columns: 1fr;
+    }
+
+    .year-heading {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .year-heading > p {
+      text-align: left;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .timeline-stats {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
