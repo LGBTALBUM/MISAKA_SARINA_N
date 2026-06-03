@@ -19,24 +19,24 @@ const withBase = (path: string) => {
 <BaseLayout title="Release Timeline" description="Chronological Misaka Sarina music release timeline grouped by archive year.">
   <section class="section timeline-hero card">
     <div>
-      <p class="eyebrow">Release Timeline</p>
-      <h1 class="title">Sound traces by year.</h1>
-      <p class="copy">A chronological view of the Misaka Sarina music archive. Main releases, manual catalogue entries, and lower-priority version entries are grouped together by year for cleanup and discovery.</p>
+      <p class="eyebrow" data-i18n="timeline.eyebrow">Release Timeline</p>
+      <h1 class="title" data-i18n="timeline.title">Sound traces by year.</h1>
+      <p class="copy" data-i18n="timeline.copy">A chronological view of the Misaka Sarina music archive. Main releases, manual catalogue entries, and lower-priority version entries are grouped together by year for cleanup and discovery.</p>
       <div class="button-row">
-        <a class="button primary" href={withBase('/music/')}>Back to music</a>
-        <a class="button" href={withBase('/catalogue-review/')}>Catalogue review</a>
+        <a class="button primary" href={withBase('/music/')} data-i18n="timeline.backMusic">Back to music</a>
+        <a class="button" href={withBase('/catalogue-review/')} data-i18n="timeline.catalogueReview">Catalogue review</a>
       </div>
     </div>
     <div class="timeline-stats" aria-label="Timeline stats">
-      <div><span>Years</span><strong>{stats.years}</strong></div>
-      <div><span>Entries</span><strong>{stats.releases}</strong></div>
-      <div><span>Main</span><strong>{stats.main}</strong></div>
-      <div><span>Manual</span><strong>{stats.manual}</strong></div>
+      <div><span data-i18n="timeline.years">Years</span><strong>{stats.years}</strong></div>
+      <div><span data-i18n="timeline.entries">Entries</span><strong>{stats.releases}</strong></div>
+      <div><span data-i18n="timeline.main">Main</span><strong>{stats.main}</strong></div>
+      <div><span data-i18n="timeline.manual">Manual</span><strong>{stats.manual}</strong></div>
     </div>
   </section>
 
   <section class="section timeline-index card" aria-label="Timeline year index">
-    <p class="eyebrow">Index</p>
+    <p class="eyebrow" data-i18n="timeline.index">Index</p>
     <div class="year-pills">
       {groups.map((group) => (
         <a href={`#year-${group.year}`}>{group.year}<span>{group.releases.length}</span></a>
@@ -49,7 +49,7 @@ const withBase = (path: string) => {
       <section class="year-block" id={`year-${group.year}`}>
         <div class="year-heading">
           <div>
-            <p class="eyebrow">Archive year</p>
+            <p class="eyebrow" data-i18n="timeline.archiveYear">Archive year</p>
             <h2>{group.year}</h2>
           </div>
           <p>{group.mainCount} main · {group.secondaryCount} secondary · {group.manualCount} manual</p>
@@ -64,8 +64,8 @@ const withBase = (path: string) => {
                 <div>
                   <div class="entry-title-row">
                     <h3>{release.title}</h3>
-                    <span class:list={["entry-badge", isMain ? "main" : "secondary"]}>{isMain ? 'Main' : 'Secondary'}</span>
-                    {isManual && <span class="entry-badge manual">Manual</span>}
+                    <span class:list={["entry-badge", isMain ? "main" : "secondary"]} data-i18n={isMain ? 'timeline.main' : 'timeline.secondary'}>{isMain ? 'Main' : 'Secondary'}</span>
+                    {isManual && <span class="entry-badge manual" data-i18n="timeline.manual">Manual</span>}
                   </div>
                   <p>{release.description}</p>
                 </div>
