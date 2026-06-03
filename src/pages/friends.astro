@@ -6,12 +6,12 @@ import { friends } from '../data/friends';
 <BaseLayout title="Friends" description="Friend links and neighboring sites around Misaka Sarina.">
   <section class="section friends-hero card">
     <div>
-      <p class="eyebrow">Friends</p>
-      <h1 class="title">Neighboring stars.</h1>
-      <p class="copy">Friend links, personal sites, and neighboring spaces connected to the Misaka Sarina archive.</p>
+      <p class="eyebrow" data-i18n="friends.eyebrow">Friends</p>
+      <h1 class="title" data-i18n="friends.title">Neighboring stars.</h1>
+      <p class="copy" data-i18n="friends.copy">Friend links, personal sites, and neighboring spaces connected to the Misaka Sarina archive.</p>
     </div>
     <div class="friend-count" aria-label="Friend link count">
-      <span>Links</span>
+      <span data-i18n="friends.links">Links</span>
       <strong>{friends.length}</strong>
     </div>
   </section>
@@ -19,7 +19,7 @@ import { friends } from '../data/friends';
   <section class="section friend-grid" aria-label="Friend links">
     {friends.map((friend) => (
       <a class="card friend-card" href={friend.href} target="_blank" rel="noreferrer">
-        <span>{friend.note ?? 'Friend site'}</span>
+        <span data-i18n="friends.site">{friend.note ?? 'Friend site'}</span>
         <h2>{friend.name}</h2>
         <p>{friend.href.replace(/^https?:\/\//, '').replace(/\/$/, '')}</p>
       </a>
