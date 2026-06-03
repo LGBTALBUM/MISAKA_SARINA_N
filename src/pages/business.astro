@@ -16,18 +16,18 @@ const resolveHref = (href: string) => href.startsWith('/') ? withBase(href) : hr
 <BaseLayout title="Business" description="Business collaboration, music production, web archive, and digital project consulting for Misaka Sarina.">
   <section class="section business-hero card">
     <div>
-      <p class="eyebrow">Business</p>
-      <h1 class="title">Collaboration with a clear scope.</h1>
-      <p class="copy">Music, web archive, and digital project work should be small enough to finish, clear enough to maintain, and quiet enough to still feel personal.</p>
+      <p class="eyebrow" data-i18n="business.eyebrow">Business</p>
+      <h1 class="title" data-i18n="business.title">Collaboration with a clear scope.</h1>
+      <p class="copy" data-i18n="business.copy">Music, web archive, and digital project work should be small enough to finish, clear enough to maintain, and quiet enough to still feel personal.</p>
       <div class="button-row hero-actions">
-        <a class="button primary" href={`mailto:${site.email}?subject=Business%20Inquiry%20for%20Misaka%20Sarina`}>Start inquiry</a>
-        <a class="button" href={withBase('/contact/')}>Contact routes</a>
+        <a class="button primary" href={`mailto:${site.email}?subject=Business%20Inquiry%20for%20Misaka%20Sarina`} data-i18n="business.startInquiry">Start inquiry</a>
+        <a class="button" href={withBase('/contact/')} data-i18n="business.contactRoutes">Contact routes</a>
       </div>
     </div>
     <aside class="business-signal" aria-label="Business signal">
-      <span>Open to</span>
-      <strong>Music / Web / Archive</strong>
-      <p>Independent creator work, production support, and maintainable small web systems.</p>
+      <span data-i18n="business.openTo">Open to</span>
+      <strong data-i18n="business.openToValue">Music / Web / Archive</strong>
+      <p data-i18n="business.openToCopy">Independent creator work, production support, and maintainable small web systems.</p>
     </aside>
   </section>
 
@@ -38,13 +38,13 @@ const resolveHref = (href: string) => href.startsWith('/') ? withBase(href) : hr
         <h2>{offering.title}</h2>
         <p>{offering.summary}</p>
         <div class="mini-section">
-          <h3>Suitable for</h3>
+          <h3 data-i18n="business.suitableFor">Suitable for</h3>
           <ul>
             {offering.suitableFor.map((item) => <li>{item}</li>)}
           </ul>
         </div>
         <div class="mini-section">
-          <h3>Deliverables</h3>
+          <h3 data-i18n="business.deliverables">Deliverables</h3>
           <ul>
             {offering.deliverables.map((item) => <li>{item}</li>)}
           </ul>
@@ -65,9 +65,9 @@ const resolveHref = (href: string) => href.startsWith('/') ? withBase(href) : hr
 
   <section class="section card process-card">
     <div class="section-heading">
-      <p class="eyebrow">Workflow</p>
-      <h2>How a project starts.</h2>
-      <p class="copy">The best inquiry is not long. It only needs enough context to decide whether the scope is real, feasible, and worth doing.</p>
+      <p class="eyebrow" data-i18n="business.workflow">Workflow</p>
+      <h2 data-i18n="business.workflowTitle">How a project starts.</h2>
+      <p class="copy" data-i18n="business.workflowCopy">The best inquiry is not long. It only needs enough context to decide whether the scope is real, feasible, and worth doing.</p>
     </div>
     <div class="process-grid">
       {businessProcess.map((step, index) => (
@@ -82,11 +82,11 @@ const resolveHref = (href: string) => href.startsWith('/') ? withBase(href) : hr
 
   <section class="section card inquiry-card">
     <div>
-      <p class="eyebrow">Inquiry note</p>
-      <h2>Send a compact brief.</h2>
-      <p class="copy">Please include the project type, expected outcome, references, deadline, budget range, and the best contact route. This keeps the first reply practical.</p>
+      <p class="eyebrow" data-i18n="business.inquiryNote">Inquiry note</p>
+      <h2 data-i18n="business.inquiryTitle">Send a compact brief.</h2>
+      <p class="copy" data-i18n="business.inquiryCopy">Please include the project type, expected outcome, references, deadline, budget range, and the best contact route. This keeps the first reply practical.</p>
     </div>
-    <a class="button primary" href={`mailto:${site.email}?subject=Business%20Inquiry%20for%20Misaka%20Sarina`}>Email {site.email}</a>
+    <a class="button primary" href={`mailto:${site.email}?subject=Business%20Inquiry%20for%20Misaka%20Sarina`} data-i18n-template="business.emailCta" data-i18n-values={`{"email":"${site.email}"}`}>Email {site.email}</a>
   </section>
 </BaseLayout>
 
