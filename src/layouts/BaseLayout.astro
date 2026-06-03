@@ -110,7 +110,11 @@ const navKeys = ['nav.home', 'nav.music', 'nav.timeline', 'nav.friends', 'nav.bu
     <main id="content"><slot /></main>
     <footer class="footer wrap">
       <p>{site.copyright}</p>
-      <p><span data-i18n="footer.built">Built with Astro. Legacy link-page behavior now lives under</span> <a href={withBase('/links')}>/links</a>.</p>
+      <p>
+        <span data-i18n="footer.built">Built with Astro. Legacy link-page behavior now lives under</span> <a href={withBase('/links')}>/links</a>.
+        <span aria-hidden="true"> · </span>
+        <a href={withBase('/rss.xml')} type="application/rss+xml" data-i18n="footer.rss">RSS Feed</a>
+      </p>
       <p><a href="https://icp.gov.moe/?keyword=20268295" target="_blank" rel="noreferrer">萌ICP备20268295号</a></p>
     </footer>
     <script is:inline>
