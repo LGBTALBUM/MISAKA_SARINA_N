@@ -14,40 +14,40 @@ const withBase = (path: string) => {
   <section class="section contact-hero card">
     <div>
       <p class="eyebrow" data-i18n="contact.eyebrow">Contact</p>
-      <h1 class="title">Start with a clear brief.</h1>
-      <p class="copy">For music production, collaboration, licensing, web archive work, or digital project inquiries, send a compact message with enough context to make the first reply useful.</p>
+      <h1 class="title" data-i18n="contact.titleNew">Start with a clear brief.</h1>
+      <p class="copy" data-i18n="contact.copyNew">For music production, collaboration, licensing, web archive work, or digital project inquiries, send a compact message with enough context to make the first reply useful.</p>
       <div class="button-row hero-actions">
-        <a class="button primary" href={`mailto:${site.email}?subject=Project%20Inquiry%20for%20Misaka%20Sarina`}>Email directly</a>
-        <a class="button" href={withBase('/business/')}>View business scope</a>
+        <a class="button primary" href={`mailto:${site.email}?subject=Project%20Inquiry%20for%20Misaka%20Sarina`} data-i18n="contact.emailDirectly">Email directly</a>
+        <a class="button" href={withBase('/business/')} data-i18n="contact.viewBusinessScope">View business scope</a>
       </div>
     </div>
     <div class="mail-card">
       <span data-i18n="contact.primaryEmail">Primary email</span>
       <strong>{site.email}</strong>
-      <p>Best for scoped inquiries, licensing questions, collaboration requests, and production work.</p>
+      <p data-i18n="contact.mailNote">Best for scoped inquiries, licensing questions, collaboration requests, and production work.</p>
     </div>
   </section>
 
   <section class="section card brief-card">
     <div>
-      <p class="eyebrow">Before writing</p>
-      <h2>What makes a good first message?</h2>
-      <p class="copy">A good first message does not need to be long. It should be specific enough to understand the goal, timing, and whether the work fits.</p>
+      <p class="eyebrow" data-i18n="contact.beforeWriting">Before writing</p>
+      <h2 data-i18n="contact.goodMessageTitle">What makes a good first message?</h2>
+      <p class="copy" data-i18n="contact.goodMessageCopy">A good first message does not need to be long. It should be specific enough to understand the goal, timing, and whether the work fits.</p>
     </div>
     <ul>
-      <li>Project type and expected outcome</li>
-      <li>Reference links or existing materials</li>
-      <li>Deadline, launch window, or urgency</li>
-      <li>Budget range or collaboration model</li>
-      <li>Preferred contact route and timezone</li>
+      <li data-i18n="contact.briefProject">Project type and expected outcome</li>
+      <li data-i18n="contact.briefReferences">Reference links or existing materials</li>
+      <li data-i18n="contact.briefDeadline">Deadline, launch window, or urgency</li>
+      <li data-i18n="contact.briefBudget">Budget range or collaboration model</li>
+      <li data-i18n="contact.briefTimezone">Preferred contact route and timezone</li>
     </ul>
   </section>
 
   <section class="section route-grid" aria-label="Contact routes">
     <a class="card contact-card feature" href={`mailto:${site.email}?subject=Music%20Production%20Inquiry`}>
-      <span>Music / Licensing</span>
-      <strong>Production, release, or usage inquiry</strong>
-      <small>Use email for work that needs context, files, credits, rights, or timeline discussion.</small>
+      <span data-i18n="contact.musicLicensing">Music / Licensing</span>
+      <strong data-i18n="contact.productionInquiry">Production, release, or usage inquiry</strong>
+      <small data-i18n="contact.productionInquiryCopy">Use email for work that needs context, files, credits, rights, or timeline discussion.</small>
     </a>
     <a class="card contact-card" href="https://soundbetter.com/profiles/701882-misaka-sarina" target="_blank" rel="noreferrer">
       <span data-i18n="contact.production">Production</span>
@@ -60,9 +60,9 @@ const withBase = (path: string) => {
       <small data-i18n="contact.instagram">Updates and direct contact</small>
     </a>
     <a class="card contact-card" href={withBase('/business/')}>
-      <span>Business</span>
-      <strong>Collaboration scope</strong>
-      <small>Music, web archive, and digital project consulting details.</small>
+      <span data-i18n="nav.business">Business</span>
+      <strong data-i18n="contact.collaborationScope">Collaboration scope</strong>
+      <small data-i18n="contact.collaborationScopeCopy">Music, web archive, and digital project consulting details.</small>
     </a>
     <a class="card contact-card" href={withBase('/links')}>
       <span data-i18n="contact.archive">Archive</span>
@@ -73,9 +73,9 @@ const withBase = (path: string) => {
 
   <section class="section card service-map">
     <div class="section-heading">
-      <p class="eyebrow">Project lanes</p>
-      <h2>Choose the closest lane.</h2>
-      <p class="copy">The message can be simple. Pick the closest lane and describe the desired result.</p>
+      <p class="eyebrow" data-i18n="contact.projectLanes">Project lanes</p>
+      <h2 data-i18n="contact.chooseLane">Choose the closest lane.</h2>
+      <p class="copy" data-i18n="contact.chooseLaneCopy">The message can be simple. Pick the closest lane and describe the desired result.</p>
     </div>
     <div class="lane-grid">
       {businessOfferings.map((offering) => (
