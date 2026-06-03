@@ -14,39 +14,84 @@ const statusLabel = {
   draft: 'Draft',
   published: 'Published'
 };
+
+const categoryLabel = (category: string) => category.replace('-', ' ');
+const draftCount = posts.filter((post) => post.status === 'draft').length;
+const plannedCount = posts.filter((post) => post.status === 'planned').length;
+const latestPosts = [...posts].sort((a, b) => new Date(b.date).valueOf() - new Date(a.date).valueOf());
+const categories = [...new Set(posts.map((post) => post.category))];
 ---
 <BaseLayout title="Blog" description="Notes, release diaries, and digital garden index.">
   <section class="section card blog-hero">
     <div>
       <p class="eyebrow" data-i18n="blog.archive">Digital Garden</p>
       <h1 class="title" data-i18n="blog.title">Notes, diaries, and maintenance logs.</h1>
-      <p class="copy" data-i18n="blog.copy">A prepared writing surface for release context, technical notes, production logs, and reproducible site maintenance records.</p>
+      <p class="copy" data-i18n="blog.copy">A prepared writing surface for release context, technical notes, production logs, collaboration notes, and reproducible site maintenance records.</p>
+      <div class="button-row hero-actions">
+        <a class="button primary" href={withBase('/business/')}>Business notes</a>
+        <a class="button" href={withBase('/music/timeline/')}>Release timeline</a>
+      </div>
     </div>
     <div class="stats" aria-label="Blog archive stats">
       <div><span>Total</span><strong>{posts.length}</strong></div>
-      <div><span>Draft</span><strong>{posts.filter((post) => post.status === 'draft').length}</strong></div>
-      <div><span>Planned</span><strong>{posts.filter((post) => post.status === 'planned').length}</strong></div>
+      <div><span>Draft</span><strong>{draftCount}</strong></div>
+      <div><span>Planned</span><strong>{plannedCount}</strong></div>
+      <div><span>Categories</span><strong>{categories.length}</strong></div>
     </div>
   </section>
 
-  <section class="section posts-list" aria-label="Notes list">
-    {posts.map((post) => (
-      <article class="card post-card">
-        <div class="post-main">
-          <p class="eyebrow">{post.category.replace('-', ' ')}</p>
-          <h2>{post.title}</h2>
-          <p>{post.summary}</p>
-          <div class="tags">
-            {post.tags.map((tag) => <span>{tag}</span>)}
+  <section class="section card category-panel" aria-label="Blog categories">
+    <p class="eyebrow">Categories</p>
+    <div class="category-pills">
+      {categories.map((category) => (
+        <a href={`#category-${category}`}>{categoryLabel(category)}<span>{posts.filter((post) => post.category === category).length}</span></a>
+      ))}
+    </div>
+  </section>
+
+  <section class="section featured-post card">
+    <p class="eyebrow">Latest note</p>
+    <div>
+      <h2>{latestPosts[0].title}</h2>
+      <p>{latestPosts[0].summary}</p>
+      <a class="button primary" href={withBase(`/blog/${latestPosts[0].slug}/`)}>Read latest</a>
+    </div>
+  </section>
+
+  <section class="section posts-groups" aria-label="Notes list">
+    {categories.map((category) => {
+      const groupPosts = latestPosts.filter((post) => post.category === category);
+      return (
+        <section class="post-group" id={`category-${category}`}>
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Category</p>
+              <h2>{categoryLabel(category)}</h2>
+            </div>
+            <p>{groupPosts.length} entries in this archive lane.</p>
           </div>
-        </div>
-        <div class="post-side">
-          <time datetime={post.date}>{post.date}</time>
-          <strong>{statusLabel[post.status]}</strong>
-          <a class="button primary" href={withBase(`/blog/${post.slug}/`)} data-i18n="blog.details">Details</a>
-        </div>
-      </article>
-    ))}
+          <div class="posts-list">
+            {groupPosts.map((post) => (
+              <article class="card post-card">
+                <div class="post-main">
+                  <p class="eyebrow">{categoryLabel(post.category)}</p>
+                  <h3>{post.title}</h3>
+                  <p>{post.summary}</p>
+                  <div class="tags">
+                    {post.tags.map((tag) => <span>{tag}</span>)}
+                  </div>
+                </div>
+                <div class="post-side">
+                  <time datetime={post.date}>{post.date}</time>
+                  <strong>{statusLabel[post.status]}</strong>
+                  <a class="button primary" href={withBase(`/blog/${post.slug}/`)} data-i18n="blog.details">Details</a>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      );
+    })}
   </section>
 
   <section class="section card next-card">
@@ -68,22 +113,27 @@ const statusLabel = {
     padding: clamp(28px, 6vw, 56px);
   }
 
+  .hero-actions {
+    margin-top: 26px;
+  }
+
   .stats {
     display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
   }
 
   .stats div,
   .post-card,
-  .next-card {
+  .next-card,
+  .featured-post,
+  .category-panel {
     border: 1px solid rgba(236, 238, 255, 0.12);
   }
 
   .stats div {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 18px;
+    display: grid;
+    gap: 8px;
     border-radius: 18px;
     background: rgba(7, 8, 18, 0.54);
     padding: 14px 16px;
@@ -91,7 +141,8 @@ const statusLabel = {
 
   .stats span,
   .tags span,
-  .post-side time {
+  .post-side time,
+  .category-pills span {
     color: var(--soft);
     font-size: 0.72rem;
     font-weight: 850;
@@ -109,6 +160,87 @@ const statusLabel = {
     line-height: 1;
   }
 
+  .category-panel,
+  .featured-post,
+  .next-card {
+    padding: clamp(24px, 5vw, 38px);
+  }
+
+  .category-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .category-pills a {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid rgba(236, 238, 255, 0.12);
+    border-radius: 999px;
+    background: rgba(7, 8, 18, 0.48);
+    padding: 10px 13px;
+    font-weight: 850;
+    text-transform: capitalize;
+    transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+  }
+
+  .category-pills a:hover,
+  .category-pills a:focus-visible {
+    transform: translateY(-2px);
+    border-color: rgba(217, 210, 255, 0.45);
+    background: rgba(19, 22, 42, 0.72);
+  }
+
+  .featured-post {
+    display: grid;
+    gap: 16px;
+  }
+
+  .featured-post h2,
+  .section-head h2,
+  .next-card h2 {
+    margin: 0 0 12px;
+    font-size: clamp(1.9rem, 5vw, 3.6rem);
+    line-height: 0.96;
+    letter-spacing: -0.07em;
+    text-transform: capitalize;
+  }
+
+  .featured-post p,
+  .section-head > p,
+  .post-main p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.72;
+  }
+
+  .featured-post .button {
+    margin-top: 20px;
+  }
+
+  .posts-groups {
+    display: grid;
+    gap: 70px;
+  }
+
+  .post-group {
+    scroll-margin-top: 110px;
+  }
+
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+
+  .section-head > p {
+    max-width: 300px;
+    text-align: right;
+  }
+
   .posts-list {
     display: grid;
     gap: 18px;
@@ -116,23 +248,16 @@ const statusLabel = {
 
   .post-card {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 160px;
+    grid-template-columns: minmax(0, 1fr) 170px;
     gap: 20px;
     padding: 24px;
   }
 
-  .post-main h2,
-  .next-card h2 {
+  .post-main h3 {
     margin: 0 0 12px;
-    font-size: clamp(1.7rem, 4vw, 2.7rem);
-    line-height: 0.96;
+    font-size: clamp(1.55rem, 3.6vw, 2.55rem);
+    line-height: 0.98;
     letter-spacing: -0.06em;
-  }
-
-  .post-main p {
-    margin: 0;
-    color: var(--muted);
-    line-height: 1.72;
   }
 
   .tags {
@@ -157,18 +282,33 @@ const statusLabel = {
     gap: 14px;
   }
 
-  .next-card {
-    padding: clamp(28px, 6vw, 44px);
-  }
-
   @media (max-width: 820px) {
     .blog-hero,
     .post-card {
       grid-template-columns: 1fr;
     }
 
-    .post-side {
+    .stats {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .post-side,
+    .section-head {
       align-items: flex-start;
+    }
+
+    .section-head {
+      flex-direction: column;
+    }
+
+    .section-head > p {
+      text-align: left;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .stats {
+      grid-template-columns: 1fr;
     }
   }
 </style>
