@@ -1,0 +1,162 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { webPageJsonLd } from '../../utils/seo';
+
+const feedUrl = 'https://openrss.org/bsky.app/profile/msarina.bluesky.siacone.art';
+const profileUrl = 'https://bsky.app/profile/msarina.bluesky.siacone.art';
+const description = 'A live Bluesky RSS section for Misaka Sarina, powered by OpenRSS.';
+---
+<BaseLayout
+  title="Bluesky RSS"
+  description={description}
+  tags={['Bluesky', 'RSS', 'OpenRSS', 'Misaka Sarina']}
+  jsonLd={webPageJsonLd({ title: 'Bluesky RSS', description, path: '/blog/bluesky/', type: 'CollectionPage' })}
+>
+  <section class="section card bluesky-hero">
+    <div>
+      <p class="eyebrow" data-i18n="bluesky.eyebrow">Bluesky RSS</p>
+      <h1 class="title" data-i18n="bluesky.title">Short posts from the social stream.</h1>
+      <p class="copy" data-i18n="bluesky.copy">This section reads the public Bluesky feed through OpenRSS and displays recent posts as a lightweight blog lane.</p>
+      <div class="button-row hero-actions">
+        <a class="button primary" href={feedUrl} target="_blank" rel="noreferrer" data-i18n="bluesky.openFeed">Open RSS feed</a>
+        <a class="button" href={profileUrl} target="_blank" rel="noreferrer" data-i18n="bluesky.openProfile">Open Bluesky profile</a>
+        <a class="button" href="/blog/" data-i18n="blog.backBlog">Back to blog</a>
+      </div>
+    </div>
+    <aside class="feed-panel">
+      <span data-i18n="bluesky.source">Source</span>
+      <strong>OpenRSS</strong>
+      <p data-bluesky-status data-i18n="bluesky.loading">Loading feed…</p>
+    </aside>
+  </section>
+
+  <section class="section card feed-note">
+    <p class="eyebrow" data-i18n="bluesky.note">Runtime note</p>
+    <p class="copy" data-i18n="bluesky.noteCopy">This is a static page. Feed items are loaded in the browser, so availability depends on the feed endpoint and browser-side network policy.</p>
+  </section>
+
+  <section class="section feed-grid" data-bluesky-feed aria-label="Bluesky RSS feed">
+    <article class="feed-item skeleton">
+      <span class="feed-item-source">Bluesky</span>
+      <h2 data-i18n="bluesky.loadingTitle">Loading recent posts…</h2>
+      <p data-i18n="bluesky.loadingCopy">If the feed cannot be fetched, direct RSS and profile links will remain available.</p>
+      <small>OpenRSS</small>
+    </article>
+  </section>
+  <script src="/bluesky-rss.js" defer></script>
+</BaseLayout>
+<style>
+  .bluesky-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 0.42fr);
+    gap: 28px;
+    align-items: end;
+    padding: clamp(28px, 6vw, 56px);
+  }
+
+  .hero-actions {
+    margin-top: 26px;
+  }
+
+  .feed-panel,
+  .feed-item,
+  .feed-note {
+    border: 1px solid rgba(236, 238, 255, 0.12);
+  }
+
+  .feed-panel {
+    display: grid;
+    gap: 12px;
+    border-radius: 22px;
+    background: rgba(7, 8, 18, 0.54);
+    padding: 22px;
+  }
+
+  .feed-panel span,
+  .feed-item-source,
+  .feed-item small,
+  .feed-note .eyebrow {
+    color: var(--soft);
+    font-size: 0.72rem;
+    font-weight: 850;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .feed-panel strong {
+    color: var(--accent);
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    line-height: 1;
+  }
+
+  .feed-panel p,
+  .feed-item p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.68;
+  }
+
+  .feed-note {
+    padding: clamp(22px, 4vw, 34px);
+  }
+
+  .feed-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .feed-item,
+  .feed-fallback {
+    display: grid;
+    gap: 12px;
+    border-radius: 20px;
+    background: rgba(7, 8, 18, 0.52);
+    padding: 22px;
+  }
+
+  .feed-item h2 {
+    margin: 0;
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    line-height: 1.08;
+    letter-spacing: -0.04em;
+  }
+
+  .feed-item h2 a {
+    color: inherit;
+  }
+
+  .feed-item:hover,
+  .feed-item:focus-within {
+    border-color: rgba(217, 210, 255, 0.45);
+    background: rgba(19, 22, 42, 0.72);
+  }
+
+  .skeleton {
+    opacity: 0.76;
+  }
+
+  .feed-fallback {
+    grid-column: 1 / -1;
+    border: 1px solid rgba(236, 238, 255, 0.12);
+  }
+
+  .feed-fallback p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  @media (max-width: 980px) {
+    .feed-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .bluesky-hero,
+    .feed-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
