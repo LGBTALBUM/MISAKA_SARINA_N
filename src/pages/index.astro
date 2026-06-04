@@ -14,10 +14,10 @@ const withBase = (path: string) => {
 const featuredRelease = getFeaturedCatalogueRelease(getSortedReleases());
 const featuredPlatforms = featuredRelease.platforms.slice(0, 3);
 const quickLinks = [
-  ['Timeline', '/music/timeline/', 'Release history by year'],
-  ['Friends', '/friends/', 'Neighboring sites'],
-  ['Blog', '/blog/', 'Notes and archive logs'],
-  ['Business', '/business/', 'Collaboration scope']
+  ['home.quickTimelineLabel', 'home.quickTimelineBody', '/music/timeline/', 'Timeline', 'Release history by year'],
+  ['home.quickFriendsLabel', 'home.quickFriendsBody', '/friends/', 'Friends', 'Neighboring sites'],
+  ['home.quickBlogLabel', 'home.quickBlogBody', '/blog/', 'Blog', 'Notes and archive logs'],
+  ['home.quickBusinessLabel', 'home.quickBusinessBody', '/business/', 'Business', 'Collaboration scope']
 ];
 ---
 <BaseLayout>
@@ -28,8 +28,8 @@ const quickLinks = [
       <p class="copy"><span data-i18n="home.copy">Music creator / VOCALOID creator / digital project maker. Welcome to the small world of Baker Siacone / Misaka Sarina.</span><br>PGP Pubkey: 213906239240F896E303A47662443ACE03F2788A</p>
       <div class="button-row">
         <a class="button primary" href={withBase('/music')} data-i18n="home.listen">Listen / Music</a>
-        <a class="button" href={withBase('/blog')}>Blog</a>
-        <a class="button" href={withBase('/business')}>Business</a>
+        <a class="button" href={withBase('/blog')} data-i18n="nav.blog">Blog</a>
+        <a class="button" href={withBase('/business')} data-i18n="nav.business">Business</a>
         <a class="button" href={withBase('/contact')} data-i18n="home.contact">Contact</a>
       </div>
     </div>
@@ -42,10 +42,10 @@ const quickLinks = [
   </section>
 
   <section class="section quick-entry" aria-label="Quick entry points">
-    {quickLinks.map(([label, href, note]) => (
+    {quickLinks.map(([labelKey, bodyKey, href, label, note]) => (
       <a class="quick-card" href={withBase(href)}>
-        <span>{label}</span>
-        <strong>{note}</strong>
+        <span data-i18n={labelKey}>{label}</span>
+        <strong data-i18n={bodyKey}>{note}</strong>
       </a>
     ))}
   </section>
@@ -68,12 +68,12 @@ const quickLinks = [
     <p class="eyebrow" data-i18n="home.explore">Explore</p>
     <h2 class="title" data-i18n="home.exploreTitle">A small hub for music, notes, and digital traces.</h2>
     <div class="grid explore-grid">
-      <a class="card tile" href={withBase('/music')}><span>Live</span><h3 data-i18n="home.tileMusicTitle">Music</h3><p data-i18n="home.tileMusicBody">Main releases first, with version entries kept in a secondary section.</p></a>
-      <a class="card tile" href={withBase('/music/timeline/')}><span>Live</span><h3>Timeline</h3><p>Sound traces by year, built from the music archive.</p></a>
-      <a class="card tile" href={withBase('/blog/')}><span>Draft</span><h3>Blog</h3><p>Release diaries, site logs, business notes, and technical field notes.</p></a>
-      <a class="card tile" href={withBase('/business/')}><span>Open</span><h3>Business</h3><p>Music, web archive, and digital project collaboration scope.</p></a>
-      <a class="card tile" href={withBase('/friends/')}><span>Live</span><h3>Friends</h3><p>Friend links, personal sites, and neighboring internet spaces.</p></a>
-      <a class="card tile" href={withBase('/links')}><span>Live</span><h3 data-i18n="home.tileLinksTitle">Links</h3><p data-i18n="home.tileLinksBody">The organized replacement for the original Linkyee list.</p></a>
+      <a class="card tile" href={withBase('/music')}><span data-i18n="status.live">Live</span><h3 data-i18n="home.tileMusicTitle">Music</h3><p data-i18n="home.tileMusicBody">Main releases first, with version entries kept in a secondary section.</p></a>
+      <a class="card tile" href={withBase('/music/timeline/')}><span data-i18n="status.live">Live</span><h3 data-i18n="nav.timeline">Timeline</h3><p data-i18n="home.tileTimelineBody">Sound traces by year, built from the music archive.</p></a>
+      <a class="card tile" href={withBase('/blog/')}><span data-i18n="status.draft">Draft</span><h3 data-i18n="nav.blog">Blog</h3><p data-i18n="home.tileBlogBody">Release diaries, site logs, business notes, and technical field notes.</p></a>
+      <a class="card tile" href={withBase('/business/')}><span data-i18n="status.open">Open</span><h3 data-i18n="nav.business">Business</h3><p data-i18n="home.tileBusinessBody">Music, web archive, and digital project collaboration scope.</p></a>
+      <a class="card tile" href={withBase('/friends/')}><span data-i18n="status.live">Live</span><h3 data-i18n="nav.friends">Friends</h3><p data-i18n="home.tileFriendsBody">Friend links, personal sites, and neighboring internet spaces.</p></a>
+      <a class="card tile" href={withBase('/links')}><span data-i18n="status.live">Live</span><h3 data-i18n="home.tileLinksTitle">Links</h3><p data-i18n="home.tileLinksBody">The organized replacement for the original Linkyee list.</p></a>
     </div>
   </section>
   <section class="section card dev-trace">
@@ -85,18 +85,18 @@ const quickLinks = [
     <div class="trace-grid">
       <a class="trace-card" href="https://github.com/LGBTALBUM" target="_blank" rel="noreferrer">
         <span>GitHub</span>
-        <strong>Profile</strong>
-        <small>Development identity</small>
+        <strong data-i18n="home.githubProfile">Profile</strong>
+        <small data-i18n="home.githubProfileBody">Development identity</small>
       </a>
       <a class="trace-card" href="https://github.com/LGBTALBUM/MISAKA_SARINA_N" target="_blank" rel="noreferrer">
-        <span>Repository</span>
+        <span data-i18n="home.repository">Repository</span>
         <strong>MISAKA_SARINA_N</strong>
-        <small>Current Astro rebuild</small>
+        <small data-i18n="home.repositoryBody">Current Astro rebuild</small>
       </a>
       <a class="trace-card" href={withBase('/works')}>
-        <span>Archive</span>
-        <strong>Works</strong>
-        <small>Reserved project index</small>
+        <span data-i18n="contact.archive">Archive</span>
+        <strong data-i18n="nav.works">Works</strong>
+        <small data-i18n="home.worksBody">Reserved project index</small>
       </a>
     </div>
   </section>
