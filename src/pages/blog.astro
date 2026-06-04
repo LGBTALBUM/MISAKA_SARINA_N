@@ -28,21 +28,25 @@ const categories = [...new Set(posts.map((post) => post.category))];
       <h1 class="title" data-i18n="blog.title">Notes, diaries, and maintenance logs.</h1>
       <p class="copy" data-i18n="blog.copy">A prepared writing surface for release context, technical notes, production logs, collaboration notes, and reproducible site maintenance records.</p>
       <div class="button-row hero-actions">
-        <a class="button primary" href={withBase('/business/')}>Business notes</a>
-        <a class="button" href={withBase('/music/timeline/')}>Release timeline</a>
+        <a class="button primary" href={withBase('/garden/')} data-i18n="blog.openGarden">Open garden</a>
+        <a class="button" href={withBase('/blog/bluesky/')} data-i18n="bluesky.eyebrow">Bluesky RSS</a>
+        <a class="button" href={withBase('/business/')} data-i18n="business.eyebrow">Business</a>
+        <a class="button" href={withBase('/music/timeline/')} data-i18n="nav.timeline">Timeline</a>
       </div>
     </div>
     <div class="stats" aria-label="Blog archive stats">
-      <div><span>Total</span><strong>{posts.length}</strong></div>
-      <div><span>Draft</span><strong>{draftCount}</strong></div>
-      <div><span>Planned</span><strong>{plannedCount}</strong></div>
-      <div><span>Categories</span><strong>{categories.length}</strong></div>
+      <div><span data-i18n="content.total">Total</span><strong>{posts.length}</strong></div>
+      <div><span data-i18n="status.draft">Draft</span><strong>{draftCount}</strong></div>
+      <div><span data-i18n="status.planned">Planned</span><strong>{plannedCount}</strong></div>
+      <div><span data-i18n="content.categories">Categories</span><strong>{categories.length}</strong></div>
     </div>
   </section>
 
   <section class="section card category-panel" aria-label="Blog categories">
-    <p class="eyebrow">Categories</p>
+    <p class="eyebrow" data-i18n="content.categories">Categories</p>
     <div class="category-pills">
+      <a href={withBase('/garden/')}><span data-i18n="blog.gardenMap">Garden map</span></a>
+      <a href={withBase('/blog/bluesky/')}><span data-i18n="bluesky.eyebrow">Bluesky RSS</span></a>
       {categories.map((category) => (
         <a href={`#category-${category}`}>{categoryLabel(category)}<span>{posts.filter((post) => post.category === category).length}</span></a>
       ))}
@@ -50,11 +54,11 @@ const categories = [...new Set(posts.map((post) => post.category))];
   </section>
 
   <section class="section featured-post card">
-    <p class="eyebrow">Latest note</p>
+    <p class="eyebrow" data-i18n="content.latestNote">Latest note</p>
     <div>
       <h2>{latestPosts[0].title}</h2>
       <p>{latestPosts[0].summary}</p>
-      <a class="button primary" href={withBase(`/blog/${latestPosts[0].slug}/`)}>Read latest</a>
+      <a class="button primary" href={withBase(`/blog/${latestPosts[0].slug}/`)} data-i18n="content.readLatest">Read latest</a>
     </div>
   </section>
 
@@ -65,7 +69,7 @@ const categories = [...new Set(posts.map((post) => post.category))];
         <section class="post-group" id={`category-${category}`}>
           <div class="section-head">
             <div>
-              <p class="eyebrow">Category</p>
+              <p class="eyebrow" data-i18n="content.category">Category</p>
               <h2>{categoryLabel(category)}</h2>
             </div>
             <p>{groupPosts.length} entries in this archive lane.</p>
