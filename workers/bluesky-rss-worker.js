@@ -1,4 +1,4 @@
-const FEED_URL = 'https://openrss.org/bsky.app/profile/msarina.bluesky.siacone.art';
+const FEED_URL = 'https://openrss.org/feed/bsky.app/profile/msarina.bluesky.siacone.art';
 const PROFILE_URL = 'https://bsky.app/profile/msarina.bluesky.siacone.art';
 const CACHE_TTL_SECONDS = 15 * 60;
 
