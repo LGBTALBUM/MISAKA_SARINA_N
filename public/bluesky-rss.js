@@ -76,11 +76,12 @@ const renderFallback = (root, message) => {
 
 const loadJsonFeed = async () => {
   const response = await fetch(BLUESKY_JSON_URL, {
+    cache: 'no-store',
     headers: { Accept: 'application/json' }
   });
   if (!response.ok) throw new Error(`Worker JSON request failed: ${response.status}`);
   const payload = await response.json();
-  if (!payload.ok || !Array.isArray(payload.items)) throw new Error(payload.error || 'Invalid Worker JSON payload');
+  if (!Array.isArray(payload.items)) throw new Error(payload.error || 'Invalid Worker JSON payload: missing items array');
   return payload.items;
 };
 
@@ -101,22 +102,26 @@ const loadBlueskyFeed = async () => {
   try {
     let source = 'Worker JSON';
     let items;
+    let workerErrorMessage = '';
+
     try {
       items = await loadJsonFeed();
     } catch (workerError) {
+      workerErrorMessage = workerError instanceof Error ? workerError.message : String(workerError);
       console.warn('[bluesky-rss] Worker JSON unavailable, trying direct RSS', workerError);
       source = 'OpenRSS direct fetch';
       items = await loadDirectRssFeed();
     }
 
     const visibleItems = items.slice(0, 12);
-    if (!visibleItems.length) throw new Error('No feed items found');
+    if (!visibleItems.length) throw new Error(workerErrorMessage || 'No feed items found');
 
     root.replaceChildren(...visibleItems.map(createFeedCard));
     if (status) status.textContent = `${visibleItems.length} items loaded from ${source}.`;
   } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
     console.warn('[bluesky-rss]', error);
-    if (status) status.textContent = 'Feed fallback mode.';
+    if (status) status.textContent = `Feed fallback mode: ${message}`;
     renderFallback(root, 'The feed could not be loaded in this browser session. You can still open the RSS feed or Bluesky profile directly.');
   }
 };
