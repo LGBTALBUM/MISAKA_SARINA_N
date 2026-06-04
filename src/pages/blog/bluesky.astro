@@ -4,43 +4,45 @@ import { webPageJsonLd } from '../../utils/seo';
 
 const feedUrl = 'https://openrss.org/bsky.app/profile/msarina.bluesky.siacone.art';
 const profileUrl = 'https://bsky.app/profile/msarina.bluesky.siacone.art';
-const description = 'A live Bluesky RSS section for Misaka Sarina, powered by OpenRSS.';
+const workerUrl = '/api/bluesky-rss.json';
+const description = 'A Worker-backed Bluesky RSS section for Misaka Sarina, powered by OpenRSS and cached as JSON.';
 ---
 <BaseLayout
   title="Bluesky RSS"
   description={description}
-  tags={['Bluesky', 'RSS', 'OpenRSS', 'Misaka Sarina']}
+  tags={['Bluesky', 'RSS', 'OpenRSS', 'Cloudflare Worker', 'Misaka Sarina']}
   jsonLd={webPageJsonLd({ title: 'Bluesky RSS', description, path: '/blog/bluesky/', type: 'CollectionPage' })}
 >
   <section class="section card bluesky-hero">
     <div>
       <p class="eyebrow" data-i18n="bluesky.eyebrow">Bluesky RSS</p>
       <h1 class="title" data-i18n="bluesky.title">Short posts from the social stream.</h1>
-      <p class="copy" data-i18n="bluesky.copy">This section reads the public Bluesky feed through OpenRSS and displays recent posts as a lightweight blog lane.</p>
+      <p class="copy" data-i18n="bluesky.copy">This section reads the public Bluesky feed through a Worker-backed JSON endpoint and displays recent posts as a lightweight blog lane.</p>
       <div class="button-row hero-actions">
-        <a class="button primary" href={feedUrl} target="_blank" rel="noreferrer" data-i18n="bluesky.openFeed">Open RSS feed</a>
+        <a class="button primary" href={workerUrl} target="_blank" rel="noreferrer" data-i18n="bluesky.openJson">Open JSON feed</a>
+        <a class="button" href={feedUrl} target="_blank" rel="noreferrer" data-i18n="bluesky.openFeed">Open RSS feed</a>
         <a class="button" href={profileUrl} target="_blank" rel="noreferrer" data-i18n="bluesky.openProfile">Open Bluesky profile</a>
         <a class="button" href="/blog/" data-i18n="blog.backBlog">Back to blog</a>
       </div>
     </div>
     <aside class="feed-panel">
       <span data-i18n="bluesky.source">Source</span>
-      <strong>OpenRSS</strong>
+      <strong>Worker JSON</strong>
       <p data-bluesky-status data-i18n="bluesky.loading">Loading feed…</p>
     </aside>
   </section>
 
   <section class="section card feed-note">
-    <p class="eyebrow" data-i18n="bluesky.note">Runtime note</p>
-    <p class="copy" data-i18n="bluesky.noteCopy">This is a static page. Feed items are loaded in the browser, so availability depends on the feed endpoint and browser-side network policy.</p>
+    <p class="eyebrow" data-i18n="bluesky.note">Feed pipeline</p>
+    <p class="copy" data-i18n="bluesky.noteCopy">OpenRSS is fetched server-side by a Cloudflare Worker, converted into JSON, cached, and then rendered by this static page.</p>
   </section>
 
   <section class="section feed-grid" data-bluesky-feed aria-label="Bluesky RSS feed">
     <article class="feed-item skeleton">
       <span class="feed-item-source">Bluesky</span>
       <h2 data-i18n="bluesky.loadingTitle">Loading recent posts…</h2>
-      <p data-i18n="bluesky.loadingCopy">If the feed cannot be fetched, direct RSS and profile links will remain available.</p>
-      <small>OpenRSS</small>
+      <p data-i18n="bluesky.loadingCopy">The page will use the Worker JSON endpoint first, then fall back to direct RSS links if needed.</p>
+      <small>Worker JSON</small>
     </article>
   </section>
   <script src="/bluesky-rss.js" defer></script>
