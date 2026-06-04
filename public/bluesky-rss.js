@@ -1,5 +1,5 @@
 const BLUESKY_JSON_URL = '/api/bluesky-rss.json';
-const BLUESKY_FEED_URL = 'https://openrss.org/bsky.app/profile/msarina.bluesky.siacone.art';
+const BLUESKY_FEED_URL = 'https://openrss.org/feed/bsky.app/profile/msarina.bluesky.siacone.art';
 const BLUESKY_PROFILE_URL = 'https://bsky.app/profile/msarina.bluesky.siacone.art';
 
 const stripHtml = (html) => {
