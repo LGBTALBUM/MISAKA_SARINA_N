@@ -8,6 +8,11 @@ const stripHtml = (html) => {
   return (template.content.textContent || '').trim();
 };
 
+const normalizePostText = (value = '') => value
+  .replace(/\r\n/g, '\n')
+  .replace(/\n{3,}/g, '\n\n')
+  .trim();
+
 const formatDate = (value) => {
   if (!value) return '';
   const date = new Date(value);
@@ -21,29 +26,48 @@ const formatDate = (value) => {
   }).format(date);
 };
 
+const getPostText = (item) => {
+  const title = normalizePostText(item.title || '');
+  const description = normalizePostText(item.description || '');
+  if (description && description !== title) return description;
+  return title || description || 'Bluesky post';
+};
+
 const createFeedCard = (item) => {
   const article = document.createElement('article');
   article.className = 'feed-item';
 
-  const eyebrow = document.createElement('span');
-  eyebrow.className = 'feed-item-source';
-  eyebrow.textContent = 'Bluesky';
+  const header = document.createElement('div');
+  header.className = 'feed-card-header';
 
-  const title = document.createElement('h2');
+  const source = document.createElement('span');
+  source.className = 'feed-item-source';
+  source.textContent = 'Bluesky';
+
+  const meta = document.createElement('time');
+  meta.className = 'feed-item-date';
+  const dateValue = item.pubDate || item.date || item.published || '';
+  if (dateValue) meta.dateTime = new Date(dateValue).toISOString?.() || dateValue;
+  meta.textContent = formatDate(dateValue);
+
+  header.append(source, meta);
+
+  const body = document.createElement('p');
+  body.className = 'feed-post-text';
+  body.textContent = getPostText(item);
+
+  const footer = document.createElement('div');
+  footer.className = 'feed-card-footer';
+
   const link = document.createElement('a');
+  link.className = 'button';
   link.href = item.link || BLUESKY_PROFILE_URL;
   link.target = '_blank';
   link.rel = 'noreferrer';
-  link.textContent = item.title || 'Bluesky post';
-  title.append(link);
+  link.textContent = 'Open post';
 
-  const body = document.createElement('p');
-  body.textContent = item.description || item.title || '';
-
-  const meta = document.createElement('small');
-  meta.textContent = formatDate(item.pubDate || item.date || item.published);
-
-  article.append(eyebrow, title, body, meta);
+  footer.append(link);
+  article.append(header, body, footer);
   return article;
 };
 
