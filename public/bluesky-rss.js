@@ -1,3 +1,4 @@
+const BLUESKY_JSON_URL = '/api/bluesky-rss.json';
 const BLUESKY_FEED_URL = 'https://openrss.org/bsky.app/profile/msarina.bluesky.siacone.art';
 const BLUESKY_PROFILE_URL = 'https://bsky.app/profile/msarina.bluesky.siacone.art';
 
@@ -30,7 +31,7 @@ const createFeedCard = (item) => {
 
   const title = document.createElement('h2');
   const link = document.createElement('a');
-  link.href = item.link;
+  link.href = item.link || BLUESKY_PROFILE_URL;
   link.target = '_blank';
   link.rel = 'noreferrer';
   link.textContent = item.title || 'Bluesky post';
@@ -40,7 +41,7 @@ const createFeedCard = (item) => {
   body.textContent = item.description || item.title || '';
 
   const meta = document.createElement('small');
-  meta.textContent = formatDate(item.pubDate);
+  meta.textContent = formatDate(item.pubDate || item.date || item.published);
 
   article.append(eyebrow, title, body, meta);
   return article;
@@ -73,27 +74,50 @@ const renderFallback = (root, message) => {
   root.replaceChildren(fallback);
 };
 
+const loadJsonFeed = async () => {
+  const response = await fetch(BLUESKY_JSON_URL, {
+    headers: { Accept: 'application/json' }
+  });
+  if (!response.ok) throw new Error(`Worker JSON request failed: ${response.status}`);
+  const payload = await response.json();
+  if (!payload.ok || !Array.isArray(payload.items)) throw new Error(payload.error || 'Invalid Worker JSON payload');
+  return payload.items;
+};
+
+const loadDirectRssFeed = async () => {
+  const response = await fetch(BLUESKY_FEED_URL, {
+    headers: { Accept: 'application/rss+xml, application/xml, text/xml;q=0.9, */*;q=0.8' }
+  });
+  if (!response.ok) throw new Error(`RSS request failed: ${response.status}`);
+  const xmlText = await response.text();
+  return parseFeed(xmlText);
+};
+
 const loadBlueskyFeed = async () => {
   const root = document.querySelector('[data-bluesky-feed]');
   const status = document.querySelector('[data-bluesky-status]');
   if (!root) return;
 
   try {
-    const response = await fetch(BLUESKY_FEED_URL, {
-      headers: { Accept: 'application/rss+xml, application/xml, text/xml;q=0.9, */*;q=0.8' }
-    });
-    if (!response.ok) throw new Error(`RSS request failed: ${response.status}`);
+    let source = 'Worker JSON';
+    let items;
+    try {
+      items = await loadJsonFeed();
+    } catch (workerError) {
+      console.warn('[bluesky-rss] Worker JSON unavailable, trying direct RSS', workerError);
+      source = 'OpenRSS direct fetch';
+      items = await loadDirectRssFeed();
+    }
 
-    const xmlText = await response.text();
-    const items = parseFeed(xmlText).slice(0, 12);
-    if (!items.length) throw new Error('No feed items found');
+    const visibleItems = items.slice(0, 12);
+    if (!visibleItems.length) throw new Error('No feed items found');
 
-    root.replaceChildren(...items.map(createFeedCard));
-    if (status) status.textContent = `${items.length} items loaded from OpenRSS.`;
+    root.replaceChildren(...visibleItems.map(createFeedCard));
+    if (status) status.textContent = `${visibleItems.length} items loaded from ${source}.`;
   } catch (error) {
     console.warn('[bluesky-rss]', error);
     if (status) status.textContent = 'Feed fallback mode.';
-    renderFallback(root, 'The RSS feed could not be loaded in this browser session. You can still open the feed or profile directly.');
+    renderFallback(root, 'The feed could not be loaded in this browser session. You can still open the RSS feed or Bluesky profile directly.');
   }
 };
 
