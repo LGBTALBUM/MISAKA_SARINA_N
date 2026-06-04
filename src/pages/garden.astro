@@ -1,0 +1,312 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { posts } from '../data/posts';
+import { webPageJsonLd } from '../utils/seo';
+
+const withBase = (path: string) => {
+  const base = import.meta.env.BASE_URL.endsWith('/')
+    ? import.meta.env.BASE_URL
+    : `${import.meta.env.BASE_URL}/`;
+  return `${base}${path.replace(/^\/+/, '')}`;
+};
+
+const description = 'A living map for Misaka Sarina notes, release diaries, technical logs, and archive maintenance records.';
+
+const categoryMeta = {
+  'release-diary': {
+    label: 'Release diary',
+    i18nLabel: 'garden.laneRelease',
+    body: 'Song background, credits, lyric context, and post-release reflections.',
+    i18nBody: 'garden.laneReleaseBody'
+  },
+  'technical-note': {
+    label: 'Technical note',
+    i18nLabel: 'garden.laneTechnical',
+    body: 'Implementation notes, data sync, deployment behavior, and reproducible build details.',
+    i18nBody: 'garden.laneTechnicalBody'
+  },
+  'site-log': {
+    label: 'Site log',
+    i18nLabel: 'garden.laneSite',
+    body: 'Design decisions, maintenance history, structure changes, and launch notes.',
+    i18nBody: 'garden.laneSiteBody'
+  },
+  'music-note': {
+    label: 'Music note',
+    i18nLabel: 'garden.laneMusic',
+    body: 'Arrangement, vocal direction, production choices, and creative process notes.',
+    i18nBody: 'garden.laneMusicBody'
+  },
+  'business-note': {
+    label: 'Business note',
+    i18nLabel: 'garden.laneBusiness',
+    body: 'Collaboration briefs, scope decisions, project routes, and practical inquiry context.',
+    i18nBody: 'garden.laneBusinessBody'
+  },
+  'field-note': {
+    label: 'Field note',
+    i18nLabel: 'garden.laneField',
+    body: 'Loose observations about small web systems, infrastructure, and creator identity.',
+    i18nBody: 'garden.laneFieldBody'
+  }
+};
+
+const latestPosts = [...posts].sort((a, b) => new Date(b.date).valueOf() - new Date(a.date).valueOf());
+const categories = Object.keys(categoryMeta) as Array<keyof typeof categoryMeta>;
+const totalDrafts = posts.filter((post) => post.status === 'draft').length;
+const totalPlanned = posts.filter((post) => post.status === 'planned').length;
+const totalPublished = posts.filter((post) => post.status === 'published').length;
+---
+<BaseLayout
+  title="Digital Garden"
+  description={description}
+  tags={['Digital Garden', 'Notes', 'Release diary', 'Technical notes', 'Misaka Sarina']}
+  jsonLd={webPageJsonLd({ title: 'Digital Garden', description, path: '/garden/', type: 'CollectionPage' })}
+>
+  <section class="section card garden-hero">
+    <div>
+      <p class="eyebrow" data-i18n="garden.eyebrow">Digital Garden</p>
+      <h1 class="title" data-i18n="garden.title">A living map for notes and traces.</h1>
+      <p class="copy" data-i18n="garden.copy">The garden collects drafts, release context, technical notes, business notes, and maintenance logs before they become a polished archive.</p>
+      <div class="button-row hero-actions">
+        <a class="button primary" href={withBase('/blog/')} data-i18n="garden.openBlog">Open note archive</a>
+        <a class="button" href={withBase('/rss.xml')} data-i18n="footer.rss">RSS Feed</a>
+      </div>
+    </div>
+    <aside class="garden-stats" aria-label="Digital Garden stats">
+      <div><span data-i18n="garden.totalNotes">Total notes</span><strong>{posts.length}</strong></div>
+      <div><span data-i18n="status.draft">Draft</span><strong>{totalDrafts}</strong></div>
+      <div><span data-i18n="status.planned">Planned</span><strong>{totalPlanned}</strong></div>
+      <div><span data-i18n="status.published">Published</span><strong>{totalPublished}</strong></div>
+    </aside>
+  </section>
+
+  <section class="section lane-grid" aria-label="Digital Garden lanes">
+    {categories.map((category) => {
+      const meta = categoryMeta[category];
+      const lanePosts = latestPosts.filter((post) => post.category === category);
+      return (
+        <a class="card lane-card" href={withBase(`/blog/#category-${category}`)}>
+          <span data-i18n={meta.i18nLabel}>{meta.label}</span>
+          <strong>{lanePosts.length}</strong>
+          <p data-i18n={meta.i18nBody}>{meta.body}</p>
+        </a>
+      );
+    })}
+  </section>
+
+  <section class="section card latest-card">
+    <div class="section-heading">
+      <p class="eyebrow" data-i18n="garden.latestSeeds">Latest seeds</p>
+      <h2 data-i18n="garden.latestTitle">Recent notes waiting to grow.</h2>
+      <p class="copy" data-i18n="garden.latestCopy">Drafts and planned notes are treated as living entries: useful now, but allowed to be revised later.</p>
+    </div>
+    <div class="seed-grid">
+      {latestPosts.slice(0, 4).map((post) => (
+        <a class="seed-card" href={withBase(`/blog/${post.slug}/`)}>
+          <span>{categoryMeta[post.category].label}</span>
+          <h3>{post.title}</h3>
+          <p>{post.summary}</p>
+          <small>{post.date} · {post.status}</small>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="section card loop-card">
+    <div class="section-heading">
+      <p class="eyebrow" data-i18n="garden.loop">Maintenance loop</p>
+      <h2 data-i18n="garden.loopTitle">How the garden stays useful.</h2>
+    </div>
+    <div class="loop-grid">
+      <article>
+        <span>01</span>
+        <h3 data-i18n="garden.capture">Capture</h3>
+        <p data-i18n="garden.captureBody">Keep unfinished context instead of waiting for perfect articles.</p>
+      </article>
+      <article>
+        <span>02</span>
+        <h3 data-i18n="garden.connect">Connect</h3>
+        <p data-i18n="garden.connectBody">Link notes back to releases, works, timelines, and collaboration routes.</p>
+      </article>
+      <article>
+        <span>03</span>
+        <h3 data-i18n="garden.review">Review</h3>
+        <p data-i18n="garden.reviewBody">Return to drafts after releases, site changes, and deployment updates.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section route-grid" aria-label="Digital Garden routes">
+    <a class="card route-card" href={withBase('/blog/')}>
+      <span data-i18n="nav.blog">Blog</span>
+      <strong data-i18n="garden.routeBlog">All notes</strong>
+      <small data-i18n="garden.routeBlogBody">Browse the complete note archive.</small>
+    </a>
+    <a class="card route-card" href={withBase('/works/')}>
+      <span data-i18n="nav.works">Works</span>
+      <strong data-i18n="garden.routeWorks">Project context</strong>
+      <small data-i18n="garden.routeWorksBody">Connect notes to systems and projects.</small>
+    </a>
+    <a class="card route-card" href={withBase('/music/timeline/')}>
+      <span data-i18n="nav.timeline">Timeline</span>
+      <strong data-i18n="garden.routeTimeline">Release history</strong>
+      <small data-i18n="garden.routeTimelineBody">Move from notes back to music traces.</small>
+    </a>
+  </section>
+</BaseLayout>
+<style>
+  .garden-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.42fr);
+    gap: 28px;
+    align-items: end;
+    padding: clamp(28px, 6vw, 56px);
+  }
+
+  .hero-actions {
+    margin-top: 26px;
+  }
+
+  .garden-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .garden-stats div,
+  .lane-card,
+  .seed-card,
+  .loop-grid article,
+  .route-card {
+    border: 1px solid rgba(236, 238, 255, 0.12);
+    border-radius: 18px;
+    background: rgba(7, 8, 18, 0.52);
+  }
+
+  .garden-stats div {
+    display: grid;
+    gap: 8px;
+    padding: 16px;
+  }
+
+  .garden-stats span,
+  .lane-card span,
+  .seed-card span,
+  .seed-card small,
+  .loop-grid span,
+  .route-card span {
+    color: var(--soft);
+    font-size: 0.72rem;
+    font-weight: 850;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .garden-stats strong,
+  .lane-card strong {
+    color: var(--accent);
+    font-size: clamp(1.8rem, 4vw, 3.2rem);
+    line-height: 1;
+  }
+
+  .lane-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .lane-card,
+  .route-card {
+    display: grid;
+    gap: 12px;
+    padding: 22px;
+    transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+  }
+
+  .lane-card p,
+  .seed-card p,
+  .loop-grid p,
+  .route-card small {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  .lane-card:hover,
+  .lane-card:focus-visible,
+  .seed-card:hover,
+  .seed-card:focus-visible,
+  .route-card:hover,
+  .route-card:focus-visible {
+    transform: translateY(-2px);
+    border-color: rgba(217, 210, 255, 0.45);
+    background: rgba(19, 22, 42, 0.72);
+  }
+
+  .latest-card,
+  .loop-card {
+    padding: clamp(28px, 6vw, 44px);
+  }
+
+  .section-heading {
+    margin-bottom: 26px;
+  }
+
+  .latest-card h2,
+  .loop-card h2 {
+    margin: 0 0 12px;
+    font-size: clamp(1.9rem, 5vw, 3.4rem);
+    line-height: 0.96;
+    letter-spacing: -0.07em;
+  }
+
+  .seed-grid,
+  .loop-grid,
+  .route-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .loop-grid,
+  .route-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .seed-card,
+  .loop-grid article {
+    display: grid;
+    align-content: start;
+    gap: 10px;
+    padding: 18px;
+  }
+
+  .seed-card h3,
+  .loop-grid h3,
+  .route-card strong {
+    margin: 0;
+    font-size: 1.15rem;
+    line-height: 1.12;
+    letter-spacing: -0.04em;
+  }
+
+  @media (max-width: 980px) {
+    .lane-grid,
+    .seed-grid,
+    .loop-grid,
+    .route-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .garden-hero,
+    .lane-grid,
+    .seed-grid,
+    .loop-grid,
+    .route-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
