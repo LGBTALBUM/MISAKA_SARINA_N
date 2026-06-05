@@ -1,12 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { webPageJsonLd } from '../../utils/seo';
 const description = 'Worker-backed Bluesky RSS feed rendered as full-width cards.';
 ---
-<BaseLayout
-  title="Bluesky RSS"
-  description={description}
-  tags={['Bluesky', 'RSS', 'OpenRSS', 'Cloudflare Worker']}
-  jsonLd={webPageJsonLd({ title: 'Bluesky RSS', description, path: '/blog/bluesky/', type: 'CollectionPage' })}
->
-  <link rel="stylesheet" href
+<BaseLayout title="Bluesky RSS" description={description}>
+  <link rel="stylesheet" href="/bsky-feed.css" />
+  <section class="section card bsky-hero">
+    <p class="eyebrow">Bluesky RSS</p>
+    <h1 class="title">Short posts from the social stream.</h1>
+    <p class="copy">Recent Bluesky
