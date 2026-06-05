@@ -2,4 +2,4 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
 <BaseLayout title="Bluesky RSS" description="Worker-backed Bluesky RSS section.">
-<section class="section card bsky-hero"><div><p class="eyebrow">Bluesky RSS</p><h1 class="title">Short posts from the social stream.</h1><p class="copy">Recent Bluesky posts are fetched through the Worker JSON endpoint and rendered as
+<section class="section card bsky-hero"><p class="eyebrow">Bluesky RSS</p><h1 class="title">Short posts from the social stream.</h1><p class="copy">Recent Bluesky posts are loaded from Worker JSON.</p><p data-bluesky-status>Loading feed...</p><div class="button-row"><a class="button primary" href="/api/bluesky-rss.json">Open JSON feed</
