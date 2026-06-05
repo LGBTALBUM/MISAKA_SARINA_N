@@ -1,5 +1,1 @@
-const API='/api/bluesky-rss.json';
-const PROFILE='https://bsky.app/profile/msarina.bluesky.siacone.art';
-function clean(v){return String(v||'').replace(/\r\n/g,'\n').replace(/\n{3,}/g,'\n\n').trim()}
-function fmt(v){if(!v)return'';const d=new Date(v);return Number.isNaN(d.valueOf())?v:new Intl.DateTimeFormat(undefined,{year:'numeric',month:'short',day:'2-digit',hour:'2-digit',minute:'2-digit'}).format(d)}
-function text
+fetch('/api/bluesky-rss.json',{cache:'no-store'}).then(r=>r.json()).then(d=>{const root=document.querySelector('[data-bluesky-feed]');const st=document.querySelector('[data-bluesky-status]');if(!root)return;const items=Array.isArray(d.items)?d.items:[];root.innerHTML='';items.slice(0,12).forEach(x=>{const a=document.createElement('article');a.className='bluesky-post-card';const text=(x.description||x.title||'Bluesky post').trim();const date=x.pubDate?new Date(x.pubDate).toLocaleString():'';a.innerHTML='<div class="bsky-meta"><span>Bluesky</span><time>'+date+'</time></div><p class="bsky-text"></p><a class="button" target
