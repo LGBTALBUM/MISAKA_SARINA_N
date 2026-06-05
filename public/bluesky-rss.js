@@ -1,7 +1,5 @@
 const API='/api/bluesky-rss.json';
-const RSS='https://openrss.org/feed/bsky.app/profile/msarina.bluesky.siacone.art';
 const PROFILE='https://bsky.app/profile/msarina.bluesky.siacone.art';
-
-const clean=(v='')=>String(v).replace(/\r\n/g,'\n').replace(/\n{3,}/g,'\n\n').trim();
-const when=(v='')=>{const d=new Date(v);return Number.isNaN(d.valueOf())?v:new Intl.DateTimeFormat(undefined,{year:'numeric',month:'short',day:'2-digit',hour:'2-digit',minute:'2-digit'}).format(d)};
-const iso=(v='')=>{const d=new Date(v);return Number.isNaN(d.valueOf())?'':
+function clean(v){return String(v||'').replace(/\r\n/g,'\n').replace(/\n{3,}/g,'\n\n').trim()}
+function fmt(v){if(!v)return'';const d=new Date(v);return Number.isNaN(d.valueOf())?v:new Intl.DateTimeFormat(undefined,{year:'numeric',month:'short',day:'2-digit',hour:'2-digit',minute:'2-digit'}).format(d)}
+function text
