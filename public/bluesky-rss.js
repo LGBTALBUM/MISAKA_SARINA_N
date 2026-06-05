@@ -9,4 +9,5 @@ const stripHtml = (html) => {
 };
 
 const normalizePostText = (value = '') => value
-  .replace(/\r\n/g
+  .replace(/\r\n/g, '\n')
+  .replace
