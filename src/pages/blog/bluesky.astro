@@ -1,9 +1,5 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-const feedUrl='https://openrss.org/feed/bsky.app/profile/msarina.bluesky.siacone.art';
-const profileUrl='https://bsky.app/profile/msarina.bluesky.siacone.art';
-const workerUrl='/api/bluesky-rss.json';
 ---
 <BaseLayout title="Bluesky RSS" description="Worker-backed Bluesky RSS section.">
-  <section class="section card bluesky-hero">
-    <div>
+<section class="section card bsky-hero"><div><p class="eyebrow">Bluesky RSS</p><h1 class="title">Short posts from the social stream.</h1><p class="copy">Recent Bluesky posts are fetched through the Worker JSON endpoint and rendered as
