@@ -1,19 +1,9 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { webPageJsonLd } from '../../utils/seo';
-
 const feedUrl = 'https://openrss.org/feed/bsky.app/profile/msarina.bluesky.siacone.art';
 const profileUrl = 'https://bsky.app/profile/msarina.bluesky.siacone.art';
 const workerUrl = '/api/bluesky-rss.json';
 const description = 'A Worker-backed Bluesky RSS section for Misaka Sarina, powered by OpenRSS and cached as JSON.';
 ---
-<BaseLayout
-  title="Bluesky RSS"
-  description={description}
-  tags={['Bluesky', 'RSS', 'OpenRSS', 'Cloudflare Worker', 'Misaka Sarina']}
-  jsonLd={webPageJsonLd({ title: 'Bluesky RSS', description, path: '/blog/bluesky/', type: 'CollectionPage' })}
->
-  <section class="section card bluesky-hero">
-    <div>
-      <p class="eyebrow" data-i18n="bluesky.eyebrow">Bluesky RSS</p>
-      <h1 class="
+<BaseLayout title="Bluesky RSS"
