@@ -2,7 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
 <BaseLayout title="Bluesky RSS" description="Worker JSON feed.">
-  <link rel="stylesheet" href="/bsky-feed.css" />
+  <link rel="stylesheet" href="/bsky-feed.css?v=card-style-1" />
   <section class="section card bsky-hero">
     <p class="eyebrow">Bluesky RSS</p>
     <h1 class="title">Short social stream.</h1>
@@ -17,5 +17,5 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   <section class="section bsky-list" data-bluesky-feed>
     <article class="bsky-card"><p>Loading recent posts...</p></article>
   </section>
-  <script src="/bsky-feed.js?v=card-pr-1" defer></script>
+  <script src="/bsky-feed.js?v=card-style-1" defer></script>
 </BaseLayout>
