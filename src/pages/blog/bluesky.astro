@@ -4,18 +4,18 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 <BaseLayout title="Bluesky RSS" description="Worker JSON feed.">
   <link rel="stylesheet" href="/bsky-feed.css?v=card-style-1" />
   <section class="section card bsky-hero">
-    <p class="eyebrow">Bluesky RSS</p>
-    <h1 class="title">Short social stream.</h1>
-    <p class="copy">Recent posts are loaded from the Worker JSON feed.</p>
-    <p data-bluesky-status>Loading feed...</p>
+    <p class="eyebrow" data-i18n="bluesky.eyebrow">Bluesky RSS</p>
+    <h1 class="title" data-i18n="bluesky.title">Short social stream.</h1>
+    <p class="copy" data-i18n="bluesky.copy">Recent posts are loaded from the Worker JSON feed.</p>
+    <p data-bluesky-status data-i18n="bluesky.loading">Loading feed...</p>
     <div class="button-row">
-      <a class="button primary" href="/api/bluesky-rss.json" target="_blank" rel="noreferrer">Open JSON</a>
-      <a class="button" href="https://bsky.app/profile/msarina.bluesky.siacone.art" target="_blank" rel="noreferrer">Open Bluesky</a>
-      <a class="button" href="/blog/">Back to blog</a>
+      <a class="button primary" href="/api/bluesky-rss.json" target="_blank" rel="noreferrer" data-i18n="bluesky.openJson">Open JSON</a>
+      <a class="button" href="https://bsky.app/profile/msarina.bluesky.siacone.art" target="_blank" rel="noreferrer" data-i18n="bluesky.openProfile">Open Bluesky</a>
+      <a class="button" href="/blog/" data-i18n="blog.backBlog">Back to blog</a>
     </div>
   </section>
   <section class="section bsky-list" data-bluesky-feed>
-    <article class="bsky-card"><p>Loading recent posts...</p></article>
+    <article class="bsky-card"><p data-i18n="bluesky.loadingCopy">Loading recent posts...</p></article>
   </section>
   <script src="/bsky-feed.js?v=card-style-1" defer></script>
 </BaseLayout>
