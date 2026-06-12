@@ -1,0 +1,35 @@
+<!DOCTYPE html><html lang="en" data-theme="dark" data-locale="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>404 | Misaka Sarina</title><meta name="description" content="Page not found."><meta name="robots" content="index, follow, max-image-preview:large"><meta name="author" content="Misaka Sarina"><meta name="theme-color" content="#070812" media="(prefers-color-scheme: dark)"><meta name="theme-color" content="#f7f3ec" media="(prefers-color-scheme: light)"><link rel="canonical" href="https://msarina.moe/404/"><link rel="icon" type="image/svg+xml" href="/MSarina.svg"><link rel="alternate" type="application/rss+xml" title="Misaka Sarina Blog" href="https://msarina.moe/rss.xml"><link rel="stylesheet" href="/home-widgets.css?v=video-widget-1"><meta property="og:type" content="website"><meta property="og:title" content="404 | Misaka Sarina"><meta property="og:description" content="Page not found."><meta property="og:url" content="https://msarina.moe/404/"><meta property="og:image" content="https://msarina.moe/og-image.svg"><meta property="og:image:alt" content="404 | Misaka Sarina preview image"><meta property="og:site_name" content="Misaka Sarina"><meta property="og:locale" content="en_US"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="404 | Misaka Sarina"><meta name="twitter:description" content="Page not found."><meta name="twitter:image" content="https://msarina.moe/og-image.svg"><script>
+      (() => {
+        const themePreference = localStorage.getItem('msarina.theme') || 'system';
+        const theme = themePreference === 'light' || themePreference === 'dark'
+          ? themePreference
+          : (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.style.colorScheme = theme;
+      })();
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.Co2nnSAe.css">
+<style>.not-found[data-astro-cid-zetdm5md]{padding:clamp(28px,6vw,56px)}
+</style></head> <body> <a class="skip-link" href="#content" data-i18n="ui.skip">Skip to content</a> <header class="header wrap" data-site-header> <a class="brand" href="/" aria-label="Misaka Sarina home"> <img src="/MSarina.svg" alt=""> </a> <button class="menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" data-menu-toggle> <span>Menu</span> <span aria-hidden="true"></span> </button> <div class="header-actions" data-header-actions> <nav class="nav" aria-label="Primary navigation"> <a href="/" data-i18n="nav.home">Home</a><a href="/music" data-i18n="nav.music">Music</a><a href="/music/timeline" data-i18n="nav.timeline">Timeline</a><a href="/friends" data-i18n="nav.friends">Friends</a><a href="/business" data-i18n="nav.business">Business</a><a href="/works" data-i18n="nav.works">Works</a><a href="/blog" data-i18n="nav.blog">Blog</a><a href="/links" data-i18n="nav.links">Links</a><a href="/about" data-i18n="nav.about">About</a><a href="/contact" data-i18n="nav.contact">Contact</a> </nav> <div class="preference-panel" aria-label="Preferences"> <label> <span data-i18n="ui.language">Language</span> <select data-locale-select aria-label="Language"> <option value="system" data-i18n="ui.system">System</option> <option value="en">English</option> <option value="ja">日本語</option> <option value="zh-TW">中文（台灣）</option> <option value="ca">Català</option> </select> </label> <label> <span data-i18n="ui.theme">Theme</span> <select data-theme-select aria-label="Theme"> <option value="system" data-i18n="ui.system">System</option> <option value="dark" data-i18n="ui.themeDark">Dark</option> <option value="light" data-i18n="ui.themeLight">Light</option> </select> </label> </div> </div> </header> <main id="content"> <section class="section card not-found" data-astro-cid-zetdm5md> <p class="eyebrow" data-i18n="notFound.eyebrow" data-astro-cid-zetdm5md>404</p> <h1 class="title" data-i18n="notFound.title" data-astro-cid-zetdm5md>Archive entry not found.</h1> <p class="copy" data-i18n="notFound.copy" data-astro-cid-zetdm5md>The page you are looking for does not exist in this archive, or the route has moved during the rebuild.</p> <div class="button-row" data-astro-cid-zetdm5md> <a class="button primary" href="/" data-i18n="notFound.backHome" data-astro-cid-zetdm5md>Back home</a> <a class="button" href="/music" data-i18n="notFound.musicArchive" data-astro-cid-zetdm5md>Music archive</a> <a class="button" href="/links" data-i18n="notFound.linksArchive" data-astro-cid-zetdm5md>Links archive</a> </div> </section> </main> <footer class="footer wrap"> <p>MISAKA SARINA AKA BAKER SIACONE @ SIACONE ART</p> <p> <span data-i18n="footer.built">Built with Astro. Legacy link-page behavior now lives under</span> <a href="/links">/links</a>.
+<span aria-hidden="true"> · </span> <a href="/rss.xml" type="application/rss+xml" data-i18n="footer.rss">RSS Feed</a> </p> <p><a href="https://icp.gov.moe/?keyword=20268295" target="_blank" rel="noreferrer">萌ICP备20268295号</a></p> </footer> <script>
+      (() => {
+        const header = document.querySelector('[data-site-header]');
+        const toggle = document.querySelector('[data-menu-toggle]');
+        const menu = document.querySelector('[data-header-actions]');
+
+        if (!header || !toggle || !menu) return;
+
+        const setOpen = (open) => {
+          header.classList.toggle('is-menu-open', open);
+          toggle.setAttribute('aria-expanded', String(open));
+        };
+
+        toggle.addEventListener('click', () => {
+          setOpen(!header.classList.contains('is-menu-open'));
+        });
+
+        menu.addEventListener('click', (event) => {
+          const target = event.target;
+          if (target instanceof HTMLAnchorElement) setOpen(false);
+        });
+      })();
+    </script> <script src="/music-cover-fallback.js" defer></script> <script src="/preferences.js" defer></script> <script src="/i18n-extra.js" defer></script> <script src="/content-i18n.js" defer></script> <script src="/garden-i18n.js" defer></script> <script src="/home-widgets.js?v=video-widget-1" defer></script> </body> </html>
