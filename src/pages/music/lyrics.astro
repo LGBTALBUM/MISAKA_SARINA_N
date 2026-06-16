@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { lyricsByTitle } from '../../data/musicLyrics';
+---
+
+<BaseLayout title="Lyrics" description="Lyrics seed catalogue for Misaka Sarina music entries.">
+  <section class="section lyrics-hero card">
+    <div>
+      <p class="eyebrow">Lyrics archive</p>
+      <h1 class="title">Lyrics seed catalogue.</h1>
+      <p class="copy">A focused index for verified lyric fragments and future full-text entries. This page intentionally separates creator-archive lyrics from generated release metadata.</p>
+    </div>
+    <div class="stats" aria-label="Lyrics stats">
+      <div><span>Total</span><strong>{lyricsByTitle.length}</strong></div>
+      <div><span>Partial</span><strong>{lyricsByTitle.filter((entry) => entry.status === 'partial').length}</strong></div>
+      <div><span>Complete</span><strong>{lyricsByTitle.filter((entry) => entry.status === 'complete').length}</strong></div>
+    </div>
+  </section>
+
+  <section class="section lyrics-grid" aria-label="Lyrics entries">
+    {lyricsByTitle.map((entry) => (
+      <article class="card lyrics-card">
+        <div class="lyrics-card-head">
+          <div>
+            <p class="eyebrow">{entry.status}</p>
+            <h2>{entry.title}</h2>
+          </div>
+          {entry.language && <span>{entry.language}</span>}
+        </div>
+        {entry.excerpt && <pre>{entry.excerpt.join('\n')}</pre>}
+        {entry.notes && <ul>{entry.notes.map((note) => <li>{note}</li>)}</ul>}
+      </article>
+    ))}
+  </section>
+
+  <section class="section back-row">
+    <a class="button primary" href="/music/">Back to music catalogue</a>
+  </section>
+</BaseLayout>
+
+<style>
+  .lyrics-hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(240px, .36fr); gap: 28px; align-items: end; padding: clamp(26px, 5vw, 46px); }
+  .stats { display: grid; gap: 12px; }
+  .stats div { display: flex; align-items: center; justify-content: space-between; gap: 18px; border: 1px solid rgba(236, 238, 255, .12); border-radius: 18px; background: rgba(7, 8, 18, .54); padding: 14px 16px; }
+  .stats span, .lyrics-card-head span { color: var(--soft); font-size: .72rem; font-weight: 850; letter-spacing: .16em; text-transform: uppercase; }
+  .stats strong { color: var(--accent); font-size: 1.45rem; line-height: 1; }
+  .lyrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
+  .lyrics-card { display: grid; gap: 18px; padding: clamp(22px, 4vw, 34px); }
+  .lyrics-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+  .lyrics-card h2 { margin: 0; font-size: clamp(1.8rem, 4vw, 3rem); line-height: .96; letter-spacing: -.07em; }
+  .lyrics-card pre { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; color: var(--text); line-height: 1.85; font: inherit; }
+  .lyrics-card ul { margin: 0; padding-left: 1.2rem; color: var(--muted); line-height: 1.75; }
+  .back-row { margin-top: 36px; }
+  @media (max-width: 760px) { .lyrics-hero { grid-template-columns: 1fr; } .lyrics-card-head { display: grid; } }
+</style>
