@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import MusicCard from '../components/MusicCard.astro';
 import { getSortedReleases } from '../utils/musicCatalogue';
+import { getLyricsStats } from '../utils/musicLyrics';
 import {
   getMainCatalogueReleases,
   getProfileEntries,
@@ -12,6 +13,7 @@ const releases = getSortedReleases();
 const mainReleases = getMainCatalogueReleases(releases);
 const secondaryReleases = getSecondaryReleases(releases);
 const profileEntries = getProfileEntries(releases);
+const lyricsStats = getLyricsStats(releases);
 ---
 
 <BaseLayout title="Music" description="Music catalogue for Misaka Sarina releases, profiles, and sound experiments.">
@@ -32,6 +34,19 @@ const profileEntries = getProfileEntries(releases);
     <p class="eyebrow">Catalogue source note</p>
     <h2>VocaDB metadata may be incomplete.</h2>
     <p class="copy">VocaDB remains the structured metadata source for generated release pages. Private YouTube Music catalogue references are not shown publicly; missing YTM-derived entries should be added as manual catalogue entries and merged into the Primary catalogue.</p>
+  </section>
+
+  <section class="section card lyrics-workbench" aria-label="Lyrics collection pane">
+    <div>
+      <p class="eyebrow">Lyrics collection</p>
+      <h2>Release pages now have a lyrics pane.</h2>
+      <p class="copy">Known lyric fragments are stored separately from generated release metadata. Entries without verified text show a pending state, so the catalogue can be expanded safely without publishing unreviewed lyrics.</p>
+    </div>
+    <div class="lyrics-stats">
+      <div><span>Seeds</span><strong>{lyricsStats.seeded}</strong></div>
+      <div><span>Matched</span><strong>{lyricsStats.matched}</strong></div>
+      <div><span>Pending</span><strong>{lyricsStats.pending}</strong></div>
+    </div>
   </section>
 
   <section class="section archive-section" aria-label="Main music releases">
@@ -88,7 +103,8 @@ const profileEntries = getProfileEntries(releases);
 </BaseLayout>
 
 <style>
-  .music-hero {
+  .music-hero,
+  .lyrics-workbench {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(260px, 0.42fr);
     gap: 28px;
@@ -100,19 +116,22 @@ const profileEntries = getProfileEntries(releases);
     padding: clamp(24px, 4vw, 34px);
   }
 
-  .catalogue-note h2 {
+  .catalogue-note h2,
+  .lyrics-workbench h2 {
     margin: 0 0 12px;
     font-size: clamp(1.8rem, 4vw, 3.2rem);
     line-height: 0.98;
     letter-spacing: -0.06em;
   }
 
-  .stats {
+  .stats,
+  .lyrics-stats {
     display: grid;
     gap: 12px;
   }
 
-  .stats div {
+  .stats div,
+  .lyrics-stats div {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -124,6 +143,7 @@ const profileEntries = getProfileEntries(releases);
   }
 
   .stats span,
+  .lyrics-stats span,
   .profile-card span {
     color: var(--soft);
     font-size: 0.72rem;
@@ -132,7 +152,8 @@ const profileEntries = getProfileEntries(releases);
     text-transform: uppercase;
   }
 
-  .stats strong {
+  .stats strong,
+  .lyrics-stats strong {
     color: var(--accent);
     font-size: 1.45rem;
     line-height: 1;
@@ -239,7 +260,8 @@ const profileEntries = getProfileEntries(releases);
   }
 
   @media (max-width: 840px) {
-    .music-hero {
+    .music-hero,
+    .lyrics-workbench {
       grid-template-columns: 1fr;
     }
 
