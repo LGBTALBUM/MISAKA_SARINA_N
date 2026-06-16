@@ -41,6 +41,7 @@ const lyricsStats = getLyricsStats(releases);
       <p class="eyebrow">Lyrics collection</p>
       <h2>Release pages now have a lyrics pane.</h2>
       <p class="copy">Known lyric fragments are stored separately from generated release metadata. Entries without verified text show a pending state, so the catalogue can be expanded safely without publishing unreviewed lyrics.</p>
+      <a class="button primary lyrics-link" href="/music/lyrics/">Open lyrics overview</a>
     </div>
     <div class="lyrics-stats">
       <div><span>Seeds</span><strong>{lyricsStats.seeded}</strong></div>
@@ -122,6 +123,10 @@ const lyricsStats = getLyricsStats(releases);
     font-size: clamp(1.8rem, 4vw, 3.2rem);
     line-height: 0.98;
     letter-spacing: -0.06em;
+  }
+
+  .lyrics-link {
+    margin-top: 18px;
   }
 
   .stats,
