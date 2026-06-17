@@ -4,6 +4,22 @@ These JSON files are intended as stable write targets for a closed-source catalo
 
 The website still keeps older curated TypeScript data layers, but manager-generated changes should prefer these files because JSON is easier to update safely from a GUI tool.
 
+## Validation contract
+
+Before opening a PR, the Manager should validate each file against the matching schema:
+
+- `lyrics.json` → `schema/lyrics.schema.json`
+- `manualReleases.json` → `schema/manualReleases.schema.json`
+- `musicOverrides.json` → `schema/musicOverrides.schema.json`
+
+Recommended Submit order:
+
+1. Read latest `main`.
+2. Validate local edits against schema.
+3. Create a branch named `catalog/update-<slug-or-date>`.
+4. Commit only the changed JSON files.
+5. Open a PR with a summary of changed songs, lyrics, and links.
+
 ## `manualReleases.json`
 
 Append new manually maintained releases here. Each entry should follow the public `MusicRelease` shape plus an explicit `source` object.

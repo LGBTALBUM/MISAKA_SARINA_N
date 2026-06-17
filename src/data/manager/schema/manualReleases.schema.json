@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://msarina.moe/schema/manager/manualReleases.schema.json",
+  "title": "Misaka Sarina Manager Manual Releases Catalog",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["title", "slug", "releaseDate", "type", "description", "platforms", "source"],
+    "properties": {
+      "title": { "type": "string", "minLength": 1 },
+      "slug": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+      "releaseDate": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" },
+      "type": { "type": "string", "enum": ["profile", "single", "ep", "album", "demo"] },
+      "description": { "type": "string" },
+      "cover": { "type": "string" },
+      "featured": { "type": "boolean" },
+      "forceMain": { "type": "boolean" },
+      "forceSecondary": { "type": "boolean" },
+      "platforms": {
+        "type": "array",
+        "items": { "$ref": "#/$defs/platform" }
+      },
+      "credits": {
+        "type": "array",
+        "items": { "type": "string" }
+      },
+      "notes": {
+        "type": "array",
+        "items": { "type": "string" }
+      },
+      "source": { "$ref": "#/$defs/source" }
+    }
+  },
+  "$defs": {
+    "platform": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "href"],
+      "properties": {
+        "label": { "type": "string", "minLength": 1 },
+        "href": { "type": "string", "minLength": 1 }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "id", "href"],
+      "properties": {
+        "label": { "type": "string", "minLength": 1 },
+        "id": { "type": "string", "minLength": 1 },
+        "href": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://msarina.moe/schema/manager/musicOverrides.schema.json",
+  "title": "Misaka Sarina Manager Music Overrides Catalog",
+  "type": "object",
+  "additionalProperties": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "title": { "type": "string" },
+      "releaseDate": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" },
+      "type": { "type": "string", "enum": ["profile", "single", "ep", "album", "demo"] },
+      "description": { "type": "string" },
+      "cover": { "type": "string" },
+      "featured": { "type": "boolean" },
+      "hidden": { "type": "boolean" },
+      "forceMain": { "type": "boolean" },
+      "forceSecondary": { "type": "boolean" },
+      "featuredCandidate": { "type": "boolean" },
+      "needsReview": { "type": "boolean" },
+      "qualityNotes": {
+        "type": "array",
+        "items": { "type": "string" }
+      },
+      "platforms": {
+        "type": "array",
+        "items": { "$ref": "#/$defs/platform" }
+      },
+      "credits": {
+        "type": "array",
+        "items": { "type": "string" }
+      },
+      "notes": {
+        "type": "array",
+        "items": { "type": "string" }
+      },
+      "source": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "label": { "type": "string" },
+          "id": { "type": "string" },
+          "href": { "type": "string" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "platform": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "href"],
+      "properties": {
+        "label": { "type": "string", "minLength": 1 },
+        "href": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}
