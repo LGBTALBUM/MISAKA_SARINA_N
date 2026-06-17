@@ -1,6 +1,7 @@
 import { musicReleases } from '../data/music';
 import type { MusicRelease } from '../data/music';
 import { manualMusicReleases } from '../data/manualMusic';
+import managerManualReleases from '../data/manager/manualReleases.json';
 import { manualMusicQualityOverrides } from '../data/manualMusicQuality';
 import { musicOverrides } from '../data/musicOverrides';
 import { applyPublicLinkCompletion, type LinkCompletion } from './publicLinkCompletion';
@@ -14,6 +15,8 @@ export type ResolvedMusicRelease = MusicRelease & {
   qualityNotes?: string[];
   linkCompletion?: LinkCompletion;
 };
+
+const managerReleases = managerManualReleases as MusicRelease[];
 
 const uniqueList = (items: string[] = []) =>
   items.filter((item, index, list) => list.indexOf(item) === index);
@@ -59,7 +62,8 @@ const mergeRelease = (release: MusicRelease): ResolvedMusicRelease => {
 
 export const getRawCatalogueReleases = () => [
   ...musicReleases,
-  ...manualMusicReleases
+  ...manualMusicReleases,
+  ...managerReleases
 ];
 
 export const getResolvedReleases = () =>

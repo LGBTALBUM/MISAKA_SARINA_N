@@ -1,4 +1,5 @@
 import type { MusicRelease } from './music';
+import managerMusicOverrides from './manager/musicOverrides.json';
 
 export type MusicReleaseOverride = Partial<Omit<MusicRelease, 'slug' | 'source'>> & {
   hidden?: boolean;
@@ -10,7 +11,7 @@ export type MusicReleaseOverride = Partial<Omit<MusicRelease, 'slug' | 'source'>
   source?: Partial<MusicRelease['source']>;
 };
 
-export const musicOverrides: Record<string, MusicReleaseOverride> = {
+const curatedMusicOverrides: Record<string, MusicReleaseOverride> = {
   'artist-profile': {
     featured: false,
     description:
@@ -184,4 +185,9 @@ export const musicOverrides: Record<string, MusicReleaseOverride> = {
     description:
       'Instrumental version of 蒼白的夢. Kept in the secondary archive section to avoid competing with the main release entry.'
   }
+};
+
+export const musicOverrides: Record<string, MusicReleaseOverride> = {
+  ...curatedMusicOverrides,
+  ...(managerMusicOverrides as Record<string, MusicReleaseOverride>)
 };
