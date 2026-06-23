@@ -33,12 +33,12 @@ const downloadLanes = [
 ];
 ---
 
-<BaseLayout title="Downloads" description="Reserved download area for Misaka Sarina small tools, archive packages, and creator-made utilities.">
+<BaseLayout title="Downloads" description="Download area for Misaka Sarina small tools, archive packages, and creator-made utilities.">
   <section class="section card downloads-hero">
     <div>
       <p class="eyebrow" data-i18n="downloads.eyebrow">Downloads</p>
-      <h1 class="title" data-i18n="downloads.title">A small shelf for future things.</h1>
-      <p class="copy" data-i18n="downloads.copy">This area is reserved for small tools, archive packages, music-related files, and creator-made utilities. Items will be added here when they are ready to distribute.</p>
+      <h1 class="title" data-i18n="downloads.title">A small shelf for downloadable works.</h1>
+      <p class="copy" data-i18n="downloads.copy">This area collects small tools, archive packages, music-related files, and creator-made utilities that are ready to share.</p>
     </div>
     <div class="stats" aria-label="Downloads status">
       <div><span data-i18n="downloads.status">Status</span><strong data-i18n="downloads.statusValue">Available</strong></div>
@@ -67,19 +67,19 @@ const downloadLanes = [
     {downloadLanes.map((lane) => (
       <article class="card download-card">
         <div>
-          <p class="eyebrow" data-i18n={lane.eyebrowKey}>Reserved lane</p>
-          <h2 data-i18n={lane.titleKey}>Coming soon</h2>
-          <p data-i18n={lane.copyKey}>This lane is prepared for future downloadable items.</p>
+          <p class="eyebrow" data-i18n={lane.eyebrowKey}>Download lane</p>
+          <h2 data-i18n={lane.titleKey}>Download category</h2>
+          <p data-i18n={lane.copyKey}>This lane describes a download category and will collect matching items as they become available.</p>
         </div>
-        <span class="status-pill" data-i18n="downloads.comingSoon">Coming soon</span>
+        <span class="status-pill" data-i18n="downloads.categoryLane">Category lane</span>
       </article>
     ))}
   </section>
 
   <section class="section card downloads-note">
     <p class="eyebrow" data-i18n="downloads.submitNote">Distribution note</p>
-    <h2 data-i18n="downloads.noteTitle">Files will stay reviewable before publication.</h2>
-    <p class="copy" data-i18n="downloads.noteCopy">Future downloadable items should be added through a pull request, with clear names, version notes, and a short explanation of what each file is for.</p>
+    <h2 data-i18n="downloads.noteTitle">Files stay versioned and reviewable.</h2>
+    <p class="copy" data-i18n="downloads.noteCopy">Downloadable items should keep clear names, version notes, and a short explanation of what each file is for.</p>
     <div class="button-row">
       <a class="button primary" href="/works/" data-i18n="downloads.viewWorks">View works</a>
       <a class="button" href="/contact/" data-i18n="downloads.contact">Contact</a>
