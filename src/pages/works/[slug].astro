@@ -311,6 +311,30 @@ const statusLabel = {
     border-color: rgba(168, 184, 255, 0.42);
   }
 
+  :root[data-theme='light'] .endpoint-card,
+  :root[data-theme='light'] .copy-endpoint {
+    border-color: #d989b4;
+    background: linear-gradient(135deg, rgba(255,255,255,.98), rgba(255,236,245,.93));
+    color: #51384e;
+    box-shadow: 0 12px 28px rgba(190, 115, 155, .14);
+  }
+
+  :root[data-theme='light'] .endpoint-card span,
+  :root[data-theme='light'] .copy-endpoint small {
+    color: #963e6f;
+  }
+
+  :root[data-theme='light'] .endpoint-card p {
+    color: #5d4b5a;
+  }
+
+  :root[data-theme='light'] .copy-endpoint:hover,
+  :root[data-theme='light'] .copy-endpoint:focus-visible {
+    border-color: #cf5d98;
+    background: #fff7fb;
+    box-shadow: 0 0 0 4px rgba(217, 95, 158, .16), 0 14px 30px rgba(190, 115, 155, .18);
+  }
+
   .back-row {
     margin-top: 36px;
   }
