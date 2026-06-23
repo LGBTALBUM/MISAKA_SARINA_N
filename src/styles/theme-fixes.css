@@ -153,4 +153,36 @@ html[data-locale='zh-TW'] .title,html[data-locale='ja'] .title{font-size:clamp(2
   box-shadow: 0 0 0 4px rgba(217, 95, 158, .16), 0 14px 30px rgba(190, 115, 155, .18) !important;
 }
 
+:root[data-theme='light'] .timeline-index .year-pills a,
+:root[data-theme='light'] .year-pills a {
+  border-color: #c96a9e !important;
+  background: linear-gradient(135deg, #fff 0%, #ffe1ef 100%) !important;
+  color: #493444 !important;
+  box-shadow: 0 10px 22px rgba(178, 98, 140, .18) !important;
+  text-shadow: none !important;
+}
+
+:root[data-theme='light'] .timeline-index .year-pills a span,
+:root[data-theme='light'] .year-pills a span {
+  display: inline-grid !important;
+  min-width: 1.45em !important;
+  min-height: 1.45em !important;
+  place-items: center !important;
+  border: 1px solid #c96a9e !important;
+  border-radius: 999px !important;
+  background: #fff7fb !important;
+  color: #a82f70 !important;
+  padding: 0 .4em !important;
+  font-weight: 900 !important;
+}
+
+:root[data-theme='light'] .timeline-index .year-pills a:hover,
+:root[data-theme='light'] .timeline-index .year-pills a:focus-visible,
+:root[data-theme='light'] .year-pills a:hover,
+:root[data-theme='light'] .year-pills a:focus-visible {
+  border-color: #b83378 !important;
+  background: linear-gradient(135deg, #fff7fb 0%, #ffd7e9 100%) !important;
+  box-shadow: 0 0 0 4px rgba(217, 95, 158, .18), 0 14px 30px rgba(178, 98, 140, .2) !important;
+}
+
 @media(max-width:820px){body::after{background-size:100% auto;background-repeat:repeat-y}.brand{width:40px;height:40px;border-radius:12px;flex:0 0 40px}html[data-locale='zh-TW'] .title,html[data-locale='ja'] .title{font-size:clamp(2.05rem,10vw,3.8rem);max-width:9ch}:root[data-theme='light'] .header{border-bottom-color:#e9accb;background:linear-gradient(180deg,rgba(255,252,247,.94),rgba(255,248,252,.9))}:root[data-theme='light'] .header-actions{border-color:#e9accb;background:rgba(255,255,255,.94)}}
