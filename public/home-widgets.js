@@ -36,8 +36,8 @@ function section() {
       </article>
       <article class="home-widget home-downloads">
         <p class="eyebrow" data-i18n="homeWidgets.downloads">Downloads</p>
-        <h2 data-i18n="homeWidgets.downloadsTitle">Download area is reserved.</h2>
-        <p data-i18n="homeWidgets.downloadsCopy">A direct shelf for future small tools, archive packages, music-related files, and creator-made utilities.</p>
+        <h2 data-i18n="homeWidgets.downloadsTitle">Download shelf is available.</h2>
+        <p data-i18n="homeWidgets.downloadsCopy">Current downloadable works and future distribution categories live here.</p>
         <a class="button primary" href="/downloads/" data-i18n="homeWidgets.openDownloads">Open downloads</a>
       </article>
       <article class="home-widget home-sponsor">
