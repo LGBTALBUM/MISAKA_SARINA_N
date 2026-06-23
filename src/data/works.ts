@@ -140,12 +140,19 @@ export const works: WorkItem[] = [
     status: 'draft',
     category: 'infrastructure',
     summary: 'Future index for deployment records, network experiments, self-hosted tools, and reproducible maintenance notes.',
-    tags: ['Infra', 'Self-hosting', 'Logs'],
+    tags: ['Infra', 'Self-hosting', 'Logs', 'NTP'],
     bodySections: [
       {
         title: 'Future direction',
         body: 'This entry is reserved for infrastructure and maintenance records. It can later link to deployment SOPs, network experiments, self-hosting notes, and operational checklists.'
+      },
+      {
+        title: '我的NTP伺服器',
+        body: 'NTP service endpoint: ntp.msarina.moe. This host is intended for NTP clients over UDP/123 only; it is not a browser page and should not be listed as a normal HTTP link.'
       }
+    ],
+    changelog: [
+      { date: '2026-06-23', title: 'NTP endpoint note', body: 'Documented ntp.msarina.moe as an NTP-only service endpoint for UDP/123 clients.' }
     ],
     related: [
       { label: 'Technical notes', href: '/blog/music-catalogue-sync/' },
