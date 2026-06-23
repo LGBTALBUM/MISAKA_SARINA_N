@@ -1,11 +1,84 @@
-const HOME_FEED='/api/bluesky-rss.json';
-const PROFILE='https://bsky.app/profile/msarina.bluesky.siacone.art';
-const SPONSOR='https://github.com/sponsors/LGBTALBUM';
-const YT='https://www.youtube.com/embed/V_er5v8QWHo?si=zKCLfJtGelG0t7bG';
-const isHome=()=>location.pathname==='/'||location.pathname==='/index.html';
-const text=(v)=>String(v||'').trim();
-const fmt=(v)=>{if(!v)return'';const d=new Date(v);return Number.isNaN(d.valueOf())?v:d.toLocaleString()};
-const postText=(x)=>text(x.description)||text(x.title)||'Bluesky post';
-function section(){const s=document.createElement('section');s.className='section home-extra';s.innerHTML='<p class="eyebrow">Live feed & support</p><article class="home-widget home-video"><p class="eyebrow">Featured video</p><div class="home-video-frame"><iframe width="560" height="315" src="'+YT+'" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe></div></article><div class="home-extra-grid"><article class="home-widget home-bsky"><div class="home-widget-top"><span class="home-widget-kicker">Bluesky</span><time class="home-widget-time">Loading</time></div><h2>From the social stream</h2><p>Loading the second latest Bluesky RSS item...</p><a class="button" href="/blog/bluesky/">Open Bluesky lane</a></article><article class="home-widget home-sponsor"><p class="eyebrow">Support</p><h2>Support the archive</h2><p>Help keep LGBTALBUM open-source work, site experiments, and creator infrastructure maintained.</p><a class="button primary" href="'+SPONSOR+'" target="_blank" rel="noreferrer">Sponsor on GitHub</a></article></div>';return s}
-async function fill(root){const card=root.querySelector('.home-bsky');try{const r=await fetch(HOME_FEED,{cache:'no-store',headers:{accept:'application/json'}});const j=await r.json();const items=Array.isArray(j.items)?j.items:[];const item=items[1]||items[0];if(!item)throw new Error('empty feed');card.querySelector('.home-widget-time').textContent=fmt(item.pubDate);card.querySelector('p').textContent=postText(item);card.querySelector('a').href=item.link||PROFILE;card.querySelector('a').textContent='Open post'}catch(e){card.querySelector('.home-widget-time').textContent='Fallback';card.querySelector('p').textContent='The homepage feed preview could not be loaded. The full Bluesky lane is still available.';card.querySelector('a').href='/blog/bluesky/';card.querySelector('a').textContent='Open Bluesky lane'}}
-document.addEventListener('DOMContentLoaded',()=>{if(!isHome())return;const main=document.querySelector('main');if(!main)return;const root=section();main.append(root);fill(root)});
+const HOME_FEED = '/api/bluesky-rss.json';
+const PROFILE = 'https://bsky.app/profile/msarina.bluesky.siacone.art';
+const SPONSOR = 'https://github.com/sponsors/LGBTALBUM';
+const YT = 'https://www.youtube.com/embed/P9Bfig2ADe0?si=cmFkg31YP-Ya6k20';
+
+const isHome = () => location.pathname === '/' || location.pathname === '/index.html';
+const text = (value) => String(value || '').trim();
+const fmt = (value) => {
+  if (!value) return '';
+  const date = new Date(value);
+  return Number.isNaN(date.valueOf()) ? value : date.toLocaleString();
+};
+const postText = (item) => text(item.description) || text(item.title) || 'Bluesky post';
+const translateDynamic = () => document.dispatchEvent(new Event('msarina:dynamic-content'));
+
+function section() {
+  const section = document.createElement('section');
+  section.className = 'section home-extra';
+  section.innerHTML = `
+    <p class="eyebrow" data-i18n="homeWidgets.kicker">Live feed & support</p>
+    <article class="home-widget home-video">
+      <p class="eyebrow" data-i18n="homeWidgets.featuredVideo">Featured video</p>
+      <div class="home-video-frame">
+        <iframe width="560" height="315" src="${YT}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
+      </div>
+    </article>
+    <div class="home-extra-grid">
+      <article class="home-widget home-bsky">
+        <div class="home-widget-top">
+          <span class="home-widget-kicker" data-i18n="homeWidgets.bsky">Bluesky</span>
+          <time class="home-widget-time">Loading</time>
+        </div>
+        <h2 data-i18n="homeWidgets.socialTitle">From the social stream</h2>
+        <p data-i18n="homeWidgets.socialLoading">Loading the second latest Bluesky RSS item...</p>
+        <a class="button" href="/blog/bluesky/" data-i18n="homeWidgets.openBsky">Open Bluesky lane</a>
+      </article>
+      <article class="home-widget home-downloads">
+        <p class="eyebrow" data-i18n="homeWidgets.downloads">Downloads</p>
+        <h2 data-i18n="homeWidgets.downloadsTitle">Download area is reserved.</h2>
+        <p data-i18n="homeWidgets.downloadsCopy">A direct shelf for future small tools, archive packages, music-related files, and creator-made utilities.</p>
+        <a class="button primary" href="/downloads/" data-i18n="homeWidgets.openDownloads">Open downloads</a>
+      </article>
+      <article class="home-widget home-sponsor">
+        <p class="eyebrow" data-i18n="homeWidgets.support">Support</p>
+        <h2 data-i18n="homeWidgets.supportTitle">Support the archive</h2>
+        <p data-i18n="homeWidgets.supportCopy">Help keep LGBTALBUM open-source work, site experiments, and creator infrastructure maintained.</p>
+        <a class="button primary" href="${SPONSOR}" target="_blank" rel="noreferrer" data-i18n="homeWidgets.sponsor">Sponsor on GitHub</a>
+      </article>
+    </div>
+  `;
+  return section;
+}
+
+async function fill(root) {
+  const card = root.querySelector('.home-bsky');
+  try {
+    const response = await fetch(HOME_FEED, { cache: 'no-store', headers: { accept: 'application/json' } });
+    const json = await response.json();
+    const items = Array.isArray(json.items) ? json.items : [];
+    const item = items[1] || items[0];
+    if (!item) throw new Error('empty feed');
+    card.querySelector('.home-widget-time').textContent = fmt(item.pubDate);
+    card.querySelector('p').removeAttribute('data-i18n');
+    card.querySelector('p').textContent = postText(item);
+    card.querySelector('a').href = item.link || PROFILE;
+    card.querySelector('a').setAttribute('data-i18n', 'homeWidgets.openPost');
+  } catch (error) {
+    card.querySelector('.home-widget-time').setAttribute('data-i18n', 'homeWidgets.fallback');
+    card.querySelector('p').setAttribute('data-i18n', 'homeWidgets.feedFallback');
+    card.querySelector('a').href = '/blog/bluesky/';
+    card.querySelector('a').setAttribute('data-i18n', 'homeWidgets.openBsky');
+  }
+  translateDynamic();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (!isHome()) return;
+  const main = document.querySelector('main');
+  if (!main) return;
+  const root = section();
+  main.append(root);
+  translateDynamic();
+  fill(root);
+});

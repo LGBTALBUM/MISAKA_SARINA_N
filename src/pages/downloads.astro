@@ -1,0 +1,149 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const downloadLanes = [
+  {
+    key: 'tools',
+    titleKey: 'downloads.laneToolsTitle',
+    eyebrowKey: 'downloads.laneToolsEyebrow',
+    copyKey: 'downloads.laneToolsCopy'
+  },
+  {
+    key: 'audio',
+    titleKey: 'downloads.laneAudioTitle',
+    eyebrowKey: 'downloads.laneAudioEyebrow',
+    copyKey: 'downloads.laneAudioCopy'
+  },
+  {
+    key: 'archive',
+    titleKey: 'downloads.laneArchiveTitle',
+    eyebrowKey: 'downloads.laneArchiveEyebrow',
+    copyKey: 'downloads.laneArchiveCopy'
+  }
+];
+---
+
+<BaseLayout title="Downloads" description="Reserved download area for Misaka Sarina small tools, archive packages, and creator-made utilities.">
+  <section class="section card downloads-hero">
+    <div>
+      <p class="eyebrow" data-i18n="downloads.eyebrow">Downloads</p>
+      <h1 class="title" data-i18n="downloads.title">A small shelf for future things.</h1>
+      <p class="copy" data-i18n="downloads.copy">This area is reserved for small tools, archive packages, music-related files, and creator-made utilities. Items will be added here when they are ready to distribute.</p>
+    </div>
+    <div class="stats" aria-label="Downloads status">
+      <div><span data-i18n="downloads.status">Status</span><strong data-i18n="downloads.statusValue">Reserved</strong></div>
+      <div><span data-i18n="downloads.items">Items</span><strong>0</strong></div>
+      <div><span data-i18n="downloads.format">Format</span><strong data-i18n="downloads.formatValue">Mixed</strong></div>
+    </div>
+  </section>
+
+  <section class="section downloads-list" aria-label="Download lanes">
+    {downloadLanes.map((lane) => (
+      <article class="card download-card">
+        <div>
+          <p class="eyebrow" data-i18n={lane.eyebrowKey}>Reserved lane</p>
+          <h2 data-i18n={lane.titleKey}>Coming soon</h2>
+          <p data-i18n={lane.copyKey}>This lane is prepared for future downloadable items.</p>
+        </div>
+        <span class="status-pill" data-i18n="downloads.comingSoon">Coming soon</span>
+      </article>
+    ))}
+  </section>
+
+  <section class="section card downloads-note">
+    <p class="eyebrow" data-i18n="downloads.submitNote">Distribution note</p>
+    <h2 data-i18n="downloads.noteTitle">Files will stay reviewable before publication.</h2>
+    <p class="copy" data-i18n="downloads.noteCopy">Future downloadable items should be added through a pull request, with clear names, version notes, and a short explanation of what each file is for.</p>
+    <div class="button-row">
+      <a class="button primary" href="/works/" data-i18n="downloads.viewWorks">View works</a>
+      <a class="button" href="/contact/" data-i18n="downloads.contact">Contact</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .downloads-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 0.42fr);
+    gap: 28px;
+    align-items: end;
+    padding: clamp(28px, 6vw, 56px);
+  }
+
+  .stats {
+    display: grid;
+    gap: 12px;
+  }
+
+  .stats div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    border: 1px solid rgba(236, 238, 255, 0.12);
+    border-radius: 18px;
+    background: rgba(7, 8, 18, 0.54);
+    padding: 14px 16px;
+  }
+
+  .stats span,
+  .status-pill {
+    color: var(--soft);
+    font-size: 0.72rem;
+    font-weight: 850;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .stats strong {
+    color: var(--accent);
+    font-size: 1.45rem;
+    line-height: 1;
+  }
+
+  .downloads-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 18px;
+  }
+
+  .download-card {
+    display: grid;
+    gap: 24px;
+    align-content: space-between;
+    min-height: 260px;
+    padding: clamp(22px, 4vw, 34px);
+  }
+
+  .download-card h2,
+  .downloads-note h2 {
+    margin: 0 0 12px;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    line-height: 0.96;
+    letter-spacing: -0.06em;
+  }
+
+  .download-card p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.72;
+  }
+
+  .status-pill {
+    width: max-content;
+    border: 1px solid rgba(236, 238, 255, 0.12);
+    border-radius: 999px;
+    background: rgba(7, 8, 18, 0.48);
+    padding: 9px 12px;
+  }
+
+  .downloads-note {
+    padding: clamp(28px, 6vw, 44px);
+  }
+
+  @media (max-width: 820px) {
+    .downloads-hero {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

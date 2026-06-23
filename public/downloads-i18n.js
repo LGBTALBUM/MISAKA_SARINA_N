@@ -1,0 +1,212 @@
+const DOWNLOADS_I18N_LOCALES = ['en', 'ja', 'zh-TW', 'ca'];
+
+const downloadsTranslations = {
+  en: {
+    'nav.downloads': 'Downloads',
+    'downloads.eyebrow': 'Downloads',
+    'downloads.title': 'A small shelf for future things.',
+    'downloads.copy': 'This area is reserved for small tools, archive packages, music-related files, and creator-made utilities. Items will be added here when they are ready to distribute.',
+    'downloads.status': 'Status',
+    'downloads.statusValue': 'Reserved',
+    'downloads.items': 'Items',
+    'downloads.format': 'Format',
+    'downloads.formatValue': 'Mixed',
+    'downloads.laneToolsEyebrow': 'Tools',
+    'downloads.laneToolsTitle': 'Small tools and utilities',
+    'downloads.laneToolsCopy': 'Future builds for tiny utilities, catalogue helpers, and creator workflow experiments can live here.',
+    'downloads.laneAudioEyebrow': 'Audio / music',
+    'downloads.laneAudioTitle': 'Music-related files',
+    'downloads.laneAudioCopy': 'Prepared space for public stems, preview packages, release helpers, or other music-adjacent downloadable files.',
+    'downloads.laneArchiveEyebrow': 'Archive',
+    'downloads.laneArchiveTitle': 'Archive packages',
+    'downloads.laneArchiveCopy': 'A reserved lane for bundled notes, public data packages, templates, and reproducible project material.',
+    'downloads.comingSoon': 'Coming soon',
+    'downloads.submitNote': 'Distribution note',
+    'downloads.noteTitle': 'Files will stay reviewable before publication.',
+    'downloads.noteCopy': 'Future downloadable items should be added through a pull request, with clear names, version notes, and a short explanation of what each file is for.',
+    'downloads.viewWorks': 'View works',
+    'downloads.contact': 'Contact',
+    'homeWidgets.kicker': 'Live feed & support',
+    'homeWidgets.featuredVideo': 'Featured video',
+    'homeWidgets.bsky': 'Bluesky',
+    'homeWidgets.socialTitle': 'From the social stream',
+    'homeWidgets.socialLoading': 'Loading the second latest Bluesky RSS item...',
+    'homeWidgets.openBsky': 'Open Bluesky lane',
+    'homeWidgets.openPost': 'Open post',
+    'homeWidgets.feedFallback': 'The homepage feed preview could not be loaded. The full Bluesky lane is still available.',
+    'homeWidgets.fallback': 'Fallback',
+    'homeWidgets.support': 'Support',
+    'homeWidgets.supportTitle': 'Support the archive',
+    'homeWidgets.supportCopy': 'Help keep LGBTALBUM open-source work, site experiments, and creator infrastructure maintained.',
+    'homeWidgets.sponsor': 'Sponsor on GitHub',
+    'homeWidgets.downloads': 'Downloads',
+    'homeWidgets.downloadsTitle': 'Download area is reserved.',
+    'homeWidgets.downloadsCopy': 'A direct shelf for future small tools, archive packages, music-related files, and creator-made utilities.',
+    'homeWidgets.openDownloads': 'Open downloads'
+  },
+  ja: {
+    'nav.downloads': 'ダウンロード',
+    'downloads.eyebrow': 'ダウンロード',
+    'downloads.title': 'これから置く小さなものの棚。',
+    'downloads.copy': '小さなツール、アーカイブパッケージ、音楽関連ファイル、自作ユーティリティのための予約スペースです。配布準備ができたものから追加します。',
+    'downloads.status': '状態',
+    'downloads.statusValue': '予約済み',
+    'downloads.items': '項目',
+    'downloads.format': '形式',
+    'downloads.formatValue': '混在',
+    'downloads.laneToolsEyebrow': 'ツール',
+    'downloads.laneToolsTitle': '小さなツールとユーティリティ',
+    'downloads.laneToolsCopy': '小さなユーティリティ、カタログ補助、クリエイター作業フローの実験的ビルドを置くための場所です。',
+    'downloads.laneAudioEyebrow': '音声 / 音楽',
+    'downloads.laneAudioTitle': '音楽関連ファイル',
+    'downloads.laneAudioCopy': '公開用ステム、プレビューパッケージ、リリース補助、その他音楽周辺の配布物のための予約スペースです。',
+    'downloads.laneArchiveEyebrow': 'アーカイブ',
+    'downloads.laneArchiveTitle': 'アーカイブパッケージ',
+    'downloads.laneArchiveCopy': 'ノート、公開データパッケージ、テンプレート、再現可能なプロジェクト素材をまとめるための予約レーンです。',
+    'downloads.comingSoon': '準備中',
+    'downloads.submitNote': '配布メモ',
+    'downloads.noteTitle': '公開前にレビューできる形で管理します。',
+    'downloads.noteCopy': '将来の配布物は、分かりやすい名前、バージョンメモ、用途の短い説明を添えて Pull Request で追加する想定です。',
+    'downloads.viewWorks': '制作物を見る',
+    'downloads.contact': '連絡する',
+    'homeWidgets.kicker': 'ライブフィードと支援',
+    'homeWidgets.featuredVideo': '注目動画',
+    'homeWidgets.bsky': 'Bluesky',
+    'homeWidgets.socialTitle': 'ソーシャルストリームから',
+    'homeWidgets.socialLoading': 'Bluesky RSS の2番目に新しい項目を読み込んでいます...',
+    'homeWidgets.openBsky': 'Bluesky レーンを開く',
+    'homeWidgets.openPost': '投稿を開く',
+    'homeWidgets.feedFallback': 'ホームページのフィードプレビューを読み込めませんでした。Bluesky レーン全体は利用できます。',
+    'homeWidgets.fallback': 'フォールバック',
+    'homeWidgets.support': '支援',
+    'homeWidgets.supportTitle': 'アーカイブを支援する',
+    'homeWidgets.supportCopy': 'LGBTALBUM のオープンソース作業、サイト実験、クリエイター基盤の維持を支援します。',
+    'homeWidgets.sponsor': 'GitHub Sponsors で支援',
+    'homeWidgets.downloads': 'ダウンロード',
+    'homeWidgets.downloadsTitle': 'ダウンロードエリアを予約しました。',
+    'homeWidgets.downloadsCopy': '将来の小さなツール、アーカイブパッケージ、音楽関連ファイル、自作ユーティリティへの直通棚です。',
+    'homeWidgets.openDownloads': 'ダウンロードを開く'
+  },
+  'zh-TW': {
+    'nav.downloads': '下載',
+    'downloads.eyebrow': '下載專區',
+    'downloads.title': '預留給未來小東西的架子。',
+    'downloads.copy': '這裡預留給小工具、檔案包、音樂相關檔案，以及自己製作的實用小東西。等內容準備好後會放在這裡配佈。',
+    'downloads.status': '狀態',
+    'downloads.statusValue': '預留',
+    'downloads.items': '項目',
+    'downloads.format': '格式',
+    'downloads.formatValue': '混合',
+    'downloads.laneToolsEyebrow': '工具',
+    'downloads.laneToolsTitle': '小工具與實用程式',
+    'downloads.laneToolsCopy': '未來的小型工具、目錄輔助程式與創作者工作流實驗版本，可以放在這裡。',
+    'downloads.laneAudioEyebrow': '音訊 / 音樂',
+    'downloads.laneAudioTitle': '音樂相關檔案',
+    'downloads.laneAudioCopy': '預留給公開 stems、試聽包、發行輔助檔案，或其他音樂相關可下載內容。',
+    'downloads.laneArchiveEyebrow': '檔案',
+    'downloads.laneArchiveTitle': '檔案包',
+    'downloads.laneArchiveCopy': '預留給筆記包、公開資料包、模板，以及可重現的專案素材。',
+    'downloads.comingSoon': '準備中',
+    'downloads.submitNote': '配佈說明',
+    'downloads.noteTitle': '檔案會在發布前保持可審查。',
+    'downloads.noteCopy': '未來的下載項目應透過 Pull Request 加入，並附上清楚名稱、版本說明，以及每個檔案用途的簡短說明。',
+    'downloads.viewWorks': '查看作品',
+    'downloads.contact': '聯絡',
+    'homeWidgets.kicker': '即時動態與支援',
+    'homeWidgets.featuredVideo': '精選影片',
+    'homeWidgets.bsky': 'Bluesky',
+    'homeWidgets.socialTitle': '來自社群動態',
+    'homeWidgets.socialLoading': '正在載入 Bluesky RSS 的第二則最新項目...',
+    'homeWidgets.openBsky': '打開 Bluesky 區域',
+    'homeWidgets.openPost': '打開貼文',
+    'homeWidgets.feedFallback': '首頁動態預覽無法載入，但完整 Bluesky 區域仍可使用。',
+    'homeWidgets.fallback': '備用',
+    'homeWidgets.support': '支援',
+    'homeWidgets.supportTitle': '支援這個檔案站',
+    'homeWidgets.supportCopy': '協助維持 LGBTALBUM 的開源工作、網站實驗與創作者基礎設施。',
+    'homeWidgets.sponsor': '在 GitHub Sponsor',
+    'homeWidgets.downloads': '下載專區',
+    'homeWidgets.downloadsTitle': '下載專區已預留。',
+    'homeWidgets.downloadsCopy': '這是一個直通架子，之後可以配佈小工具、檔案包、音樂相關檔案與自己製作的小東西。',
+    'homeWidgets.openDownloads': '前往下載專區'
+  },
+  ca: {
+    'nav.downloads': 'Baixades',
+    'downloads.eyebrow': 'Baixades',
+    'downloads.title': 'Un prestatge petit per a coses futures.',
+    'downloads.copy': 'Aquest espai queda reservat per a petites eines, paquets d’arxiu, fitxers relacionats amb música i utilitats fetes per la creadora. Els elements s’hi afegiran quan estiguin llestos per distribuir.',
+    'downloads.status': 'Estat',
+    'downloads.statusValue': 'Reservat',
+    'downloads.items': 'Elements',
+    'downloads.format': 'Format',
+    'downloads.formatValue': 'Mixt',
+    'downloads.laneToolsEyebrow': 'Eines',
+    'downloads.laneToolsTitle': 'Petites eines i utilitats',
+    'downloads.laneToolsCopy': 'Aquí poden viure futures compilacions de petites utilitats, ajudants de catàleg i experiments de flux de treball creatiu.',
+    'downloads.laneAudioEyebrow': 'Àudio / música',
+    'downloads.laneAudioTitle': 'Fitxers relacionats amb música',
+    'downloads.laneAudioCopy': 'Espai preparat per a stems públics, paquets de previsualització, ajudants de llançament o altres fitxers descarregables relacionats amb música.',
+    'downloads.laneArchiveEyebrow': 'Arxiu',
+    'downloads.laneArchiveTitle': 'Paquets d’arxiu',
+    'downloads.laneArchiveCopy': 'Una línia reservada per a notes agrupades, paquets de dades públiques, plantilles i material de projecte reproduïble.',
+    'downloads.comingSoon': 'Properament',
+    'downloads.submitNote': 'Nota de distribució',
+    'downloads.noteTitle': 'Els fitxers es mantindran revisables abans de publicar-los.',
+    'downloads.noteCopy': 'Els futurs elements descarregables s’haurien d’afegir mitjançant una pull request, amb noms clars, notes de versió i una breu explicació de la funció de cada fitxer.',
+    'downloads.viewWorks': 'Veure treballs',
+    'downloads.contact': 'Contacte',
+    'homeWidgets.kicker': 'Feed en directe i suport',
+    'homeWidgets.featuredVideo': 'Vídeo destacat',
+    'homeWidgets.bsky': 'Bluesky',
+    'homeWidgets.socialTitle': 'Des del flux social',
+    'homeWidgets.socialLoading': 'Carregant el segon element més recent del RSS de Bluesky...',
+    'homeWidgets.openBsky': 'Obre la línia de Bluesky',
+    'homeWidgets.openPost': 'Obre la publicació',
+    'homeWidgets.feedFallback': 'No s’ha pogut carregar la previsualització del feed de la portada. La línia completa de Bluesky continua disponible.',
+    'homeWidgets.fallback': 'Alternativa',
+    'homeWidgets.support': 'Suport',
+    'homeWidgets.supportTitle': 'Dona suport a l’arxiu',
+    'homeWidgets.supportCopy': 'Ajuda a mantenir la feina de codi obert de LGBTALBUM, els experiments del lloc i la infraestructura creativa.',
+    'homeWidgets.sponsor': 'Patrocina a GitHub',
+    'homeWidgets.downloads': 'Baixades',
+    'homeWidgets.downloadsTitle': 'L’àrea de baixades queda reservada.',
+    'homeWidgets.downloadsCopy': 'Un prestatge directe per a futures eines petites, paquets d’arxiu, fitxers relacionats amb música i utilitats fetes per la creadora.',
+    'homeWidgets.openDownloads': 'Obre baixades'
+  }
+};
+
+const resolveDownloadsLocale = () => {
+  const stored = localStorage.getItem('msarina.locale') || 'system';
+  if (stored !== 'system' && DOWNLOADS_I18N_LOCALES.includes(stored)) return stored;
+
+  const browser = navigator.language || 'en';
+  if (browser.toLowerCase().startsWith('ja')) return 'ja';
+  if (browser.toLowerCase().startsWith('zh')) return 'zh-TW';
+  if (browser.toLowerCase().startsWith('ca')) return 'ca';
+  return 'en';
+};
+
+const applyDownloadsI18n = () => {
+  const locale = resolveDownloadsLocale();
+  const dict = downloadsTranslations[locale] || downloadsTranslations.en;
+
+  document.querySelectorAll('[data-i18n]').forEach((node) => {
+    const key = node.getAttribute('data-i18n');
+    const value = dict[key] || downloadsTranslations.en[key];
+    if (value) node.textContent = value;
+  });
+};
+
+window.applyDownloadsI18n = applyDownloadsI18n;
+
+document.addEventListener('DOMContentLoaded', () => {
+  applyDownloadsI18n();
+
+  document.querySelectorAll('[data-locale-select]').forEach((select) => {
+    select.addEventListener('change', () => {
+      window.setTimeout(applyDownloadsI18n, 0);
+    });
+  });
+});
+
+document.addEventListener('msarina:dynamic-content', applyDownloadsI18n);
