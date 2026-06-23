@@ -167,8 +167,8 @@ const navKeys = ['nav.home', 'nav.music', 'nav.timeline', 'nav.friends', 'nav.bu
           if (!value) return;
 
           event.preventDefault();
-          const defaultText = trigger.dataset.copyDefault || trigger.textContent || 'Copy';
-          trigger.dataset.copyDefault = defaultText;
+          const defaultHtml = trigger.dataset.copyHtml || trigger.innerHTML;
+          trigger.dataset.copyHtml = defaultHtml;
 
           try {
             if (navigator.clipboard && window.isSecureContext) {
@@ -179,13 +179,13 @@ const navKeys = ['nav.home', 'nav.music', 'nav.timeline', 'nav.friends', 'nav.bu
             trigger.textContent = trigger.dataset.copyDone || 'Copied';
             trigger.setAttribute('data-copied', 'true');
             window.setTimeout(() => {
-              trigger.textContent = trigger.dataset.copyDefault || 'Copy';
+              trigger.innerHTML = trigger.dataset.copyHtml || defaultHtml;
               trigger.removeAttribute('data-copied');
             }, 1600);
           } catch (error) {
             trigger.textContent = trigger.dataset.copyError || 'Copy failed';
             window.setTimeout(() => {
-              trigger.textContent = trigger.dataset.copyDefault || 'Copy';
+              trigger.innerHTML = trigger.dataset.copyHtml || defaultHtml;
             }, 1600);
           }
         });
