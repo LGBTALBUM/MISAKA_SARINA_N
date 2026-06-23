@@ -9,6 +9,13 @@ export type ContentLink = {
   note?: string;
 };
 
+export type ServiceEndpoint = {
+  label: string;
+  value: string;
+  protocol: string;
+  note?: string;
+};
+
 export type ChangelogEntry = {
   date: string;
   title: string;
@@ -25,6 +32,7 @@ export type WorkItem = {
   tags: string[];
   bodySections?: ContentSection[];
   links?: ContentLink[];
+  serviceEndpoints?: ServiceEndpoint[];
   changelog?: ChangelogEntry[];
   related?: ContentLink[];
 };
@@ -148,7 +156,15 @@ export const works: WorkItem[] = [
       },
       {
         title: '我的NTP伺服器',
-        body: 'NTP service endpoint: ntp.msarina.moe. This host is intended for NTP clients over UDP/123 only; it is not a browser page and should not be listed as a normal HTTP link.'
+        body: 'This host is intended for NTP clients only. It should be configured as an NTP server endpoint, not opened as a normal browser page.'
+      }
+    ],
+    serviceEndpoints: [
+      {
+        label: '我的NTP伺服器',
+        value: 'ntp.msarina.moe',
+        protocol: 'UDP/123',
+        note: 'Use this value in NTP client settings. It is not an HTTP/HTTPS web link.'
       }
     ],
     changelog: [
