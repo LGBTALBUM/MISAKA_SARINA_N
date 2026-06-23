@@ -44,6 +44,7 @@ export const linkGroups = [
     ['YouTube — Baker', 'https://www.youtube.com/@BakerSiacone', 'Baker channel'],
     ['YouTube — Sarina', 'https://www.youtube.com/@misakasarina', 'Sarina channel'],
     ['Calendar Tool', 'https://calendar.siacone.art/', 'Web tool'],
+    ['我的NTP伺服器', 'https://ntp.msarina.moe/', 'NTP server'],
     ['Legacy Linkyee Page', 'https://msarina.siacone.art/', 'Previous link-page mirror']
   ]}
 ];
