@@ -58,6 +58,35 @@ const statusLabel = {
       ))}
     </section>
 
+    {work.serviceEndpoints && work.serviceEndpoints.length > 0 && (
+      <section class="card page-card service-card">
+        <p class="eyebrow">Service endpoints</p>
+        <div class="endpoint-list">
+          {work.serviceEndpoints.map((endpoint) => (
+            <article class="endpoint-card">
+              <div>
+                <span>{endpoint.protocol}</span>
+                <h2>{endpoint.label}</h2>
+                {endpoint.note && <p>{endpoint.note}</p>}
+              </div>
+              <button
+                class="copy-endpoint"
+                type="button"
+                data-copy-value={endpoint.value}
+                data-copy-default="Copy endpoint"
+                data-copy-done="Copied"
+                data-copy-error="Copy failed"
+                aria-label={`Copy ${endpoint.value}`}
+              >
+                <code>{endpoint.value}</code>
+                <small>Copy</small>
+              </button>
+            </article>
+          ))}
+        </div>
+      </section>
+    )}
+
     {work.links && work.links.length > 0 && (
       <section class="card page-card">
         <p class="eyebrow">Links</p>
@@ -135,7 +164,9 @@ const statusLabel = {
 
   .meta-panel span,
   .tags span,
-  .content-section time {
+  .content-section time,
+  .endpoint-card span,
+  .copy-endpoint small {
     color: var(--soft);
     font-size: 0.72rem;
     font-weight: 850;
@@ -159,6 +190,7 @@ const statusLabel = {
   }
 
   .content-card,
+  .service-card,
   .related-card {
     grid-column: 1 / -1;
   }
@@ -202,18 +234,25 @@ const statusLabel = {
     gap: 12px;
   }
 
-  .link-list a {
-    display: grid;
-    gap: 6px;
+  .link-list a,
+  .endpoint-card,
+  .copy-endpoint {
     border: 1px solid rgba(236, 238, 255, 0.12);
     border-radius: 16px;
     background: rgba(7, 8, 18, 0.48);
+  }
+
+  .link-list a {
+    display: grid;
+    gap: 6px;
     padding: 14px;
     transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
   }
 
   .link-list a:hover,
-  .link-list a:focus-visible {
+  .link-list a:focus-visible,
+  .copy-endpoint:hover,
+  .copy-endpoint:focus-visible {
     transform: translateY(-2px);
     border-color: rgba(217, 210, 255, 0.45);
     background: rgba(19, 22, 42, 0.72);
@@ -223,13 +262,63 @@ const statusLabel = {
     color: var(--soft);
   }
 
+  .endpoint-list {
+    display: grid;
+    gap: 12px;
+  }
+
+  .endpoint-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(220px, auto);
+    gap: 18px;
+    align-items: center;
+    padding: clamp(18px, 3vw, 24px);
+  }
+
+  .endpoint-card h2 {
+    margin: 8px 0 10px;
+    font-size: clamp(1.45rem, 4vw, 2.35rem);
+    line-height: 1;
+    letter-spacing: -0.06em;
+  }
+
+  .endpoint-card p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  .copy-endpoint {
+    display: grid;
+    gap: 8px;
+    justify-items: start;
+    color: var(--text);
+    cursor: pointer;
+    padding: 14px 16px;
+    text-align: left;
+    transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+  }
+
+  .copy-endpoint code {
+    font: inherit;
+    font-size: clamp(1rem, 2vw, 1.35rem);
+    font-weight: 900;
+    letter-spacing: -0.025em;
+    word-break: break-all;
+  }
+
+  .copy-endpoint[data-copied="true"] {
+    border-color: rgba(168, 184, 255, 0.42);
+  }
+
   .back-row {
     margin-top: 36px;
   }
 
   @media (max-width: 820px) {
     .detail-hero,
-    .detail-grid {
+    .detail-grid,
+    .endpoint-card {
       grid-template-columns: 1fr;
     }
   }
