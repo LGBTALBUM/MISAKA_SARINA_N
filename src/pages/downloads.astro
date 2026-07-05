@@ -7,7 +7,20 @@ const downloadItems = [
     eyebrowKey: 'downloads.handwritingEyebrow',
     copyKey: 'downloads.handwritingCopy',
     href: 'https://github.com/LGBTALBUM/MisakaSarinaHandwritingOne',
-    ctaKey: 'downloads.openRepository'
+    ctaKey: 'downloads.openRepository',
+    fallbackEyebrow: 'Font',
+    fallbackTitle: 'MisakaSarina Handwriting One — First Version',
+    fallbackCopy: 'First version of the MisakaSarina handwriting font project.'
+  },
+  {
+    titleKey: 'downloads.cjkExtTitle',
+    eyebrowKey: 'downloads.cjkExtEyebrow',
+    copyKey: 'downloads.cjkExtCopy',
+    href: 'https://github.com/LGBTALBUM/MisakaHand-CJKExt-S100',
+    ctaKey: 'downloads.openRepository',
+    fallbackEyebrow: 'CJK font',
+    fallbackTitle: 'MisakaHand CJK Extension S100',
+    fallbackCopy: 'CJK extension font project for the MisakaHand series, distributed through its GitHub repository.'
   }
 ];
 
@@ -51,9 +64,9 @@ const downloadLanes = [
     {downloadItems.map((item) => (
       <article class="card download-card featured-download">
         <div>
-          <p class="eyebrow" data-i18n={item.eyebrowKey}>Font</p>
-          <h2 data-i18n={item.titleKey}>MisakaSarina Handwriting One — First Version</h2>
-          <p data-i18n={item.copyKey}>First version of the MisakaSarina handwriting font project.</p>
+          <p class="eyebrow" data-i18n={item.eyebrowKey}>{item.fallbackEyebrow}</p>
+          <h2 data-i18n={item.titleKey}>{item.fallbackTitle}</h2>
+          <p data-i18n={item.copyKey}>{item.fallbackCopy}</p>
         </div>
         <div class="download-actions">
           <span class="status-pill" data-i18n="downloads.available">Available</span>
