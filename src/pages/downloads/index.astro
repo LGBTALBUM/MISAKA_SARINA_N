@@ -1,0 +1,65 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const downloadItems = [
+  {
+    eyebrow: 'Font',
+    title: 'MisakaSarina Handwriting One — First Version',
+    copy: 'First version of the MisakaSarina handwriting font project, distributed through its GitHub repository.',
+    href: 'https://github.com/LGBTALBUM/MisakaSarinaHandwritingOne'
+  },
+  {
+    eyebrow: 'CJK font',
+    title: 'MisakaHand CJK Extension S100',
+    copy: 'CJK extension font project for the MisakaHand series, distributed through its GitHub repository.',
+    href: 'https://github.com/LGBTALBUM/MisakaHand-CJKExt-S100'
+  }
+];
+---
+
+<BaseLayout title="Downloads" description="Download area for Misaka Sarina small tools, archive packages, and creator-made utilities.">
+  <section class="section card downloads-hero">
+    <div>
+      <p class="eyebrow">Downloads</p>
+      <h1 class="title">A small shelf for downloadable works.</h1>
+      <p class="copy">This area collects small tools, archive packages, music-related files, and creator-made utilities that are ready to share.</p>
+    </div>
+    <div class="stats" aria-label="Downloads status">
+      <div><span>Status</span><strong>Available</strong></div>
+      <div><span>Items</span><strong>{downloadItems.length}</strong></div>
+      <div><span>Format</span><strong>Mixed</strong></div>
+    </div>
+  </section>
+
+  <section class="section downloads-list" aria-label="Available downloads">
+    {downloadItems.map((item) => (
+      <article class="card download-card featured-download">
+        <div>
+          <p class="eyebrow">{item.eyebrow}</p>
+          <h2>{item.title}</h2>
+          <p>{item.copy}</p>
+        </div>
+        <div class="download-actions">
+          <span class="status-pill">Available</span>
+          <a class="button primary" href={item.href} target="_blank" rel="noreferrer">Open repository</a>
+        </div>
+      </article>
+    ))}
+  </section>
+</BaseLayout>
+
+<style>
+  .downloads-hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(260px, 0.42fr); gap: 28px; align-items: end; padding: clamp(28px, 6vw, 56px); }
+  .stats { display: grid; gap: 12px; }
+  .stats div { display: flex; align-items: center; justify-content: space-between; gap: 18px; border: 1px solid rgba(236, 238, 255, 0.12); border-radius: 18px; background: rgba(7, 8, 18, 0.54); padding: 14px 16px; }
+  .stats span, .status-pill { color: var(--soft); font-size: 0.72rem; font-weight: 850; letter-spacing: 0.14em; text-transform: uppercase; }
+  .stats strong { color: var(--accent); font-size: 1.45rem; line-height: 1; }
+  .downloads-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
+  .download-card { display: grid; gap: 24px; align-content: space-between; min-height: 260px; padding: clamp(22px, 4vw, 34px); }
+  .featured-download { grid-template-columns: minmax(0, 1fr) auto; align-items: end; min-height: 220px; }
+  .download-card h2 { margin: 0 0 12px; font-size: clamp(1.8rem, 4vw, 3rem); line-height: 0.96; letter-spacing: -0.06em; }
+  .download-card p { margin: 0; color: var(--muted); line-height: 1.72; }
+  .download-actions { display: grid; justify-items: end; gap: 12px; }
+  .status-pill { width: max-content; border: 1px solid rgba(236, 238, 255, 0.12); border-radius: 999px; background: rgba(7, 8, 18, 0.48); padding: 9px 12px; }
+  @media (max-width: 820px) { .downloads-hero, .featured-download { grid-template-columns: 1fr; } .download-actions { justify-items: start; } }
+</style>
