@@ -1,48 +1,61 @@
-name: Sync VocaDB music data
+name: Sync VocaDB Catalogue
 
 on:
   workflow_dispatch:
+    inputs:
+      commit_message:
+        description: Commit message for catalogue changes
+        required: false
+        default: "chore: sync VocaDB music catalogue"
 
 permissions:
   contents: write
 
 jobs:
   sync-vocadb:
+    name: Sync VocaDB catalogue
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
+          fetch-depth: 0
           persist-credentials: true
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      - name: Sync VocaDB data
+      - name: Sync catalogue from VocaDB
         run: npm run sync:vocadb
 
       - name: Build check
         run: npm run build
 
-      - name: Commit synced data to branch
+      - name: Detect catalogue changes
+        id: diff
+        run: |
+          if git diff --quiet -- src/data/music.ts; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit catalogue update
+        if: steps.diff.outputs.changed == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout -B data/vocadb-sync
           git add src/data/music.ts
-          if git diff --cached --quiet; then
-            echo "No VocaDB music data changes detected."
-            exit 0
-          fi
-          git commit -m "Sync music catalogue from VocaDB"
-          git push --force origin data/vocadb-sync
+          git commit -m "${{ inputs.commit_message }}"
+          git push
 
-      - name: Print manual pull request link
-        run: |
-          echo "Synced data branch: data/vocadb-sync"
-          echo "Open PR manually: https://github.com/LGBTALBUM/MISAKA_SARINA_N/compare/main...data/vocadb-sync?expand=1"
+      - name: No catalogue changes
+        if: steps.diff.outputs.changed != 'true'
+        run: echo "VocaDB sync produced no changes."
