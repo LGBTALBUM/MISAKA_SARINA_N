@@ -22,10 +22,12 @@ const curatedMusicOverrides: Record<string, MusicReleaseOverride> = {
     ]
   },
   'the-terrible-days-we-ve-passed': {
+    featured: true,
     description:
-      'A Misaka Sarina and Hatsune Miku release preserved as a primary archive entry. This override keeps the page readable while VocaDB remains the structured metadata source.',
+      'A public Misaka Sarina and Hatsune Miku release selected as the current homepage feature. The entry keeps its public YouTube and VocaDB links while the VocaDB source remains available for structured metadata review.',
     credits: ['Misaka Sarina', '初音ミク'],
     notes: [
+      'Selected as the current homepage featured release.',
       'Curated site description added through musicOverrides.ts.',
       'The VocaDB source link is preserved for structured metadata review.'
     ]
@@ -49,13 +51,13 @@ const curatedMusicOverrides: Record<string, MusicReleaseOverride> = {
     ]
   },
   'ytm-02-057': {
-    featured: true,
+    featured: false,
     forceMain: true,
     description:
-      'A private-catalogue-derived Misaka Sarina-era main release candidate. Public platform links are not added yet, but the entry is promoted as a curated archive highlight.',
+      'A private-catalogue-derived Misaka Sarina-era main release candidate. The entry remains in the curated archive but is no longer used as the homepage featured release until a public canonical platform URL is confirmed.',
     credits: ['初音ミク', 'Misaka Sarina'],
     notes: [
-      'Selected as the current featured release for the homepage archive module.',
+      'Previously selected as the homepage featured release; replaced by a public-link release.',
       'Private YouTube Music export references remain omitted from public output.',
       'Add public streaming or video links when a public canonical URL is confirmed.'
     ]
