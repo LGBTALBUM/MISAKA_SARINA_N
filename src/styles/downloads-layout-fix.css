@@ -1,0 +1,26 @@
+@media (min-width: 821px) {
+  .downloads-list[aria-label="Available downloads"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  .downloads-list[aria-label="Available downloads"] .download-card {
+    grid-template-columns: minmax(0, 1fr) minmax(190px, auto);
+    min-height: 0;
+  }
+
+  .downloads-list[aria-label="Available downloads"] .download-card > div:first-child {
+    max-width: 780px;
+  }
+
+  .downloads-list[aria-label="Available downloads"] .download-card h2 {
+    font-size: clamp(2rem, 4.8vw, 4rem);
+  }
+
+  .downloads-list[aria-label="Available downloads"] .download-card p {
+    max-width: 70ch;
+  }
+
+  .downloads-list[aria-label="Available downloads"] .download-actions {
+    align-self: center;
+  }
+}
