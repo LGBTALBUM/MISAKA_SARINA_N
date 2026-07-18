@@ -26,6 +26,7 @@ export const linkGroups = [
     ['Apple Music', 'https://music.apple.com/en/artist/misaka-sarina/1705885192', 'Artist profile'],
     ['Amazon Music', 'https://www.amazon.co.uk/music/player/artists/B0C627DLFN/misaka-sarina', 'Artist profile'],
     ['YouTube Music', 'https://music.youtube.com/channel/UC7HcmRkHYdqHMYs_TxlP_GQ', 'Music channel'],
+    ['YouTube — Misaka Sarina VEVO', 'https://www.youtube.com/@misakasarinaVEVO', 'Official VEVO channel'],
     ['VocaDB', 'https://vocadb.net/Ar/75285', 'Structured metadata profile']
   ]},
   { title: 'Support / Collaboration', items: [
