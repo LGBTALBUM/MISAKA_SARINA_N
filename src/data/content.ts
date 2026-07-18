@@ -43,6 +43,7 @@ export const linkGroups = [
   { title: 'Projects', items: [
     ['YouTube — Baker', 'https://www.youtube.com/@BakerSiacone', 'Baker channel'],
     ['YouTube — Sarina', 'https://www.youtube.com/@misakasarina', 'Sarina channel'],
+    ['YouTube — Misaka Sarina VEVO', 'https://www.youtube.com/@misakasarinaVEVO', 'Official music video channel'],
     ['Calendar Tool', 'https://calendar.siacone.art/', 'Web tool'],
     ['Legacy Linkyee Page', 'https://msarina.siacone.art/', 'Previous link-page mirror']
   ]}
