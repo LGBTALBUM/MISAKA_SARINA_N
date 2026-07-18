@@ -1,7 +1,7 @@
 const HOME_FEED = '/api/bluesky-rss.json';
 const PROFILE = 'https://bsky.app/profile/msarina.bluesky.siacone.art';
 const SPONSOR = 'https://github.com/sponsors/LGBTALBUM';
-const YT = 'https://www.youtube.com/embed/P9Bfig2ADe0?si=cmFkg31YP-Ya6k20';
+const YT = 'https://www.youtube.com/embed/laHZvUI_l4o';
 
 const isHome = () => location.pathname === '/' || location.pathname === '/index.html';
 const text = (value) => String(value || '').trim();
