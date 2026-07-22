@@ -42,7 +42,8 @@ const navKeys = ['nav.home', 'nav.music', 'nav.timeline', 'nav.friends', 'nav.bu
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href={withBase('/MSarina.svg')} />
     <link rel="alternate" type="application/rss+xml" title={`${site.title} Blog`} href={new URL('rss.xml', site.url).toString()} />
-    <link rel="stylesheet" href={withBase('/home-widgets.css?v=featured-video-2')} />
+    <link rel="stylesheet" href={withBase('/home-widgets.css?v=featured-video-promo-3')} />
+    <link rel="stylesheet" href={withBase('/home-video-promo.css?v=featured-video-promo-3')} />
     <meta property="og:type" content={ogType} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
@@ -197,6 +198,7 @@ const navKeys = ['nav.home', 'nav.music', 'nav.timeline', 'nav.friends', 'nav.bu
     <script src={withBase('/content-i18n.js')} defer></script>
     <script src={withBase('/garden-i18n.js')} defer></script>
     <script src={withBase('/downloads-i18n.js')} defer></script>
-    <script src={withBase('/home-widgets.js?v=featured-video-2')} defer></script>
+    <script src={withBase('/home-video-i18n.js?v=featured-video-promo-3')} defer></script>
+    <script src={withBase('/home-widgets.js?v=featured-video-promo-3')} defer></script>
   </body>
 </html>
