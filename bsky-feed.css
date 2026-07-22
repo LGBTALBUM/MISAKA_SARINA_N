@@ -1,0 +1,11 @@
+.bsky-hero{padding:clamp(28px,6vw,56px)}
+.bsky-list{display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
+.bsky-card{display:grid;gap:18px;width:100%;box-sizing:border-box;border:1px solid rgba(236,238,255,.16);border-radius:24px;background:linear-gradient(145deg,rgba(19,22,42,.82),rgba(7,8,18,.68));padding:clamp(22px,4vw,34px);box-shadow:0 22px 70px rgba(0,0,0,.24)}
+.bsky-card:hover{border-color:rgba(217,210,255,.45);background:linear-gradient(145deg,rgba(28,32,58,.9),rgba(12,14,28,.78))}
+.bsky-top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;color:var(--soft);font-size:.72rem;font-weight:850;letter-spacing:.16em;text-transform:uppercase}
+.bsky-card p{margin:0;color:var(--text);font-size:clamp(1rem,2vw,1.18rem);line-height:1.72;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word}
+.bsky-card .button{width:max-content;justify-self:start}
+.bsky-fallback{padding:24px}
+:root[data-theme='light'] .bsky-card{border-color:rgba(34,28,45,.16);background:linear-gradient(145deg,rgba(255,255,255,.92),rgba(255,252,247,.82));box-shadow:0 18px 46px rgba(35,27,55,.12)}
+:root[data-theme='light'] .bsky-card:hover{border-color:rgba(51,42,145,.34);background:linear-gradient(145deg,rgba(255,255,255,.98),rgba(247,243,236,.9))}
+@media(max-width:720px){.bsky-top{align-items:flex-start;flex-direction:column}.bsky-card .button{width:100%;justify-content:center}}

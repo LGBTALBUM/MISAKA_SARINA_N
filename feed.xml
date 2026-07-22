@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Misaka Sarina</title>
+    <link>https://msarina.moe/</link>
+    <description>Misaka Sarina aka Baker Siacone — music creator, VOCALOID creator, and digital project maker.</description>
+    <language>zh-Hant</language>
+    <lastBuildDate>Wed, 22 Jul 2026 16:37:07 GMT</lastBuildDate>
+    <atom:link href="https://msarina.moe/feed.xml" rel="self" type="application/rss+xml" />
+
+  </channel>
+</rss>
