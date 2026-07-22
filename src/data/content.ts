@@ -13,10 +13,8 @@ export const nav = [
 ];
 
 export const socials = [
-  ['Instagram', 'https://www.instagram.com/misakasarina/'],
   ['Bluesky', 'https://bsky.app/profile/msarina.bluesky.siacone.art'],
   ['YouTube', 'https://www.youtube.com/@misakasarina'],
-  ['Facebook', 'https://www.facebook.com/misakasarina/'],
   ['Email', 'mailto:i@msarina.moe']
 ];
 
@@ -34,10 +32,6 @@ export const linkGroups = [
     ['Email', 'mailto:i@msarina.moe', 'Direct contact']
   ]},
   { title: 'Social', items: [
-    ['Facebook Profile', 'https://www.facebook.com/BakerSiacone/', 'Personal profile'],
-    ['Facebook Page', 'https://www.facebook.com/misakasarina/', 'Artist page'],
-    ['Facebook Group', 'https://www.facebook.com/share/g/17WHMr54Qj/', 'Community group'],
-    ['Instagram', 'https://www.instagram.com/misakasarina/', 'Updates'],
     ['Bluesky', 'https://bsky.app/profile/msarina.bluesky.siacone.art', 'Short posts']
   ]},
   { title: 'Projects', items: [
