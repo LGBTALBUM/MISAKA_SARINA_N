@@ -1,7 +1,8 @@
 const HOME_FEED = '/api/bluesky-rss.json';
 const PROFILE = 'https://bsky.app/profile/msarina.bluesky.siacone.art';
 const SPONSOR = 'https://github.com/sponsors/LGBTALBUM';
-const YT = 'https://www.youtube.com/embed/laHZvUI_l4o';
+const YT = 'https://www.youtube.com/embed/-ZseniKo-2s';
+const YT_WATCH = 'https://youtu.be/-ZseniKo-2s?si=q5HjSG0nBWpqnLyq';
 
 const isHome = () => location.pathname === '/' || location.pathname === '/index.html';
 const text = (value) => String(value || '').trim();
@@ -21,7 +22,14 @@ function section() {
     <article class="home-widget home-video">
       <p class="eyebrow" data-i18n="homeWidgets.featuredVideo">Featured video</p>
       <div class="home-video-frame">
-        <iframe width="560" height="315" src="${YT}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
+        <iframe width="560" height="315" src="${YT}" title="Misaka Sarina featured video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
+      </div>
+      <div class="home-video-promo">
+        <div>
+          <h2 data-i18n="homeVideo.title">Now featured: a new Misaka Sarina video.</h2>
+          <p data-i18n="homeVideo.copy">The homepage spotlight has been refreshed. Watch the featured video here, then continue on YouTube to like, comment, share, and explore more releases.</p>
+        </div>
+        <a class="button primary" href="${YT_WATCH}" target="_blank" rel="noreferrer" data-i18n="homeVideo.watch">Watch on YouTube</a>
       </div>
     </article>
     <div class="home-extra-grid">
