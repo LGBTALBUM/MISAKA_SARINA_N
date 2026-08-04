@@ -1,4 +1,3 @@
-const HOME_FEED = '/api/bluesky-rss.json';
 const PROFILE = 'https://bsky.app/profile/msarina.bluesky.siacone.art';
 const SPONSOR = 'https://github.com/sponsors/LGBTALBUM';
 const YT = 'https://www.youtube.com/embed/-ZseniKo-2s';
@@ -39,7 +38,7 @@ function section() {
           <time class="home-widget-time">Loading</time>
         </div>
         <h2 data-i18n="homeWidgets.socialTitle">From the social stream</h2>
-        <p data-i18n="homeWidgets.socialLoading">Loading the second latest Bluesky RSS item...</p>
+        <p data-i18n="homeWidgets.socialLoading">Loading the second latest Bluesky item...</p>
         <a class="button" href="/blog/bluesky/" data-i18n="homeWidgets.openBsky">Open Bluesky lane</a>
       </article>
       <article class="home-widget home-downloads">
@@ -61,12 +60,16 @@ function section() {
 
 async function fill(root) {
   const card = root.querySelector('.home-bsky');
+
   try {
-    const response = await fetch(HOME_FEED, { cache: 'no-store', headers: { accept: 'application/json' } });
-    const json = await response.json();
-    const items = Array.isArray(json.items) ? json.items : [];
-    const item = items[1] || items[0];
+    if (!window.MSBlueskyFeed || typeof window.MSBlueskyFeed.getItems !== 'function') {
+      throw new Error('Bluesky feed client unavailable');
+    }
+
+    const result = await window.MSBlueskyFeed.getItems({ limit: 4 });
+    const item = result.items[1] || result.items[0];
     if (!item) throw new Error('empty feed');
+
     card.querySelector('.home-widget-time').textContent = fmt(item.pubDate);
     card.querySelector('p').removeAttribute('data-i18n');
     card.querySelector('p').textContent = postText(item);
@@ -78,6 +81,7 @@ async function fill(root) {
     card.querySelector('a').href = '/blog/bluesky/';
     card.querySelector('a').setAttribute('data-i18n', 'homeWidgets.openBsky');
   }
+
   translateDynamic();
 }
 
