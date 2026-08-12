@@ -1,0 +1,41 @@
+.home-video-promo {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: clamp(18px, 4vw, 34px);
+  align-items: end;
+  padding: clamp(6px, 1vw, 12px) clamp(2px, 1vw, 8px) 0;
+}
+
+.home-video-promo > div {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+
+.home-video-promo h2 {
+  max-width: 900px;
+  font-size: clamp(2rem, 5vw, 4.2rem);
+  line-height: 0.95;
+  letter-spacing: -0.075em;
+}
+
+.home-video-promo p {
+  max-width: 820px;
+}
+
+.home-video-promo .button {
+  align-self: end;
+  white-space: nowrap;
+}
+
+@media (max-width: 880px) {
+  .home-video-promo {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .home-video-promo .button {
+    width: 100%;
+    justify-content: center;
+  }
+}
