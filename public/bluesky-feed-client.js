@@ -1,13 +1,19 @@
 (() => {
   const HANDLE = 'msarina.bluesky.siacone.art';
+  const DID = 'did:plc:67qxrad62jqu2433pa3i2fhi';
   const PROFILE_URL = `https://bsky.app/profile/${HANDLE}`;
   const WORKER_URL = '/api/bluesky-rss.json';
-  const PUBLIC_API_URL = new URL('https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed');
 
-  PUBLIC_API_URL.searchParams.set('actor', HANDLE);
-  PUBLIC_API_URL.searchParams.set('limit', '30');
-  PUBLIC_API_URL.searchParams.set('filter', 'posts_no_replies');
+  const makePublicApiUrl = (origin) => {
+    const url = new URL('/xrpc/app.bsky.feed.getAuthorFeed', origin);
+    url.searchParams.set('actor', DID);
+    url.searchParams.set('limit', '30');
+    url.searchParams.set('filter', 'posts_no_replies');
+    return url;
+  };
 
+  const PUBLIC_API_URL = makePublicApiUrl('https://public.api.bsky.app');
+  const API_FALLBACK_URL = makePublicApiUrl('https://api.bsky.app');
   const cleanText = (value) => String(value || '').trim();
 
   const fetchJson = async (url, timeoutMs) => {
@@ -76,12 +82,16 @@
 
   const sources = [
     {
-      name: 'Bluesky public API',
-      load: async () => normalizePublicApi(await fetchJson(PUBLIC_API_URL.toString(), 8000))
+      name: 'Site Worker proxy',
+      load: async () => normalizeWorker(await fetchJson(WORKER_URL, 7000))
     },
     {
-      name: 'Worker JSON fallback',
-      load: async () => normalizeWorker(await fetchJson(WORKER_URL, 4000))
+      name: 'Bluesky public API',
+      load: async () => normalizePublicApi(await fetchJson(PUBLIC_API_URL.toString(), 7000))
+    },
+    {
+      name: 'Bluesky API fallback',
+      load: async () => normalizePublicApi(await fetchJson(API_FALLBACK_URL.toString(), 7000))
     }
   ];
 
@@ -109,6 +119,7 @@
   window.MSBlueskyFeed = Object.freeze({
     getItems,
     profileUrl: PROFILE_URL,
+    workerUrl: WORKER_URL,
     publicApiUrl: PUBLIC_API_URL.toString()
   });
 })();
