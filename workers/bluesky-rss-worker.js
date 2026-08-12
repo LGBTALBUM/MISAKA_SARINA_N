@@ -1,5 +1,7 @@
-const FEED_URL = 'https://openrss.org/feed/bsky.app/profile/msarina.bluesky.siacone.art';
-const PROFILE_URL = 'https://bsky.app/profile/msarina.bluesky.siacone.art';
+const HANDLE = 'msarina.bluesky.siacone.art';
+const DID = 'did:plc:67qxrad62jqu2433pa3i2fhi';
+const PROFILE_URL = `https://bsky.app/profile/${HANDLE}`;
+const OPENRSS_URL = `https://openrss.org/feed/bsky.app/profile/${HANDLE}`;
 const CACHE_TTL_SECONDS = 15 * 60;
 
 const corsHeaders = {
@@ -7,6 +9,21 @@ const corsHeaders = {
   'Access-Control-Allow-Methods': 'GET, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, Accept'
 };
+
+const cleanText = (value = '') => String(value || '').trim();
+
+const makeAuthorFeedUrl = (origin) => {
+  const url = new URL('/xrpc/app.bsky.feed.getAuthorFeed', origin);
+  url.searchParams.set('actor', DID);
+  url.searchParams.set('limit', '30');
+  url.searchParams.set('filter', 'posts_no_replies');
+  return url.toString();
+};
+
+const publicApiSources = [
+  ['Bluesky public API', makeAuthorFeedUrl('https://public.api.bsky.app')],
+  ['Bluesky API fallback', makeAuthorFeedUrl('https://api.bsky.app')]
+];
 
 const stripHtml = (value = '') => value
   .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1')
@@ -24,7 +41,7 @@ const getTag = (item, tagName) => {
   return match ? stripHtml(match[1]) : '';
 };
 
-const parseItems = (xml) => {
+const parseRssItems = (xml) => {
   const itemMatches = xml.match(/<item[\s\S]*?<\/item>/gi) || [];
   return itemMatches.slice(0, 20).map((item) => ({
     title: getTag(item, 'title') || 'Bluesky post',
@@ -33,6 +50,82 @@ const parseItems = (xml) => {
     pubDate: getTag(item, 'pubDate'),
     guid: getTag(item, 'guid') || getTag(item, 'link')
   }));
+};
+
+const postUrl = (post) => {
+  const uri = cleanText(post?.uri);
+  const rkey = uri.split('/').filter(Boolean).pop();
+  const handle = cleanText(post?.author?.handle) || HANDLE;
+
+  return rkey
+    ? `https://bsky.app/profile/${encodeURIComponent(handle)}/post/${encodeURIComponent(rkey)}`
+    : PROFILE_URL;
+};
+
+const parseApiItems = (payload) => {
+  const feed = Array.isArray(payload?.feed) ? payload.feed : [];
+
+  return feed
+    .filter((entry) => !entry?.reason)
+    .map((entry) => {
+      const post = entry?.post || {};
+      const record = post?.record || {};
+      const description = cleanText(record?.text);
+      const link = postUrl(post);
+
+      return {
+        title: description || 'Bluesky post',
+        link,
+        description,
+        pubDate: cleanText(record?.createdAt) || cleanText(post?.indexedAt),
+        guid: cleanText(post?.uri) || link
+      };
+    })
+    .filter((item) => item.description || item.link)
+    .slice(0, 20);
+};
+
+const fetchWithTimeout = async (url, init = {}, timeoutMs = 8000) => {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    return await fetch(url, { ...init, signal: controller.signal });
+  } finally {
+    clearTimeout(timeout);
+  }
+};
+
+const fetchApiSource = async (name, url) => {
+  const response = await fetchWithTimeout(url, {
+    headers: {
+      Accept: 'application/json',
+      'User-Agent': 'MisakaSarinaSite/2.0 (+https://msarina.moe/)'
+    }
+  });
+
+  if (!response.ok) throw new Error(`${name} HTTP ${response.status}`);
+  const payload = await response.json();
+  const items = parseApiItems(payload);
+  if (!items.length) throw new Error(`${name} returned empty feed`);
+
+  return { source: name, sourceUrl: url, items };
+};
+
+const fetchOpenRss = async () => {
+  const response = await fetchWithTimeout(OPENRSS_URL, {
+    headers: {
+      Accept: 'application/rss+xml, application/xml, text/xml;q=0.9, */*;q=0.8',
+      'User-Agent': 'MisakaSarinaSite/2.0 (+https://msarina.moe/)'
+    }
+  });
+
+  if (!response.ok) throw new Error(`OpenRSS HTTP ${response.status}`);
+  const xml = await response.text();
+  const items = parseRssItems(xml);
+  if (!items.length) throw new Error('OpenRSS returned empty feed');
+
+  return { source: 'OpenRSS fallback', sourceUrl: OPENRSS_URL, items };
 };
 
 const jsonResponse = (body, init = {}) => new Response(JSON.stringify(body, null, 2), {
@@ -44,6 +137,26 @@ const jsonResponse = (body, init = {}) => new Response(JSON.stringify(body, null
     ...(init.headers || {})
   }
 });
+
+const loadFeed = async () => {
+  const errors = [];
+
+  for (const [name, url] of publicApiSources) {
+    try {
+      return await fetchApiSource(name, url);
+    } catch (error) {
+      errors.push(error instanceof Error ? error.message : String(error));
+    }
+  }
+
+  try {
+    return await fetchOpenRss();
+  } catch (error) {
+    errors.push(error instanceof Error ? error.message : String(error));
+  }
+
+  throw new Error(errors.join(' | ') || 'No Bluesky upstream available');
+};
 
 export default {
   async fetch(request, env, ctx) {
@@ -61,33 +174,15 @@ export default {
     if (cached) return cached;
 
     try {
-      const upstream = await fetch(FEED_URL, {
-        headers: {
-          Accept: 'application/rss+xml, application/xml, text/xml;q=0.9, */*;q=0.8',
-          'User-Agent': 'MisakaSarinaSite/1.0 (+https://msarina.moe/)'
-        }
-      });
-
-      if (!upstream.ok) {
-        return jsonResponse({
-          ok: false,
-          error: `Upstream RSS request failed: ${upstream.status}`,
-          feedUrl: FEED_URL,
-          profileUrl: PROFILE_URL,
-          items: []
-        }, { status: 502 });
-      }
-
-      const xml = await upstream.text();
-      const items = parseItems(xml);
+      const result = await loadFeed();
       const payload = {
         ok: true,
-        source: 'OpenRSS',
-        feedUrl: FEED_URL,
+        source: result.source,
+        sourceUrl: result.sourceUrl,
         profileUrl: PROFILE_URL,
         fetchedAt: new Date().toISOString(),
-        count: items.length,
-        items
+        count: result.items.length,
+        items: result.items
       };
 
       const response = jsonResponse(payload);
@@ -97,10 +192,9 @@ export default {
       return jsonResponse({
         ok: false,
         error: error instanceof Error ? error.message : 'Unknown Worker error',
-        feedUrl: FEED_URL,
         profileUrl: PROFILE_URL,
         items: []
-      }, { status: 500 });
+      }, { status: 502 });
     }
   }
 };
