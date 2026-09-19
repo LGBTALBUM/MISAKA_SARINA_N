@@ -1,6 +1,6 @@
 export const site = {
   title: 'Misaka Sarina',
-  description: 'Misaka Sarina aka Baker Siacone — music creator, VOCALOID creator, and digital project maker.',
+  description: 'Misaka Sarina — independent music producer and digital creator building songs, archives, and small worlds on the internet.',
   url: 'https://msarina.moe/',
   email: 'i@msarina.moe',
   image: '/og-image.svg',
@@ -9,7 +9,12 @@ export const site = {
 };
 
 export const nav = [
-  ['Home', '/'], ['Music', '/music'], ['Timeline', '/music/timeline'], ['Friends', '/friends'], ['Business', '/business'], ['Works', '/works'], ['Downloads', '/downloads'], ['Blog', '/blog'], ['Links', '/links'], ['About', '/about'], ['Contact', '/contact']
+  ['Home', '/'],
+  ['Music', '/music/'],
+  ['Archive', '/archive/'],
+  ['About', '/about/'],
+  ['Support', '/support/'],
+  ['Work with me', '/business/']
 ];
 
 export const socials = [
