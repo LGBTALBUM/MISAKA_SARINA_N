@@ -24,7 +24,12 @@ export const linkGroups = [
     ['Apple Music', 'https://music.apple.com/en/artist/misaka-sarina/1705885192', 'Artist profile'],
     ['Amazon Music', 'https://www.amazon.co.uk/music/player/artists/B0C627DLFN/misaka-sarina', 'Artist profile'],
     ['YouTube Music', 'https://music.youtube.com/channel/UC7HcmRkHYdqHMYs_TxlP_GQ', 'Music channel'],
-    ['VocaDB', 'https://vocadb.net/Ar/75285', 'Structured metadata profile']
+    ['VocaDB — 75285', 'https://vocadb.net/Ar/75285', 'Structured metadata profile'],
+    ['VocaDB — 176454', 'https://vocadb.net/Ar/176454', 'Second structured metadata identity'],
+    ['Kiite', 'https://kiite.jp/creator/DoEBH2NZo3', 'Niconico catalogue discovery'],
+    ['VocaRank — Combined', 'https://vocarank.live/en/search?vocalist_ids=75285%2C176454', 'Cross-ID song search and live view statistics'],
+    ['VocaRank — 75285', 'https://vocarank.live/en/artist/75285', 'Artist statistics profile'],
+    ['VocaRank — 176454', 'https://vocarank.live/en/artist/176454', 'Second artist statistics profile']
   ]},
   { title: 'Support / Collaboration', items: [
     ['愛發電', 'https://afdian.com/a/misakasarina', 'Creator support'],
