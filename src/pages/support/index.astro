@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const supportRoutes = [
+  {
+    eyebrow: 'brandSupport.international',
+    title: 'Ko-fi',
+    copy: 'brandSupport.internationalCopy',
+    href: 'https://ko-fi.com/M4M61Q0UCZ'
+  },
+  {
+    eyebrow: 'brandSupport.cn',
+    title: '愛發電',
+    copy: 'brandSupport.cnCopy',
+    href: 'https://afdian.com/a/misakasarina'
+  },
+  {
+    eyebrow: 'brandSupport.dev',
+    title: 'GitHub Sponsors',
+    copy: 'brandSupport.devCopy',
+    href: 'https://github.com/sponsors/LGBTALBUM'
+  }
+];
+---
+<BaseLayout title="Support Sarina" description="Support Misaka Sarina music, archive maintenance, and independent creator work.">
+  <section class="section card support-hero">
+    <p class="eyebrow" data-i18n="brandSupport.eyebrow">Support Sarina</p>
+    <h1 class="title" data-i18n="brandSupport.title">Keep the songs and archive moving.</h1>
+    <p class="copy" data-i18n="brandSupport.copy">Choose one route. The purpose is the same: support new music, archive maintenance, and independent creator work.</p>
+  </section>
+
+  <section class="section support-grid">
+    {supportRoutes.map((route) => (
+      <article class="card support-card">
+        <p class="eyebrow" data-i18n={route.eyebrow}>Support</p>
+        <h2>{route.title}</h2>
+        <p data-i18n={route.copy}>Support route.</p>
+        <a class="button primary" href={route.href} target="_blank" rel="noreferrer" data-i18n="brandSupport.open">Open support route</a>
+      </article>
+    ))}
+  </section>
+</BaseLayout>
+
+<style>
+  .support-hero { padding: clamp(30px, 7vw, 72px); }
+  .support-hero .copy { max-width: 760px; }
+  .support-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+  .support-card { display: flex; min-height: 310px; flex-direction: column; align-items: flex-start; padding: clamp(24px,4vw,34px); }
+  .support-card h2 { margin: 0 0 14px; font-size: clamp(2rem,4vw,3rem); letter-spacing: -.06em; }
+  .support-card > p:not(.eyebrow) { margin: 0 0 24px; color: var(--muted); line-height: 1.7; }
+  .support-card .button { margin-top: auto; }
+  @media (max-width: 880px) { .support-grid { grid-template-columns: 1fr; } .support-card { min-height: 240px; } }
+</style>
