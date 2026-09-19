@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import MusicCard from '../components/MusicCard.astro';
 import { getSortedReleases } from '../utils/musicCatalogue';
 import { getLyricsStats } from '../utils/musicLyrics';
+import { musicExternalSources } from '../data/musicExternalSources';
 import {
   getMainCatalogueReleases,
   getProfileEntries,
@@ -34,6 +35,26 @@ const lyricsStats = getLyricsStats(releases);
     <p class="eyebrow">Catalogue source note</p>
     <h2>VocaDB metadata may be incomplete.</h2>
     <p class="copy">VocaDB remains the structured metadata source for generated release pages. Private YouTube Music catalogue references are not shown publicly; missing YTM-derived entries should be added as manual catalogue entries and merged into the Primary catalogue.</p>
+  </section>
+
+  <section class="section external-sources" aria-label="External music discovery sources">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow" data-i18n="musicSources.eyebrow">External discovery & statistics</p>
+        <h2 data-i18n="musicSources.title">Cross-check the archive across Kiite and VocaRank.</h2>
+      </div>
+      <p data-i18n="musicSources.copy">The local catalogue remains curated and static. These external sources help discover missing works, reconcile the two Misaka Sarina VocaDB artist identities, and inspect live YouTube / Niconico statistics without freezing volatile view counts into this site.</p>
+    </div>
+    <div class="source-grid">
+      {musicExternalSources.map((source) => (
+        <a class="card source-card" href={source.href} target="_blank" rel="noreferrer">
+          <span>{source.eyebrow}</span>
+          <strong>{source.label}</strong>
+          <p data-i18n={source.copyKey}>{source.description}</p>
+          <small>{source.meta}</small>
+        </a>
+      ))}
+    </div>
   </section>
 
   <section class="section card lyrics-workbench" aria-label="Lyrics collection pane">
@@ -194,7 +215,8 @@ const lyricsStats = getLyricsStats(releases);
 
   .music-list,
   .compact-list,
-  .profile-grid {
+  .profile-grid,
+  .source-grid {
     display: grid;
     gap: 18px;
   }
@@ -241,6 +263,49 @@ const lyricsStats = getLyricsStats(releases);
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   }
 
+  .source-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .source-card {
+    display: grid;
+    gap: 12px;
+    min-height: 220px;
+    padding: 24px;
+    transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+  }
+
+  .source-card:hover,
+  .source-card:focus-visible {
+    transform: translateY(-2px);
+    border-color: rgba(217, 210, 255, 0.45);
+    background: rgba(19, 22, 42, 0.72);
+  }
+
+  .source-card span {
+    color: var(--accent-2);
+    font-size: 0.72rem;
+    font-weight: 850;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .source-card strong {
+    font-size: 1.25rem;
+    line-height: 1.15;
+  }
+
+  .source-card p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  .source-card small {
+    margin-top: auto;
+    color: var(--soft);
+  }
+
   .profile-card {
     display: grid;
     gap: 10px;
@@ -267,6 +332,10 @@ const lyricsStats = getLyricsStats(releases);
   @media (max-width: 840px) {
     .music-hero,
     .lyrics-workbench {
+      grid-template-columns: 1fr;
+    }
+
+    .source-grid {
       grid-template-columns: 1fr;
     }
 
