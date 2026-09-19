@@ -15,10 +15,24 @@ const curatedMusicOverrides: Record<string, MusicReleaseOverride> = {
   'artist-profile': {
     featured: false,
     description:
-      'Official public music profiles for Misaka Sarina, grouped as an artist-profile archive entry rather than a release. Individual works remain available as separate catalogue pages.',
+      'Official public music profiles and discovery sources for Misaka Sarina. The catalogue now cross-checks both known VocaDB artist identities and links out to Kiite and VocaRank for broader discovery and live statistics.',
+    platforms: [
+      { label: 'Spotify', href: 'https://open.spotify.com/artist/7HO1a8ZvIIRGG0y4sjkwy1' },
+      { label: 'Apple Music', href: 'https://music.apple.com/en/artist/misaka-sarina/1705885192' },
+      { label: 'YouTube Music', href: 'https://music.youtube.com/channel/UC7HcmRkHYdqHMYs_TxlP_GQ' },
+      { label: 'Amazon Music', href: 'https://www.amazon.co.uk/music/player/artists/B0C627DLFN/misaka-sarina' },
+      { label: 'VocaDB — 75285', href: 'https://vocadb.net/Ar/75285' },
+      { label: 'VocaDB — 176454', href: 'https://vocadb.net/Ar/176454' },
+      { label: 'Kiite', href: 'https://kiite.jp/creator/DoEBH2NZo3' },
+      { label: 'VocaRank — Combined', href: 'https://vocarank.live/en/search?vocalist_ids=75285%2C176454' },
+      { label: 'VocaRank — 75285', href: 'https://vocarank.live/en/artist/75285' },
+      { label: 'VocaRank — 176454', href: 'https://vocarank.live/en/artist/176454' }
+    ],
     notes: [
       'Profile entries are intentionally separated from release entries on the music archive page.',
-      'Public artist profile links are kept here so release pages can stay focused on individual works.'
+      'VocaDB artist IDs 75285 and 176454 both resolve to Misaka Sarina and are treated as catalogue identities.',
+      'Kiite is used as a discovery / cross-check source for Niconico-facing works.',
+      'VocaRank is used for live YouTube / Niconico statistics and cross-ID discovery; view counts are intentionally not copied into static metadata.'
     ]
   },
   'the-terrible-days-we-ve-passed': {
