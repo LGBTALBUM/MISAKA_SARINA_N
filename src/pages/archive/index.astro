@@ -1,0 +1,94 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const routes = [
+  {
+    href: '/music/',
+    key: 'brandArchive.songs',
+    copyKey: 'brandArchive.songsCopy',
+    fallback: 'Songs',
+    fallbackCopy: 'Full music catalogue, versions, lyrics, profiles, and release metadata.'
+  },
+  {
+    href: '/blog/',
+    key: 'brandArchive.stories',
+    copyKey: 'brandArchive.storiesCopy',
+    fallback: 'Stories',
+    fallbackCopy: 'Release diaries, music notes, site logs, and longer writing.'
+  },
+  {
+    href: '/music/timeline/',
+    key: 'brandArchive.timeline',
+    copyKey: 'brandArchive.timelineCopy',
+    fallback: 'Timeline',
+    fallbackCopy: 'Move through the music archive by year.'
+  },
+  {
+    href: '/works/',
+    key: 'brandArchive.artifacts',
+    copyKey: 'brandArchive.artifactsCopy',
+    fallback: 'Artifacts',
+    fallbackCopy: 'Public projects, systems, experiments, and technical traces.'
+  },
+  {
+    href: '/downloads/',
+    key: 'brandArchive.downloads',
+    copyKey: 'brandArchive.downloadsCopy',
+    fallback: 'Downloads',
+    fallbackCopy: 'Fonts, tools, archive packages, and creator-made utilities.'
+  },
+  {
+    href: '/garden/',
+    key: 'brandArchive.garden',
+    copyKey: 'brandArchive.gardenCopy',
+    fallback: 'Digital Garden',
+    fallbackCopy: 'Drafts, seeds, maintenance notes, and unfinished context.'
+  }
+];
+
+const withBase = (path: string) => {
+  const base = import.meta.env.BASE_URL.endsWith('/')
+    ? import.meta.env.BASE_URL
+    : `${import.meta.env.BASE_URL}/`;
+  return `${base}${path.replace(/^\/+/, '')}`;
+};
+---
+<BaseLayout title="Archive" description="Songs, stories, timeline, artifacts, downloads, and digital traces from Misaka Sarina.">
+  <section class="section card archive-hero">
+    <p class="eyebrow" data-i18n="brandArchive.eyebrow">Archive</p>
+    <h1 class="title" data-i18n="brandArchive.title">Everything that is worth keeping.</h1>
+    <p class="copy" data-i18n="brandArchive.copy">The first-level navigation stays small. The deeper catalogue, stories, timeline, tools, downloads, and living notes remain here for people who want to explore.</p>
+  </section>
+
+  <section class="section archive-grid" aria-label="Archive routes">
+    {routes.map((route) => (
+      <a class="card archive-card" href={withBase(route.href)}>
+        <span>MS / ARCHIVE</span>
+        <h2 data-i18n={route.key}>{route.fallback}</h2>
+        <p data-i18n={route.copyKey}>{route.fallbackCopy}</p>
+        <strong aria-hidden="true">→</strong>
+      </a>
+    ))}
+  </section>
+
+  <section class="section archive-secondary">
+    <a href={withBase('/friends/')}>Friends</a>
+    <a href={withBase('/links/')}>Links</a>
+    <a href={withBase('/catalogue-review/')}>Catalogue Review</a>
+  </section>
+</BaseLayout>
+
+<style>
+  .archive-hero { padding: clamp(30px, 7vw, 72px); }
+  .archive-hero .copy { max-width: 760px; }
+  .archive-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+  .archive-card { display: grid; min-height: 250px; gap: 14px; padding: clamp(24px, 4vw, 34px); transition: transform 160ms ease, border-color 160ms ease, background 160ms ease; }
+  .archive-card:hover,.archive-card:focus-visible { transform: translateY(-3px); border-color: rgba(217,210,255,.45); background: rgba(19,22,42,.72); }
+  .archive-card span { color: var(--soft); font-size: .72rem; font-weight: 850; letter-spacing: .16em; }
+  .archive-card h2 { margin: 0; font-size: clamp(2rem,5vw,3.4rem); line-height: .94; letter-spacing: -.07em; }
+  .archive-card p { margin: 0; max-width: 560px; color: var(--muted); line-height: 1.68; }
+  .archive-card strong { margin-top: auto; color: var(--accent); font-size: 1.5rem; }
+  .archive-secondary { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; }
+  .archive-secondary a { border: 1px solid var(--line); border-radius: 999px; padding: 10px 14px; color: var(--soft); }
+  @media (max-width: 760px) { .archive-grid { grid-template-columns: 1fr; } }
+</style>

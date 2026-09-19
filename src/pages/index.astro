@@ -1,8 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { socials } from '../data/content';
+import { homeDiscoverySongs } from '../data/homeDiscovery';
 import { getSortedReleases } from '../utils/musicCatalogue';
-import { getFeaturedCatalogueRelease } from '../utils/musicVisibility';
+import { getMainCatalogueReleases } from '../utils/musicVisibility';
+import { resolveMusicCover } from '../utils/musicCover';
+import type { ResolvedMusicRelease } from '../utils/musicCatalogue';
 
 const withBase = (path: string) => {
   const base = import.meta.env.BASE_URL.endsWith('/')
@@ -11,107 +13,260 @@ const withBase = (path: string) => {
   return `${base}${path.replace(/^\/+/, '')}`;
 };
 
-const featuredRelease = getFeaturedCatalogueRelease(getSortedReleases());
-const featuredPlatforms = featuredRelease.platforms.slice(0, 3);
-const quickLinks = [
-  ['home.quickTimelineLabel', 'home.quickTimelineBody', '/music/timeline/', 'Timeline', 'Release history by year'],
-  ['home.quickGardenLabel', 'home.quickGardenBody', '/garden/', 'Garden', 'Living notes map'],
-  ['home.quickFriendsLabel', 'home.quickFriendsBody', '/friends/', 'Friends', 'Neighboring sites'],
-  ['home.quickBlogLabel', 'home.quickBlogBody', '/blog/', 'Blog', 'Notes and archive logs'],
-  ['home.quickBusinessLabel', 'home.quickBusinessBody', '/business/', 'Business', 'Collaboration scope']
-];
+const releases = getSortedReleases();
+const mainReleases = getMainCatalogueReleases(releases);
+const today = new Date().toISOString().slice(0, 10);
+const currentRelease =
+  mainReleases.find((release) => release.releaseDate <= today) ??
+  mainReleases[0] ??
+  releases[0];
+
+if (!currentRelease) throw new Error('Music catalogue is empty.');
+
+const pickPlay = (release: ResolvedMusicRelease) => {
+  const preferred = release.platforms.find((platform) =>
+    /youtube|spotify|apple music|niconico|soundcloud|bilibili/i.test(platform.label)
+  );
+  return preferred
+    ? { href: preferred.href, external: true }
+    : { href: withBase(`/music/${release.slug}/`), external: false };
+};
+
+const heroSongs = homeDiscoverySongs.flatMap((spec) => {
+  const release = releases.find((item) => item.slug === spec.slug);
+  if (!release) return [];
+  return [{
+    spec,
+    release,
+    cover: resolveMusicCover(release, import.meta.env.BASE_URL),
+    play: pickPlay(release)
+  }];
+});
+
+const currentCover = resolveMusicCover(currentRelease, import.meta.env.BASE_URL);
+const currentPlay = pickPlay(currentRelease);
 ---
-<BaseLayout>
+<BaseLayout
+  description="Misaka Sarina — independent music producer and digital creator building songs, archives, and small worlds on the internet."
+>
   <section class="section hero">
-    <div>
-      <p class="eyebrow" data-i18n="home.eyebrow">Baker Siacone / Siacone Art</p>
+    <div class="hero-copy">
+      <p class="eyebrow" data-i18n="brandHome.eyebrow">Independent music producer & digital creator</p>
       <h1>Misaka Sarina</h1>
-      <p class="copy"><span data-i18n="home.copy">Music creator / VOCALOID creator / digital project maker. Welcome to the small world of Baker Siacone / Misaka Sarina.</span><br>PGP Pubkey: 213906239240F896E303A47662443ACE03F2788A</p>
-      <div class="button-row">
-        <a class="button primary" href={withBase('/music')} data-i18n="home.listen">Listen / Music</a>
-        <a class="button" href={withBase('/garden')} data-i18n="garden.eyebrow">Digital Garden</a>
-        <a class="button" href={withBase('/blog')} data-i18n="nav.blog">Blog</a>
-        <a class="button" href={withBase('/business')} data-i18n="nav.business">Business</a>
-        <a class="button" href={withBase('/contact')} data-i18n="home.contact">Contact</a>
+      <p class="tagline" data-i18n="brandHome.tagline">Songs, memories, and small worlds on the internet.</p>
+      <p class="copy" data-i18n="brandHome.intro">Misaka Sarina makes music with virtual singers and keeps the surrounding stories, traces, and small digital worlds from disappearing.</p>
+      <div class="button-row hero-actions">
+        <a class="button primary" href="#start-here" data-i18n="brandHome.listen">Listen</a>
+        <a class="button" href={withBase('/archive/')} data-i18n="brandHome.enterArchive">Enter the Archive</a>
       </div>
     </div>
-    <aside class="card hero-card">
+    <aside class="card hero-signal" aria-label="Misaka Sarina brand signal">
       <div class="orb">MS</div>
-      <p class="index-label" data-i18n="home.nightArchive">Night archive</p>
-      <p data-i18n="home.heroCard">I make music, small tools, and personal spaces on the internet.</p>
-      <div class="socials">{socials.map(([label, href]) => <a class="pill" href={href} target="_blank" rel="noreferrer">{label}</a>)}</div>
+      <span>NIGHT / MEMORY / ARCHIVE</span>
+      <strong>cute × nostalgic × digital × lonely × warm</strong>
+      <small>also known as Baker Siacone</small>
     </aside>
   </section>
 
-  <section class="section card platform-notice" role="note" aria-labelledby="meta-platform-notice-title">
-    <div class="notice-mark" aria-hidden="true">!</div>
-    <div class="notice-copy">
-      <p class="eyebrow" data-i18n="home.metaNoticeEyebrow">Platform notice</p>
-      <h2 id="meta-platform-notice-title" data-i18n="home.metaNoticeTitle">Meta platform use suspended</h2>
-      <p class="copy" data-i18n="home.metaNoticeBody">Because all of MISAKA SARINA's Meta accounts have been suspended, and after considering the future direction of this personal project, Meta platforms will no longer be used for the foreseeable future. Thank you for your understanding.</p>
-    </div>
-  </section>
-
-  <section class="section quick-entry" aria-label="Quick entry points">
-    {quickLinks.map(([labelKey, bodyKey, href, label, note]) => (
-      <a class="quick-card" href={withBase(href)}>
-        <span data-i18n={labelKey}>{label}</span>
-        <strong data-i18n={bodyKey}>{note}</strong>
-      </a>
-    ))}
-  </section>
-
-  <section class="section card featured">
+  <section class="section meta-notice" role="note" aria-labelledby="meta-platform-notice-title">
+    <span aria-hidden="true">!</span>
     <div>
-      <p class="eyebrow" data-i18n="home.featured">Featured Release</p>
-      <h2>{featuredRelease.title}</h2>
-      <p class="copy">{featuredRelease.description}</p>
-      <p class="release-meta">{featuredRelease.type.toUpperCase()} · {featuredRelease.releaseDate}</p>
+      <strong id="meta-platform-notice-title" data-i18n="home.metaNoticeTitle">Meta platform use suspended</strong>
+      <p data-i18n="home.metaNoticeBody">Because all of MISAKA SARINA's Meta accounts have been suspended, and after considering the future direction of this personal project, Meta platforms will no longer be used for the foreseeable future. Thank you for your understanding.</p>
     </div>
-    <div class="button-row featured-actions">
-      <a class="button primary" href={withBase(`/music/${featuredRelease.slug}/`)} data-i18n="home.viewRelease">View release</a>
-      {featuredPlatforms.map((platform) => (
-        <a class="button" href={platform.href} target="_blank" rel="noreferrer">{platform.label}</a>
+  </section>
+
+  <section class="section discovery" id="start-here">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow" data-i18n="brandHome.startEyebrow">Start here</p>
+        <h2 data-i18n="brandHome.startTitle">Four songs. Four ways into the world.</h2>
+      </div>
+      <p data-i18n="brandHome.startCopy">This is the discovery layer: a small set of songs chosen for different roles, not a ranking of the whole catalogue.</p>
+    </div>
+
+    <div class="discovery-grid">
+      {heroSongs.map(({ spec, release, cover, play }, index) => (
+        <article class="card discovery-card">
+          <div class="song-cover" aria-hidden="true">
+            {cover.primary ? (
+              <img src={cover.primary} data-cover-fallback data-fallback-src={cover.fallback} data-cover-strategy={cover.strategy} alt="" />
+            ) : <span>MS</span>}
+          </div>
+          <div class="song-copy">
+            <span class="song-index">{String(index + 1).padStart(2, '0')} · {spec.role}</span>
+            <h3>{release.title}</h3>
+            <p data-i18n={spec.storyKey}>{spec.fallbackStory}</p>
+            <div class="button-row">
+              <a class="button primary" href={play.href} target={play.external ? '_blank' : undefined} rel={play.external ? 'noreferrer' : undefined} data-i18n="brandHome.play">Play</a>
+              <a class="button" href={withBase(`/music/${release.slug}/`)} data-i18n="brandHome.openEntry">Open archive entry</a>
+            </div>
+          </div>
+        </article>
       ))}
     </div>
   </section>
-  <section class="section">
-    <p class="eyebrow" data-i18n="home.explore">Explore</p>
-    <h2 class="title" data-i18n="home.exploreTitle">A small hub for music, notes, and digital traces.</h2>
-    <div class="grid explore-grid">
-      <a class="card tile" href={withBase('/music')}><span data-i18n="status.live">Live</span><h3 data-i18n="home.tileMusicTitle">Music</h3><p data-i18n="home.tileMusicBody">Main releases first, with version entries kept in a secondary section.</p></a>
-      <a class="card tile" href={withBase('/music/timeline/')}><span data-i18n="status.live">Live</span><h3 data-i18n="nav.timeline">Timeline</h3><p data-i18n="home.tileTimelineBody">Sound traces by year, built from the music archive.</p></a>
-      <a class="card tile" href={withBase('/garden/')}><span data-i18n="status.draft">Draft</span><h3 data-i18n="garden.eyebrow">Digital Garden</h3><p data-i18n="home.tileGardenBody">A living map for drafts, notes, release context, and maintenance traces.</p></a>
-      <a class="card tile" href={withBase('/blog/')}><span data-i18n="status.draft">Draft</span><h3 data-i18n="nav.blog">Blog</h3><p data-i18n="home.tileBlogBody">Release diaries, site logs, business notes, and technical field notes.</p></a>
-      <a class="card tile" href={withBase('/business/')}><span data-i18n="status.open">Open</span><h3 data-i18n="nav.business">Business</h3><p data-i18n="home.tileBusinessBody">Music, web archive, and digital project collaboration scope.</p></a>
-      <a class="card tile" href={withBase('/friends/')}><span data-i18n="status.live">Live</span><h3 data-i18n="nav.friends">Friends</h3><p data-i18n="home.tileFriendsBody">Friend links, personal sites, and neighboring internet spaces.</p></a>
-      <a class="card tile" href={withBase('/links')}><span data-i18n="status.live">Live</span><h3 data-i18n="home.tileLinksTitle">Links</h3><p data-i18n="home.tileLinksBody">The organized replacement for the original Linkyee list.</p></a>
+
+  <section class="section current-transmission">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow" data-i18n="brandHome.currentEyebrow">Current transmission</p>
+        <h2 data-i18n="brandHome.currentTitle">The newest story in the archive.</h2>
+      </div>
+      <p data-i18n="brandHome.currentCopy">This slot is generated from the newest main catalogue release available at build time, so the homepage does not get stuck on an old manual feature.</p>
+    </div>
+
+    <div class="current-grid">
+      <article class="card current-release">
+        <div class="current-cover" aria-hidden="true">
+          {currentCover.primary ? (
+            <img src={currentCover.primary} data-cover-fallback data-fallback-src={currentCover.fallback} data-cover-strategy={currentCover.strategy} alt="" />
+          ) : <span>MS</span>}
+        </div>
+        <div>
+          <p class="eyebrow">{currentRelease.type} · {currentRelease.releaseDate}</p>
+          <h3>{currentRelease.title}</h3>
+          <p>{currentRelease.description}</p>
+          <div class="button-row">
+            <a class="button primary" href={withBase(`/music/${currentRelease.slug}/`)} data-i18n="brandHome.viewRelease">Open current release</a>
+            <a class="button" href={currentPlay.href} target={currentPlay.external ? '_blank' : undefined} rel={currentPlay.external ? 'noreferrer' : undefined} data-i18n="brandHome.play">Play</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card current-video">
+        <p class="eyebrow" data-i18n="brandHome.featuredVideo">Featured video</p>
+        <div class="video-frame">
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/-ZseniKo-2s"
+            title="Misaka Sarina featured video"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+            loading="lazy"
+          ></iframe>
+        </div>
+        <a class="button" href="https://youtu.be/-ZseniKo-2s?si=q5HjSG0nBWpqnLyq" target="_blank" rel="noreferrer" data-i18n="brandHome.watchVideo">Watch on YouTube</a>
+      </article>
     </div>
   </section>
-  <section class="section card dev-trace">
+
+  <section class="section archive-entry">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow" data-i18n="brandHome.archiveEyebrow">Enter the Archive</p>
+        <h2 data-i18n="brandHome.archiveTitle">Go deeper without putting the whole database on the homepage.</h2>
+      </div>
+    </div>
+    <div class="archive-grid">
+      <a class="card route-card" href={withBase('/music/')}>
+        <span>01</span><h3 data-i18n="brandHome.musicArchive">Music Archive</h3><p data-i18n="brandHome.musicArchiveCopy">The complete catalogue: main releases, versions, profiles, lyrics, and source metadata.</p>
+      </a>
+      <a class="card route-card" href={withBase('/blog/')}>
+        <span>02</span><h3 data-i18n="brandHome.stories">Stories</h3><p data-i18n="brandHome.storiesCopy">Song context, diaries, notes, and the human reasons behind the archive.</p>
+      </a>
+      <a class="card route-card" href={withBase('/archive/')}>
+        <span>03</span><h3 data-i18n="brandHome.artifacts">Artifacts</h3><p data-i18n="brandHome.artifactsCopy">Tools, downloads, experiments, project traces, and the digital garden.</p>
+      </a>
+    </div>
+  </section>
+
+  <section class="section about-stay-grid">
+    <article class="card about-sarina">
+      <p class="eyebrow" data-i18n="brandHome.aboutEyebrow">About Sarina</p>
+      <h2 data-i18n="brandHome.aboutTitle">The person behind the archive.</h2>
+      <p data-i18n="brandHome.aboutCopy">Misaka Sarina is an independent music producer and digital creator. VOCALOID and virtual singers are recurring instruments, but the larger project is about songs, memory, night, archives, and small worlds left on the internet. Baker Siacone remains the creator and legacy identity behind the project.</p>
+      <a class="button" href={withBase('/about/')} data-i18n="brandHome.readStory">Read the full story</a>
+    </article>
+
+    <article class="card stay-card">
+      <p class="eyebrow" data-i18n="brandHome.stayEyebrow">Join the Archive</p>
+      <h2 data-i18n="brandHome.stayTitle">Receive transmissions.</h2>
+      <p data-i18n="brandHome.stayCopy">Email transmissions are still being prepared. RSS is the stable owned channel today, so you can follow new notes without relying on a social platform.</p>
+      <a class="button primary" href={withBase('/rss.xml')} data-i18n="brandHome.followRss">Follow RSS</a>
+    </article>
+  </section>
+
+  <section class="section card support-strip">
     <div>
-      <p class="eyebrow" data-i18n="home.digitalTrace">Digital Trace</p>
-      <h2 data-i18n="home.digitalTitle">Development traces behind the archive.</h2>
-      <p class="copy" data-i18n="home.digitalBody">Small tools, web experiments, infrastructure notes, and the repository history that keeps this creator space reproducible.</p>
+      <p class="eyebrow" data-i18n="brandHome.supportEyebrow">Support</p>
+      <h2 data-i18n="brandHome.supportTitle">Support Sarina.</h2>
+      <p data-i18n="brandHome.supportCopy">One support page, then choose the route that fits you. The homepage does not need to expose the payment infrastructure.</p>
     </div>
-    <div class="trace-grid">
-      <a class="trace-card" href="https://github.com/LGBTALBUM" target="_blank" rel="noreferrer">
-        <span>GitHub</span>
-        <strong data-i18n="home.githubProfile">Profile</strong>
-        <small data-i18n="home.githubProfileBody">Development identity</small>
-      </a>
-      <a class="trace-card" href="https://github.com/LGBTALBUM/MISAKA_SARINA_N" target="_blank" rel="noreferrer">
-        <span data-i18n="home.repository">Repository</span>
-        <strong>MISAKA_SARINA_N</strong>
-        <small data-i18n="home.repositoryBody">Current Astro rebuild</small>
-      </a>
-      <a class="trace-card" href={withBase('/works')}>
-        <span data-i18n="contact.archive">Archive</span>
-        <strong data-i18n="nav.works">Works</strong>
-        <small data-i18n="home.worksBody">Reserved project index</small>
-      </a>
-    </div>
+    <a class="button primary" href={withBase('/support/')} data-i18n="brandHome.supportCta">Support Sarina</a>
   </section>
+
   <script src={withBase('/meta-notice-i18n.js')} defer></script>
 </BaseLayout>
-<style>.hero{display:grid;grid-template-columns:minmax(0,1.18fr) minmax(280px,.82fr);align-items:center;gap:30px;margin-top:62px}h1{margin:0;font-size:clamp(4.2rem,12vw,9.5rem);line-height:.84;letter-spacing:-.105em;text-shadow:0 18px 70px rgba(0,0,0,.55)}.hero-card{padding:28px}.index-label{margin:22px 0 4px;color:var(--accent);font-size:.78rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase}.orb{display:grid;place-items:center;width:154px;height:154px;border:1px solid rgba(236,238,255,.3);border-radius:32px;color:#080914;font-size:3.5rem;font-weight:950;letter-spacing:-.12em;background:linear-gradient(135deg,#f5f2ff,#aebcff 58%,#d7b4c7);box-shadow:0 24px 90px rgba(0,0,0,.46)}.platform-notice{display:grid;grid-template-columns:auto minmax(0,1fr);gap:20px;align-items:start;padding:clamp(22px,4vw,32px);border-color:rgba(255,190,202,.28);background:linear-gradient(145deg,rgba(49,22,35,.78),rgba(14,10,20,.72))}.notice-mark{display:grid;place-items:center;width:52px;height:52px;border:1px solid rgba(255,190,202,.35);border-radius:16px;color:#ffd1da;background:rgba(255,190,202,.1);font-size:1.5rem;font-weight:950}.notice-copy h2{margin:0 0 10px;font-size:clamp(1.65rem,4vw,2.8rem);line-height:1;letter-spacing:-.055em}.notice-copy .eyebrow{margin-bottom:10px;color:#ffb9c8}.notice-copy .copy{margin:0;max-width:1000px}.quick-entry{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:-22px}.quick-card{display:grid;gap:8px;border:1px solid rgba(236,238,255,.12);border-radius:18px;background:rgba(7,8,18,.46);padding:16px 18px;transition:transform 160ms ease,border-color 160ms ease,background 160ms ease}.quick-card:hover,.quick-card:focus-visible{transform:translateY(-2px);border-color:rgba(217,210,255,.45);background:rgba(19,22,42,.72)}.quick-card span{color:var(--accent-2);font-size:.72rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase}.quick-card strong{font-size:.95rem;line-height:1.25}.featured,.tile,.dev-trace{padding:30px}.featured{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,auto);align-items:center;gap:24px}.featured h2,.dev-trace h2{margin:0 0 12px;font-size:clamp(2rem,5vw,4.2rem);letter-spacing:-.07em}.featured-actions{justify-content:flex-end}.release-meta{margin:16px 0 0;color:var(--accent-2);font-size:.78rem;font-weight:850;letter-spacing:.16em}.explore-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.tile{display:flex;min-height:220px;flex-direction:column;justify-content:space-between}.tile span{width:fit-content;padding:8px 12px;border:1px solid rgba(236,238,255,.14);border-radius:999px;color:var(--accent-2);background:rgba(7,8,18,.55);font-size:.76rem;font-weight:850;letter-spacing:.16em;text-transform:uppercase}.tile h3{font-size:1.65rem;letter-spacing:-.045em}.tile p,.hero-card p{color:var(--muted)}.dev-trace{display:grid;grid-template-columns:minmax(0,0.9fr) minmax(320px,1.1fr);gap:28px;align-items:center;margin-bottom:24px}.trace-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.trace-card{display:grid;gap:8px;border:1px solid rgba(236,238,255,.12);border-radius:18px;background:rgba(7,8,18,.48);padding:18px;transition:transform 160ms ease,border-color 160ms ease,background 160ms ease}.trace-card:hover,.trace-card:focus-visible{transform:translateY(-2px);border-color:rgba(217,210,255,.45);background:rgba(19,22,42,.72)}.trace-card span{color:var(--soft);font-size:.72rem;font-weight:850;letter-spacing:.16em;text-transform:uppercase}.trace-card strong{font-size:1.05rem}.trace-card small{color:var(--soft);line-height:1.45}:global(:root[data-theme='light']) .platform-notice{border-color:rgba(197,107,152,.28);background:linear-gradient(145deg,rgba(255,247,250,.96),rgba(255,252,247,.9))}:global(:root[data-theme='light']) .notice-mark{border-color:rgba(197,107,152,.32);color:#9c426e;background:rgba(197,107,152,.08)}:global(:root[data-theme='light']) .notice-copy .eyebrow{color:#9c426e}@media(max-width:1180px){.quick-entry{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:1020px){.explore-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:920px){.dev-trace,.trace-grid{grid-template-columns:1fr}}@media(max-width:880px){.hero,.featured{grid-template-columns:1fr}.featured-actions{justify-content:flex-start}.quick-entry{margin-top:0;grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:620px){.platform-notice{grid-template-columns:1fr}.notice-mark{width:44px;height:44px}}@media(max-width:560px){.quick-entry,.explore-grid{grid-template-columns:1fr}}</style>
+
+<style>
+  .hero { display: grid; grid-template-columns: minmax(0,1.2fr) minmax(280px,.58fr); gap: 30px; align-items: center; margin-top: 62px; }
+  h1 { margin: 0; font-size: clamp(4.5rem,12vw,10rem); line-height: .82; letter-spacing: -.11em; text-shadow: 0 18px 70px rgba(0,0,0,.55); }
+  .tagline { max-width: 820px; margin: 22px 0 10px; color: var(--text); font-size: clamp(1.5rem,3.5vw,2.6rem); font-weight: 850; line-height: 1.05; letter-spacing: -.055em; }
+  .hero-copy .copy { max-width: 700px; }
+  .hero-actions { margin-top: 28px; }
+  .hero-signal { display: grid; gap: 18px; padding: 28px; }
+  .hero-signal > span,.hero-signal small,.song-index { color: var(--soft); font-size: .72rem; font-weight: 850; letter-spacing: .14em; text-transform: uppercase; }
+  .hero-signal strong { color: var(--accent); line-height: 1.5; }
+  .orb { display: grid; place-items: center; width: 154px; height: 154px; border: 1px solid rgba(236,238,255,.3); border-radius: 32px; color: #080914; font-size: 3.5rem; font-weight: 950; letter-spacing: -.12em; background: linear-gradient(135deg,#f5f2ff,#aebcff 58%,#d7b4c7); box-shadow: 0 24px 90px rgba(0,0,0,.46); }
+
+  .meta-notice { display: grid; grid-template-columns: auto minmax(0,1fr); gap: 14px; align-items: start; border: 1px solid rgba(255,190,202,.2); border-radius: 20px; background: rgba(49,22,35,.34); padding: 18px 20px; }
+  .meta-notice > span { display: grid; place-items: center; width: 34px; height: 34px; border: 1px solid rgba(255,190,202,.28); border-radius: 11px; color: #ffd1da; font-weight: 950; }
+  .meta-notice strong { color: var(--text); }
+  .meta-notice p { margin: 5px 0 0; color: var(--soft); line-height: 1.55; font-size: .92rem; }
+
+  .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 28px; margin-bottom: 24px; }
+  .section-heading h2,.about-sarina h2,.stay-card h2,.support-strip h2 { margin: 0; font-size: clamp(2.2rem,5vw,4.4rem); line-height: .92; letter-spacing: -.075em; }
+  .section-heading > p { max-width: 420px; margin: 0; color: var(--muted); line-height: 1.65; }
+
+  .discovery-grid { display: grid; gap: 16px; }
+  .discovery-card { display: grid; grid-template-columns: 190px minmax(0,1fr); gap: 24px; align-items: center; padding: 20px; }
+  .song-cover,.current-cover { overflow: hidden; aspect-ratio: 1; border: 1px solid rgba(236,238,255,.16); border-radius: 20px; background: linear-gradient(135deg,#f5f2ff,#aebcff 58%,#d7b4c7); }
+  .song-cover img,.current-cover img { width: 100%; height: 100%; object-fit: cover; }
+  .song-cover span,.current-cover span { display: grid; place-items: center; width: 100%; height: 100%; color: #080914; font-size: 2.8rem; font-weight: 950; }
+  .song-copy h3,.current-release h3 { margin: 8px 0 10px; font-size: clamp(1.9rem,4vw,3.2rem); line-height: .95; letter-spacing: -.065em; }
+  .song-copy > p,.current-release > div > p:not(.eyebrow) { margin: 0 0 18px; color: var(--muted); line-height: 1.68; }
+
+  .current-grid { display: grid; grid-template-columns: minmax(0,1.2fr) minmax(320px,.8fr); gap: 18px; }
+  .current-release { display: grid; grid-template-columns: minmax(180px,260px) minmax(0,1fr); gap: 24px; align-items: center; padding: 24px; }
+  .current-video { display: grid; align-content: start; gap: 16px; padding: 22px; }
+  .video-frame { position: relative; overflow: hidden; width: 100%; aspect-ratio: 16/9; border-radius: 18px; background: #000; }
+  .video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+  .archive-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; }
+  .route-card { display: grid; min-height: 260px; gap: 12px; padding: 24px; transition: transform 160ms ease,border-color 160ms ease,background 160ms ease; }
+  .route-card:hover,.route-card:focus-visible { transform: translateY(-3px); border-color: rgba(217,210,255,.45); background: rgba(19,22,42,.72); }
+  .route-card span { color: var(--accent-2); font-size: .72rem; font-weight: 900; letter-spacing: .16em; }
+  .route-card h3 { margin: auto 0 0; font-size: clamp(2rem,4vw,3rem); letter-spacing: -.06em; }
+  .route-card p { margin: 0; color: var(--muted); line-height: 1.65; }
+
+  .about-stay-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .about-sarina,.stay-card { display: flex; min-height: 340px; flex-direction: column; align-items: flex-start; padding: clamp(26px,5vw,40px); }
+  .about-sarina > p:not(.eyebrow),.stay-card > p:not(.eyebrow),.support-strip p { color: var(--muted); line-height: 1.72; }
+  .about-sarina .button,.stay-card .button { margin-top: auto; }
+
+  .support-strip { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 24px; align-items: center; padding: clamp(26px,5vw,40px); margin-bottom: 24px; }
+  .support-strip p { max-width: 760px; margin-bottom: 0; }
+
+  :global(:root[data-theme='light']) .meta-notice { border-color: rgba(197,107,152,.22); background: rgba(255,247,250,.82); }
+  :global(:root[data-theme='light']) .meta-notice > span { color: #9c426e; border-color: rgba(197,107,152,.28); }
+
+  @media (max-width: 980px) {
+    .hero,.current-grid,.about-stay-grid { grid-template-columns: 1fr; }
+    .archive-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 780px) {
+    .section-heading { align-items: flex-start; flex-direction: column; }
+    .discovery-card,.current-release { grid-template-columns: 1fr; }
+    .song-cover { max-width: 240px; }
+    .current-cover { max-width: 300px; }
+    .support-strip { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    .meta-notice { grid-template-columns: 1fr; }
+    .hero { margin-top: 34px; }
+  }
+</style>

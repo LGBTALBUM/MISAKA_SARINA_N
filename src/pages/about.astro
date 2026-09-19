@@ -1,98 +1,60 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const withBase = (path: string) => {
+  const base = import.meta.env.BASE_URL.endsWith('/')
+    ? import.meta.env.BASE_URL
+    : `${import.meta.env.BASE_URL}/`;
+  return `${base}${path.replace(/^\/+/, '')}`;
+};
 ---
-<BaseLayout title="About" description="About Misaka Sarina aka Baker Siacone.">
+<BaseLayout title="About" description="About Misaka Sarina — independent music producer and digital creator.">
   <section class="section about-hero card">
     <div>
-      <p class="eyebrow" data-i18n="about.eyebrow">About</p>
-      <h1 class="title" data-i18n="about.title">Misaka Sarina aka Baker Siacone</h1>
-      <p class="copy" data-i18n="about.copy">This site is a dark archive for music, links, notes, and digital traces. It turns the old link page into a creator homepage with a proper release catalogue and room for future projects.</p>
+      <p class="eyebrow" data-i18n="brandAbout.eyebrow">About</p>
+      <h1 class="title" data-i18n="brandAbout.title">Misaka Sarina</h1>
+      <p class="copy" data-i18n="brandAbout.copy">An independent music producer and digital creator building songs, archives, and small worlds on the internet.</p>
+      <div class="button-row about-actions">
+        <a class="button primary" href={withBase('/music/')} data-i18n="brandNav.music">Music</a>
+        <a class="button" href={withBase('/about/history/')} data-i18n="brandAbout.history">Identity history</a>
+      </div>
     </div>
-    <div class="identity-card">
-      <span data-i18n="about.identity">Identity</span>
-      <strong data-i18n="about.identityTitle">Music creator / VOCALOID creator / digital project maker</strong>
-      <p data-i18n="about.identityCopy">Siacone Art is the project space. Misaka Sarina is the music identity.</p>
-    </div>
+    <aside class="identity-card">
+      <span data-i18n="brandAbout.identity">Identity</span>
+      <strong data-i18n="brandAbout.identityTitle">Independent music producer & digital creator</strong>
+      <p data-i18n="brandAbout.identityCopy">Misaka Sarina is the master public identity. Baker Siacone is the creator / producer and legacy identity behind it.</p>
+    </aside>
   </section>
 
   <section class="section grid notes-grid">
     <article class="card note-card">
-      <p class="eyebrow" data-i18n="about.music">Music</p>
-      <h2 data-i18n="about.musicTitle">Release archive first.</h2>
-      <p data-i18n="about.musicCopy">The music catalogue is synced from VocaDB and arranged so main releases stay visible while versions and instrumentals remain available.</p>
+      <p class="eyebrow">Music</p>
+      <h2 data-i18n="brandAbout.musicTitle">Music is the front door.</h2>
+      <p data-i18n="brandAbout.musicCopy">VOCALOID and virtual singers are important creative media, but the long-term brand is Misaka Sarina rather than a single genre or software ecosystem.</p>
     </article>
     <article class="card note-card">
-      <p class="eyebrow" data-i18n="about.web">Web</p>
-      <h2 data-i18n="about.webTitle">A personal space.</h2>
-      <p data-i18n="about.webCopy">The site is built with Astro and designed to stay light, static, and portable across GitHub Pages or future production hosting.</p>
+      <p class="eyebrow">Memory / Archive</p>
+      <h2 data-i18n="brandAbout.archiveTitle">Memory becomes an archive.</h2>
+      <p data-i18n="brandAbout.archiveCopy">Songs, demos, lyrics, old pages, tools, and notes are kept as traces of time instead of being treated as disposable launch material.</p>
     </article>
     <article class="card note-card">
-      <p class="eyebrow" data-i18n="about.future">Future</p>
-      <h2 data-i18n="about.futureTitle">Expandable by design.</h2>
-      <p data-i18n="about.futureCopy">Works, blog notes, lyrics, credits, and production logs can be added without changing the core information architecture.</p>
+      <p class="eyebrow">Small Worlds</p>
+      <h2 data-i18n="brandAbout.worldTitle">Each project is a small world.</h2>
+      <p data-i18n="brandAbout.worldCopy">Night, rooms, stars, computer windows, old files, timestamps, and warmth form the shared visual and narrative vocabulary.</p>
     </article>
   </section>
 </BaseLayout>
+
 <style>
-  .about-hero {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(260px, 0.42fr);
-    gap: 28px;
-    align-items: end;
-    padding: clamp(28px, 6vw, 56px);
-  }
-
-  .title span {
-    color: var(--muted);
-  }
-
-  .identity-card,
-  .note-card {
-    border: 1px solid rgba(236, 238, 255, 0.12);
-    border-radius: 20px;
-    background: rgba(7, 8, 18, 0.52);
-  }
-
-  .identity-card {
-    display: grid;
-    gap: 12px;
-    padding: 22px;
-  }
-
-  .identity-card span {
-    color: var(--soft);
-    font-size: 0.72rem;
-    font-weight: 850;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-  }
-
-  .identity-card strong {
-    color: var(--accent);
-    font-size: 1.12rem;
-    line-height: 1.35;
-  }
-
-  .identity-card p,
-  .note-card p {
-    margin: 0;
-    color: var(--muted);
-    line-height: 1.7;
-  }
-
-  .note-card {
-    padding: 24px;
-  }
-
-  .note-card h2 {
-    margin: 0 0 12px;
-    font-size: 1.65rem;
-    letter-spacing: -0.05em;
-  }
-
-  @media (max-width: 840px) {
-    .about-hero {
-      grid-template-columns: 1fr;
-    }
-  }
+  .about-hero { display: grid; grid-template-columns: minmax(0,1fr) minmax(280px,.48fr); gap: 28px; align-items: end; padding: clamp(28px,6vw,56px); }
+  .about-actions { margin-top: 24px; }
+  .identity-card,.note-card { border: 1px solid rgba(236,238,255,.12); border-radius: 20px; background: rgba(7,8,18,.52); }
+  .identity-card { display: grid; gap: 12px; padding: 22px; }
+  .identity-card span { color: var(--soft); font-size: .72rem; font-weight: 850; letter-spacing: .16em; text-transform: uppercase; }
+  .identity-card strong { color: var(--accent); font-size: 1.12rem; line-height: 1.35; }
+  .identity-card p,.note-card p { margin: 0; color: var(--muted); line-height: 1.7; }
+  .notes-grid { grid-template-columns: repeat(3,minmax(0,1fr)); }
+  .note-card { padding: 24px; }
+  .note-card h2 { margin: 0 0 12px; font-size: 1.65rem; letter-spacing: -.05em; }
+  @media (max-width: 900px) { .about-hero,.notes-grid { grid-template-columns: 1fr; } }
 </style>
