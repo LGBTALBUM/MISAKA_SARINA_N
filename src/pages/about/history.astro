@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Identity History" description="Former and legacy identities in the Misaka Sarina archive.">
+  <section class="section card history-hero">
+    <p class="eyebrow" data-i18n="brandHistory.eyebrow">History / former identities</p>
+    <h1 class="title" data-i18n="brandHistory.title">Old names stay in the archive, not in competition.</h1>
+    <p class="copy" data-i18n="brandHistory.copy">The public-facing master brand is Misaka Sarina. Earlier names remain here as provenance for credits, metadata migration, and historical context.</p>
+  </section>
+
+  <section class="section history-list">
+    <article class="card history-card">
+      <span>01</span>
+      <div><h2 data-i18n="brandHistory.carter">2018–2020 · Baker CarterG</h2><p data-i18n="brandHistory.carterCopy">An earlier creator identity. It remains part of the historical record rather than an active public brand.</p></div>
+    </article>
+    <article class="card history-card">
+      <span>02</span>
+      <div><h2 data-i18n="brandHistory.siacone">Later · Baker Siacone</h2><p data-i18n="brandHistory.siaconeCopy">Creator / producer identity behind Misaka Sarina, still appropriate for technical credits, GitHub, engineering work, and legacy metadata.</p></div>
+    </article>
+    <article class="card history-card">
+      <span>03</span>
+      <div><h2 data-i18n="brandHistory.sarina">Present · Misaka Sarina</h2><p data-i18n="brandHistory.sarinaCopy">The master public identity for music, media introductions, covers, social presence, and audience-facing work.</p></div>
+    </article>
+  </section>
+
+  <section class="section card history-note">
+    <p data-i18n="brandHistory.note">Precise transition dates after 2020 are still being reconciled from archive metadata; this page intentionally does not invent them.</p>
+  </section>
+</BaseLayout>
+
+<style>
+  .history-hero,.history-note { padding: clamp(28px,6vw,56px); }
+  .history-list { display: grid; gap: 16px; }
+  .history-card { display: grid; grid-template-columns: 70px minmax(0,1fr); gap: 18px; align-items: start; padding: 26px; }
+  .history-card > span { color: var(--accent); font-size: .78rem; font-weight: 900; letter-spacing: .16em; }
+  .history-card h2 { margin: 0 0 10px; font-size: clamp(1.7rem,4vw,2.8rem); letter-spacing: -.06em; }
+  .history-card p,.history-note p { margin: 0; color: var(--muted); line-height: 1.72; }
+  @media (max-width: 620px) { .history-card { grid-template-columns: 1fr; } }
+</style>
