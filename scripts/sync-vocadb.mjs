@@ -1,7 +1,9 @@
 import { writeFile } from 'node:fs/promises';
 
-const ARTIST_ID = 75285;
+const ARTIST_IDS = [75285, 176454];
 const OUTPUT_PATH = 'src/data/music.ts';
+const PAGE_SIZE = 100;
+const COMMON_FIELDS = 'Names,Artists,PVs,WebLinks,ThumbUrl';
 
 const artistProfile = {
   title: 'Misaka Sarina Artist Profile',
@@ -10,7 +12,7 @@ const artistProfile = {
   type: 'profile',
   featured: true,
   description:
-    'Official public music profiles for Misaka Sarina. This catalogue entry groups confirmed artist pages while individual song releases are synced from VocaDB.',
+    'Official public music profiles and discovery sources for Misaka Sarina. Individual song releases are synchronized across both known VocaDB artist identities.',
   platforms: [
     {
       label: 'Spotify',
@@ -29,19 +31,41 @@ const artistProfile = {
       href: 'https://www.amazon.co.uk/music/player/artists/B0C627DLFN/misaka-sarina'
     },
     {
-      label: 'VocaDB',
-      href: `https://vocadb.net/Ar/${ARTIST_ID}`
+      label: 'VocaDB — 75285',
+      href: 'https://vocadb.net/Ar/75285'
+    },
+    {
+      label: 'VocaDB — 176454',
+      href: 'https://vocadb.net/Ar/176454'
+    },
+    {
+      label: 'Kiite',
+      href: 'https://kiite.jp/creator/DoEBH2NZo3'
+    },
+    {
+      label: 'VocaRank — Combined',
+      href: 'https://vocarank.live/en/search?vocalist_ids=75285%2C176454'
+    },
+    {
+      label: 'VocaRank — 75285',
+      href: 'https://vocarank.live/en/artist/75285'
+    },
+    {
+      label: 'VocaRank — 176454',
+      href: 'https://vocarank.live/en/artist/176454'
     }
   ],
   credits: ['Artist: Misaka Sarina', 'Project identity: Baker Siacone'],
   notes: [
     'This entry is intentionally marked as a profile, not a single release.',
-    'Individual song entries below can be regenerated from VocaDB by running npm run sync:vocadb.'
+    'VocaDB artist IDs 75285 and 176454 are both included in synchronization.',
+    'Kiite is used as an external discovery / cross-check source.',
+    'VocaRank is used as a live statistics and cross-ID discovery source; view counts are not frozen into this static catalogue.'
   ],
   source: {
     label: 'VocaDB',
-    id: String(ARTIST_ID),
-    href: `https://vocadb.net/Ar/${ARTIST_ID}`
+    id: ARTIST_IDS.join(' / '),
+    href: 'https://vocadb.net/Ar/75285'
   }
 };
 
@@ -151,6 +175,7 @@ const mapSong = (song, usedSlugs) => {
     credits: mapCredits(song),
     notes: [
       'This entry was generated from VocaDB.',
+      'The sync checks both Misaka Sarina artist IDs: 75285 and 176454.',
       'Review title, date, credits, and platform links before treating it as final.'
     ],
     source: {
@@ -163,36 +188,13 @@ const mapSong = (song, usedSlugs) => {
 
 const toTs = (releases) => `export type MusicPlatform = {\n  label: string;\n  href: string;\n};\n\nexport type MusicRelease = {\n  title: string;\n  slug: string;\n  releaseDate: string;\n  type: 'profile' | 'single' | 'ep' | 'album' | 'demo';\n  description: string;\n  cover?: string;\n  featured?: boolean;\n  platforms: MusicPlatform[];\n  credits?: string[];\n  notes?: string[];\n  source?: {\n    label: string;\n    id: string;\n    href: string;\n  };\n};\n\nexport const musicReleases: MusicRelease[] = ${JSON.stringify(releases, null, 2)};\n\nexport const getSortedReleases = () =>\n  [...musicReleases].sort(\n    (a, b) => new Date(b.releaseDate).valueOf() - new Date(a.releaseDate).valueOf()\n  );\n\nexport const getFeaturedRelease = () => musicReleases.find((release) => release.featured) ?? musicReleases[0];\n`;
 
-const buildSongApiUrls = () => {
-  const commonFields = 'Names,Artists,PVs,WebLinks,ThumbUrl';
-  const makeUrl = (params) => {
-    const apiUrl = new URL('https://vocadb.net/api/songs');
-    for (const [key, value] of params) {
-      apiUrl.searchParams.append(key, value);
-    }
-    return apiUrl;
-  };
-
-  return [
-    makeUrl([
-      ['artistId[]', String(ARTIST_ID)],
-      ['start', '0'],
-      ['maxResults', '100'],
-      ['fields', commonFields]
-    ]),
-    makeUrl([
-      ['artistId', String(ARTIST_ID)],
-      ['start', '0'],
-      ['maxResults', '100'],
-      ['fields', commonFields]
-    ]),
-    makeUrl([
-      ['query', 'Misaka Sarina'],
-      ['start', '0'],
-      ['maxResults', '100'],
-      ['fields', commonFields]
-    ])
-  ];
+const makeSongApiUrl = ({ key, value, start }) => {
+  const apiUrl = new URL('https://vocadb.net/api/songs');
+  apiUrl.searchParams.append(key, String(value));
+  apiUrl.searchParams.append('start', String(start));
+  apiUrl.searchParams.append('maxResults', String(PAGE_SIZE));
+  apiUrl.searchParams.append('fields', COMMON_FIELDS);
+  return apiUrl;
 };
 
 const requestJson = async (apiUrl) => {
@@ -214,22 +216,65 @@ const requestJson = async (apiUrl) => {
   return body ? JSON.parse(body) : null;
 };
 
-const fetchSongs = async () => {
+const fetchPaged = async (key, value) => {
+  const all = [];
+
+  for (let start = 0; start < 2000; start += PAGE_SIZE) {
+    const apiUrl = makeSongApiUrl({ key, value, start });
+    const payload = await requestJson(apiUrl);
+    const items = Array.isArray(payload) ? payload : payload?.items ?? [];
+
+    all.push(...items);
+    console.log(`Fetched ${items.length} entries from ${apiUrl.toString()}`);
+
+    if (items.length < PAGE_SIZE) break;
+  }
+
+  return all;
+};
+
+const fetchSongsForArtist = async (artistId) => {
   const errors = [];
 
-  for (const apiUrl of buildSongApiUrls()) {
+  for (const key of ['artistId[]', 'artistId']) {
     try {
-      const payload = await requestJson(apiUrl);
-      const items = Array.isArray(payload) ? payload : payload?.items ?? [];
-      console.log(`Fetched ${items.length} VocaDB entries from ${apiUrl.toString()}`);
-      return items;
+      const items = await fetchPaged(key, artistId);
+      if (items.length > 0) return items;
+      errors.push(`${key}: empty result`);
     } catch (error) {
-      errors.push(error.message);
-      console.warn(error.message);
+      const message = error instanceof Error ? error.message : String(error);
+      errors.push(message);
+      console.warn(message);
     }
   }
 
-  throw new Error(`All VocaDB API strategies failed.\n\n${errors.join('\n\n')}`);
+  console.warn(`No entries resolved for artist ${artistId}.\n${errors.join('\n')}`);
+  return [];
+};
+
+const fetchSongs = async () => {
+  const merged = new Map();
+
+  for (const artistId of ARTIST_IDS) {
+    const items = await fetchSongsForArtist(artistId);
+    for (const item of items) {
+      if (item?.id != null) merged.set(String(item.id), item);
+    }
+  }
+
+  if (merged.size === 0) {
+    console.warn('Artist-ID strategies returned no songs; falling back to text query.');
+    const items = await fetchPaged('query', 'Misaka Sarina');
+    for (const item of items) {
+      if (item?.id != null) merged.set(String(item.id), item);
+    }
+  }
+
+  if (merged.size === 0) {
+    throw new Error('No VocaDB songs were returned for either artist ID or the text-query fallback.');
+  }
+
+  return [...merged.values()];
 };
 
 const main = async () => {
@@ -239,7 +284,7 @@ const main = async () => {
   const releases = [artistProfile, ...songs];
 
   await writeFile(OUTPUT_PATH, toTs(releases));
-  console.log(`Synced ${songs.length} VocaDB song entries for artist ${ARTIST_ID}.`);
+  console.log(`Synced ${songs.length} unique VocaDB song entries across artist IDs ${ARTIST_IDS.join(', ')}.`);
 };
 
 main().catch((error) => {
